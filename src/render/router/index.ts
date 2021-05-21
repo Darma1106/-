@@ -12,11 +12,6 @@ const routes: RouteRecordRaw[] = [
     meta: {
       hidden: false
     }
-  },
-  {
-    path: '/antd/:componentName',
-    name: 'Antd-vue-2.x',
-    component: () => import('../views/antd/index.vue')
   }
 ]
 

@@ -1,6 +1,7 @@
 import { onMounted, reactive, Ref } from 'vue'
-import useFlag from './useFlag'
 import ProjectService, { ProjectInfo } from '../services/module/projectService'
+
+import useFlag from './useFlag'
 
 export interface ProjectController {
   loading: Ref<boolean>

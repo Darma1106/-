@@ -4,14 +4,8 @@
     <!-- <a-button @click="add">ADD</a-button> -->
     <!-- </div> -->
     <a-tabs v-model:activeKey="activeKey" hide-add type="editable-card" @edit="onEdit">
-      <a-tab-pane
-        v-for="pane in panes"
-        v-show="pane.key == activeKey"
-        :key="pane.key"
-        :tab="pane.title"
-        :closable="pane.closable"
-      >
-        <component :is="pane.component"></component>
+      <a-tab-pane v-for="pane in panes" :key="pane.key" :tab="pane.title" :closable="pane.closable">
+        <component :is="pane.component" v-if="pane.key == activeKey"></component>
       </a-tab-pane>
     </a-tabs>
   </div>

@@ -30,6 +30,7 @@ export default defineComponent({
   background-color: @header-color;
   padding: 0;
   height: auto;
+  line-height: normal;
   border-bottom: 2px solid #ddd;
 
   .menu-bar {
