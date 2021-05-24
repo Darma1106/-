@@ -8,10 +8,12 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('../views/layout/index.vue'),
-    meta: {
-      hidden: false
-    }
+    component: () => import('../views/layout/index.vue')
+  },
+  {
+    path: '/gojs',
+    name: 'gojs',
+    component: () => import('../views/gojs/index.vue')
   }
 ]
 

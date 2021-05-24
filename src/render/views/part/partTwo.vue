@@ -15,6 +15,6 @@ export default defineComponent({
 <style lang="less" scope>
 .part-two {
   border: 2px solid red;
-  height: 60px;
+  height: 100vh;
 }
 </style>

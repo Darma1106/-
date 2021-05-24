@@ -46,20 +46,28 @@ export default defineComponent({
 <style lang="less" scope>
 .context-button {
   cursor: pointer;
-  height: 100%;
-  width: 60px;
+  height: 65px;
+  width: 70px;
   max-width: 80px;
   .button-container {
     text-align: center;
     padding-top: 10px;
     height: 100%;
+    &:hover {
+      background: #0f4d80;
+      box-shadow: 0 0 15px 5px #3e72b9 inset;
+      border-radius: 4px;
+      .item-title {
+        color: #fff;
+      }
+    }
     .item-image {
       font-size: @tool-svg-size;
       line-height: @tool-svg-size;
     }
     .item-title {
       line-height: 30px;
-      margin-left: 4px;
+      // margin-left: 4px;
       white-space: nowrap;
     }
   }

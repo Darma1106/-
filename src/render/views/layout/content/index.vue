@@ -13,5 +13,6 @@ export default defineComponent({
 <style lang="less" scope>
 .layout-content {
   background: #fff;
+  // border: 2px solid blue;
 }
 </style>

@@ -1,34 +1,42 @@
 <template>
-  <div style="height: 100%">
-    <!-- <div :style="{ marginBottom: '16px' }"> -->
-    <!-- <a-button @click="add">ADD</a-button> -->
-    <!-- </div> -->
-    <a-tabs v-model:activeKey="activeKey" hide-add type="editable-card" @edit="onEdit">
-      <a-tab-pane v-for="pane in panes" :key="pane.key" :tab="pane.title" :closable="pane.closable">
-        <component :is="pane.component" v-if="pane.key == activeKey"></component>
-      </a-tab-pane>
-    </a-tabs>
-  </div>
+  <a-tabs v-model:activeKey="activeKey" class="tabs" hide-add type="editable-card" @edit="onEdit">
+    <a-tab-pane
+      v-for="pane in panes"
+      v-show="pane.key == activeKey"
+      :key="pane.key"
+      class="tab-panel"
+      :tab="pane.title"
+      :closable="pane.closable"
+    >
+      <component :is="pane.component" v-if="pane.key == activeKey"></component>
+    </a-tab-pane>
+  </a-tabs>
 </template>
+
 <script lang="ts">
-import { defineComponent, ref, Ref } from 'vue'
+import { defineComponent, ref, Ref, watch } from 'vue'
 import type { Pane } from './type'
 import PartOne from '/@/views/part/partOne.vue'
 import PartTwo from '/@/views/part/PartTwo.vue'
+import Gojs from '/@/views/gojs/index.vue'
 
 export default defineComponent({
   components: {
     PartOne,
-    PartTwo
+    PartTwo,
+    Gojs
   },
   setup() {
     const panes: Ref<Pane[]> = ref([
       { title: 'Tab 1', content: 'Content of Tab 1', key: '1', closable: true, component: 'PartOne' },
-      { title: 'Tab 2', content: 'Content of Tab 2', key: '2', closable: true, component: 'PartTwo' }
+      { title: 'Tab 2', content: 'Content of Tab 2', key: '2', closable: true, component: 'Gojs' }
     ])
     const activeKey = ref(panes.value[0].key)
     const newTabIndex = ref(0)
 
+    watch(activeKey, (val) => {
+      console.log(val)
+    })
     const add = () => {
       activeKey.value = `newTab${newTabIndex.value++}`
       panes.value.push({
@@ -70,3 +78,21 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="less" scoped>
+.tabs {
+  height: 100%;
+
+  .tab-panel {
+    height: 100%;
+  }
+  ::v-deep(.ant-tabs-bar) {
+    margin: 0;
+  }
+
+  ::v-deep(.ant-tabs-top-content, .ant-tabs-bottom-content) {
+    height: calc(100% - 40px);
+    width: 100%;
+  }
+}
+</style>

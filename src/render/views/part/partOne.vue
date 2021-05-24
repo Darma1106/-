@@ -17,9 +17,7 @@ export default defineComponent({
 
 <style lang="less" scope>
 .part-one {
-  // background: #000;
-  // border: 2px red solid;
-  box-sizing: content-box;
+  border: 2px solid red;
   height: 100%;
 }
 </style>
