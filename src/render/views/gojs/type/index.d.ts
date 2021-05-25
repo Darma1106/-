@@ -1,5 +1,9 @@
-type RelationshipType = 'generalization' | 'aggregation'
-type PropertyType = 'public' | 'private' | 'protected' | 'package'
+import { PropertyTypeValue, RelationshipTypeValue, NodePortTypeValue } from './enum'
+
+type RelationshipType = keyof typeof RelationshipTypeValue
+type PropertyType = keyof typeof PropertyTypeValue
+type MethodType = PropertyType
+type NodePortType = keyof typeof NodePortTypeValue
 type NodeKey = string | number
 
 export interface NodeData {
@@ -8,23 +12,42 @@ export interface NodeData {
   properties: NodeProperty[]
   methods: NodeMethod[]
 }
+
+/**
+ *  @name 节点名
+ *  @type 节点类型
+ *  @visibility 渲染类型
+ *  @defaultValue 默认值
+ *
+ */
+
 export interface NodeProperty {
   name: string
   type: string
-  visibility: string
-  default?: number | string
+  visibility: PropertyType
+  defaultValue?: number | string | boolean
 }
+
+/**
+ * @name 属性名
+ * @type 属性类型
+ */
 export interface MethodParameter {
   name: string
   type: string
 }
+
 export interface NodeMethod {
   name: string
-  parameters: MethodParameter[]
-  visibility: string
+  parameters?: MethodParameter[]
+  visibility: MethodType
+  type?: string
 }
+
 export interface LinkData {
   from: NodeKey
   to: NodeKey
-  relationship: RelationshipType
+  relationship?: RelationshipType
+  fromPort?: NodePortType
+  toPort?: NodePortType
 }
