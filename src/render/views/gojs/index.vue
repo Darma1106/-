@@ -1,5 +1,5 @@
 <template>
-  <div ref="diagramRef" class="diagram">123</div>
+  <div ref="diagramRef" class="diagram"></div>
 </template>
 
 <script setup lang="ts">
@@ -10,9 +10,9 @@ import { init } from './ts/umlDiagram'
 import type { Ref } from 'vue'
 import type { NodeData, LinkData } from './type'
 
-// import type { PropertyType } from './type'
-
 const diagramRef: Ref<HTMLDivElement | null> = ref(null)
+
+// console.log(go.Shape.getArrowheadGeometries().toKeySet().toArray())
 
 onMounted(() => {
   const myDiagram = init(diagramRef.value as HTMLDivElement)
@@ -75,10 +75,10 @@ function setData(myDiagram: go.Diagram): void {
     }
   ]
   const linkdata: LinkData[] = [
-    { from: 12, to: 11, relationship: 'generalization' },
-    { from: 13, to: 11, relationship: 'generalization' },
-    { from: 14, to: 13, relationship: 'aggregation' }
-    // { from: 11, to: 1 }
+    { from: 12, to: 11, relationship: 'Dependency' },
+    { from: 13, to: 11, relationship: 'Aggregation' },
+    { from: 14, to: 13, relationship: 'Generalization' },
+    { from: 11, to: 1, relationship: 'Association' }
   ]
   myDiagram.model = make(go.GraphLinksModel, {
     linkFromPortIdProperty: 'fromPort',

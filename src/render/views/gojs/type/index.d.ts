@@ -1,6 +1,6 @@
 import { PropertyTypeValue, RelationshipTypeValue, NodePortTypeValue } from './enum'
 
-type RelationshipType = keyof typeof RelationshipTypeValue
+export type RelationshipType = keyof typeof RelationshipTypeValue
 type PropertyType = keyof typeof PropertyTypeValue
 type MethodType = PropertyType
 type NodePortType = keyof typeof NodePortTypeValue
@@ -25,6 +25,7 @@ export interface NodeProperty {
   name: string
   type: string
   visibility: PropertyType
+  scope?: string
   defaultValue?: number | string | boolean
 }
 

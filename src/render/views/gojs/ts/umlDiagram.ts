@@ -1,6 +1,6 @@
 import * as go from 'gojs'
 
-import type { PropertyType } from '../type'
+import type { PropertyType, RelationshipType } from '../type'
 
 const make = go.GraphObject.make
 
@@ -21,14 +21,32 @@ function convertVisibility(v: PropertyType) {
 }
 
 // 是否树形分布
-function convertIsTreeLink(r: string) {
-  return r === 'generalization'
+function convertIsTreeLink(relationship: RelationshipType) {
+  // return relationship === 'Generalization'
+  return true
+}
+
+// 是否使用虚线
+function convertIsDashed(relationship: RelationshipType) {
+  switch (relationship) {
+    case 'Realization':
+      return [6, 3]
+    case 'Dependency':
+      return [6, 3]
+    default:
+      return []
+  }
 }
 
 // 箭尾样式
-function convertFromArrow(r: string) {
-  switch (r) {
-    case 'generalization':
+function convertFromArrow(relationship: RelationshipType) {
+  switch (relationship) {
+    case 'Composition':
+      return 'BackwardV'
+    case 'Aggregation':
+      return 'BackwardV'
+
+    case 'Association':
       return ''
     default:
       return ''
@@ -36,12 +54,20 @@ function convertFromArrow(r: string) {
 }
 
 // 箭头样式
-function convertToArrow(r: string): string {
-  switch (r) {
-    case 'generalization':
+function convertToArrow(relationship: RelationshipType): string {
+  switch (relationship) {
+    case 'Generalization':
       return 'Triangle'
-    case 'aggregation':
+    case 'Realization':
+      return 'Triangle'
+    case 'Aggregation':
       return 'StretchedDiamond'
+    case 'Composition':
+      return 'StretchedDiamond'
+    case 'Association':
+      return 'SidewaysV'
+    case 'Dependency':
+      return 'SidewaysV'
     default:
       return ''
   }
@@ -102,22 +128,22 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
   const propertyTemplate = make(
     go.Panel,
     'Horizontal',
-    // property visibility/access
+    // 属性性质(public,private,protected,package) 对应(+,-,#,~)
     make(
       go.TextBlock,
       { isMultiline: false, editable: false, width: 12 },
       new go.Binding('text', 'visibility', convertVisibility)
     ),
-    // property name, underlined if scope=="class" to indicate static property
+    // 给静态属性加下划线
     make(
       go.TextBlock,
       { isMultiline: false, editable: true },
       new go.Binding('text', 'name').makeTwoWay(),
       new go.Binding('isUnderline', 'scope', function (s) {
-        return s[0] === 'c'
+        return s === 'static'
       })
     ),
-    // property type, if known
+    // 属性类型
     make(
       go.TextBlock,
       '',
@@ -126,6 +152,7 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
       })
     ),
     make(go.TextBlock, { isMultiline: false, editable: true }, new go.Binding('text', 'type').makeTwoWay()),
+    // 属性默认值
     make(
       go.TextBlock,
       { isMultiline: false, editable: false },
@@ -270,7 +297,7 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
     go.Link,
     { routing: go.Link.Orthogonal, isLayoutPositioned: false },
     new go.Binding('isLayoutPositioned', 'relationship', convertIsTreeLink),
-    make(go.Shape),
+    make(go.Shape, {}, new go.Binding('strokeDashArray', 'relationship', convertIsDashed)),
     make(
       go.Shape,
       { scale: 1.3, fill: 'white', fromArrow: '' },

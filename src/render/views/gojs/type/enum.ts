@@ -6,8 +6,18 @@ export enum PropertyTypeValue {
 }
 
 export enum RelationshipTypeValue {
-  generalization = 'generalization',
-  aggregation = 'aggregation'
+  // 泛化
+  Generalization = 'Generalization',
+  // 实现
+  Realization = 'Realization',
+  // 组合
+  Composition = 'Composition',
+  // 聚合
+  Aggregation = 'Aggregation',
+  // 关联
+  Association = 'Associations',
+  // 依赖
+  Dependency = 'Dependency'
 }
 
 export enum NodePortTypeValue {
