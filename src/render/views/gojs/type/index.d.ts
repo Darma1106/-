@@ -9,8 +9,10 @@ type NodeKey = string | number
 export interface NodeData {
   key: NodeKey
   name: string
-  properties: NodeProperty[]
-  methods: NodeMethod[]
+  type?: string
+  location?: { x: number; y: number }
+  properties?: NodeProperty[]
+  methods?: NodeMethod[]
 }
 
 /**
@@ -35,7 +37,7 @@ export interface NodeProperty {
  */
 export interface MethodParameter {
   name: string
-  type: string
+  type?: string
 }
 
 export interface NodeMethod {

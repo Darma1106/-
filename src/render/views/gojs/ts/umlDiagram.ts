@@ -22,8 +22,8 @@ function convertVisibility(v: PropertyType) {
 
 // 是否树形分布
 function convertIsTreeLink(relationship: RelationshipType) {
-  // return relationship === 'Generalization'
-  return true
+  // return relationship !== 'Generalization'
+  return false
 }
 
 // 是否使用虚线
@@ -38,7 +38,7 @@ function convertIsDashed(relationship: RelationshipType) {
   }
 }
 
-// 箭尾样式
+// 箭尾样式形状
 function convertFromArrow(relationship: RelationshipType) {
   switch (relationship) {
     case 'Composition':
@@ -53,7 +53,15 @@ function convertFromArrow(relationship: RelationshipType) {
   }
 }
 
-// 箭头样式
+// 箭尾样式颜色
+function convertFromArrowColor(relationship: RelationshipType): string {
+  switch (relationship) {
+    default:
+      return 'white'
+  }
+}
+
+// 箭头样式形状
 function convertToArrow(relationship: RelationshipType): string {
   switch (relationship) {
     case 'Generalization':
@@ -70,6 +78,16 @@ function convertToArrow(relationship: RelationshipType): string {
       return 'SidewaysV'
     default:
       return ''
+  }
+}
+
+// 箭头样式颜色
+function convertToArrowColor(relationship: RelationshipType): string {
+  switch (relationship) {
+    case 'Composition':
+      return 'black'
+    default:
+      return 'white'
   }
 }
 
@@ -113,12 +131,16 @@ function makePort(name: string, align: go.Spot, spot: go.Spot, output: boolean, 
 export function init(templeteRef: HTMLDivElement): go.Diagram {
   const myDiagram = make(go.Diagram, templeteRef, {
     'undoManager.isEnabled': true,
+    ChangedSelection: (a) => {
+      console.log(a.diagram.selection.first()?.location)
+    },
     allowLink: true,
     LinkDrawn
   })
 
   const diagramLayout = make(go.TreeLayout, {
     angle: 90,
+    isOngoing: false,
     path: go.TreeLayout.PathSource,
     setsPortSpot: false,
     setsChildPortSpot: false,
@@ -212,6 +234,7 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
     go.Node,
     'Auto',
     {
+      // location: new go.Point(983.398234059116, 50.5)
       locationSpot: go.Spot.Center,
       fromSpot: go.Spot.AllSides,
       toSpot: go.Spot.AllSides
@@ -223,67 +246,100 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
       { defaultRowSeparatorStroke: 'black' },
       // header
       make(
-        go.TextBlock,
-        {
-          row: 0,
-          columnSpan: 2,
-          margin: 3,
-          alignment: go.Spot.Center,
-          font: 'bold 12pt sans-serif',
-          isMultiline: false,
-          editable: true
-        },
-        new go.Binding('text', 'name').makeTwoWay()
+        go.Panel,
+        'Vertical',
+        { row: 0, alignment: go.Spot.Center },
+        make(
+          go.TextBlock,
+          {
+            alignment: go.Spot.Center,
+            font: 'bold 12pt sans-serif',
+            isMultiline: false,
+            editable: true,
+            text: '123123',
+            visible: false
+          },
+          new go.Binding('text', 'type', (type) => `<<${type}>>`),
+          new go.Binding('visible', 'type')
+        ),
+        make(
+          go.TextBlock,
+          {
+            row: 0,
+            columnSpan: 2,
+            margin: 3,
+            alignment: go.Spot.Center,
+            font: 'bold 12pt sans-serif',
+            isMultiline: false,
+            editable: true
+          },
+          new go.Binding('text', 'name').makeTwoWay()
+        )
       ),
+
       // properties
       make(
-        go.TextBlock,
-        'Properties',
-        { row: 1, font: 'italic 10pt sans-serif' },
-        new go.Binding('visible', 'visible', function (v) {
-          return !v
-        }).ofObject('PROPERTIES')
+        go.Panel,
+        'Horizontal',
+        { row: 1, alignment: go.Spot.Center, visible: false },
+        new go.Binding('visible', 'properties', (properties) => properties.length > 0),
+        make(
+          go.TextBlock,
+          'Properties',
+          // { row: 1, font: 'italic 10pt sans-serif' },
+          new go.Binding('visible', 'visible', function (v) {
+            return !v
+          }).ofObject('PROPERTIES')
+        ),
+        make(go.Panel, 'Vertical', { name: 'PROPERTIES' }, new go.Binding('itemArray', 'properties'), {
+          // row: 1,
+          margin: 3,
+          stretch: go.GraphObject.Fill,
+          defaultAlignment: go.Spot.Left,
+          background: 'lightyellow',
+          itemTemplate: propertyTemplate
+        }),
+        make(
+          'PanelExpanderButton',
+          'PROPERTIES',
+          // { row: 1, column: 1, alignment: go.Spot.TopRight, visible: false },
+          new go.Binding('visible', 'properties', function (arr) {
+            return arr.length > 0
+          })
+        )
       ),
-      make(go.Panel, 'Vertical', { name: 'PROPERTIES' }, new go.Binding('itemArray', 'properties'), {
-        row: 1,
-        margin: 3,
-        stretch: go.GraphObject.Fill,
-        defaultAlignment: go.Spot.Left,
-        background: 'lightyellow',
-        itemTemplate: propertyTemplate
-      }),
-      make(
-        'PanelExpanderButton',
-        'PROPERTIES',
-        { row: 1, column: 1, alignment: go.Spot.TopRight, visible: false },
-        new go.Binding('visible', 'properties', function (arr) {
-          return arr.length > 0
-        })
-      ),
+      // properties
+
       // methods
       make(
-        go.TextBlock,
-        'Methods',
-        { row: 2, font: 'italic 10pt sans-serif' },
-        new go.Binding('visible', 'visible', function (v) {
-          return !v
-        }).ofObject('METHODS')
-      ),
-      make(go.Panel, 'Vertical', { name: 'METHODS' }, new go.Binding('itemArray', 'methods'), {
-        row: 2,
-        margin: 3,
-        stretch: go.GraphObject.Fill,
-        defaultAlignment: go.Spot.Left,
-        background: 'lightyellow',
-        itemTemplate: methodTemplate
-      }),
-      make(
-        'PanelExpanderButton',
-        'METHODS',
-        { row: 2, column: 1, alignment: go.Spot.TopRight, visible: false },
-        new go.Binding('visible', 'methods', function (arr) {
-          return arr.length > 0
-        })
+        go.Panel,
+        'Horizontal',
+        { row: 2, alignment: go.Spot.Center, visible: false },
+        new go.Binding('visible', 'methods', (methods) => methods.length > 0),
+        make(
+          go.TextBlock,
+          'Methods',
+          // { row: 2, font: 'italic 10pt sans-serif' },
+          new go.Binding('visible', 'visible', function (v) {
+            return !v
+          }).ofObject('METHODS')
+        ),
+        make(go.Panel, 'Vertical', { name: 'METHODS' }, new go.Binding('itemArray', 'methods'), {
+          // row: 2,
+          margin: 3,
+          stretch: go.GraphObject.Fill,
+          defaultAlignment: go.Spot.Left,
+          background: 'lightyellow',
+          itemTemplate: methodTemplate
+        }),
+        make(
+          'PanelExpanderButton',
+          'METHODS',
+          // { row: 2, column: 1, alignment: go.Spot.TopRight, visible: false },
+          new go.Binding('visible', 'methods', function (arr) {
+            return arr.length > 0
+          })
+        )
       )
     ),
     // four named ports, one on each side:
@@ -295,18 +351,20 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
 
   myDiagram.linkTemplate = make(
     go.Link,
-    { routing: go.Link.Orthogonal, isLayoutPositioned: false },
+    { routing: go.Link.Normal, isLayoutPositioned: false },
     new go.Binding('isLayoutPositioned', 'relationship', convertIsTreeLink),
     make(go.Shape, {}, new go.Binding('strokeDashArray', 'relationship', convertIsDashed)),
     make(
       go.Shape,
       { scale: 1.3, fill: 'white', fromArrow: '' },
-      new go.Binding('fromArrow', 'relationship', convertFromArrow)
+      new go.Binding('fromArrow', 'relationship', convertFromArrow),
+      new go.Binding('fill', 'relationship', convertFromArrowColor)
     ),
     make(
       go.Shape,
       { scale: 1.3, fill: 'white', toArrow: '' },
-      new go.Binding('toArrow', 'relationship', convertToArrow)
+      new go.Binding('toArrow', 'relationship', convertToArrow),
+      new go.Binding('fill', 'relationship', convertToArrowColor)
     )
   )
 
