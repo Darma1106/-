@@ -8,6 +8,7 @@
       :tab="pane.title"
       :closable="pane.closable"
     >
+      <!-- <router-view /> -->
       <component :is="pane.component" v-if="pane.key == activeKey"></component>
     </a-tab-pane>
   </a-tabs>
@@ -16,19 +17,17 @@
 <script lang="ts">
 import { defineComponent, ref, Ref, watch } from 'vue'
 import type { Pane } from './type'
-import PartOne from '/@/views/part/partOne.vue'
-import PartTwo from '/@/views/part/PartTwo.vue'
 import Gojs from '/@/views/gojs/index.vue'
+import ActiveModel from '/@/views/gojs/activeModel.vue'
 
 export default defineComponent({
   components: {
-    PartOne,
-    PartTwo,
-    Gojs
+    Gojs,
+    ActiveModel
   },
   setup() {
     const panes: Ref<Pane[]> = ref([
-      { title: 'Tab 1', content: 'Content of Tab 1', key: '1', closable: true, component: 'PartOne' },
+      { title: 'Tab 1', content: 'Content of Tab 1', key: '1', closable: true, component: 'ActiveModel' },
       { title: 'Tab 2', content: 'Content of Tab 2', key: '2', closable: true, component: 'Gojs' }
     ])
     const activeKey = ref(panes.value[0].key)

@@ -8,13 +8,20 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('../views/layout/index.vue')
-  },
-  {
-    path: '/gojs',
-    name: 'gojs',
-    component: () => import('../views/gojs/index.vue')
+    component: () => import('../views/layout/index.vue'),
+    children: [
+      {
+        path: '/home/activeModel',
+        name: '活动模型',
+        component: () => import('../views/gojs/activeModel.vue')
+      }
+    ]
   }
+  // {
+  //   path: '/home/activeModel',
+  //   name: '活动模型',
+  //   component: () => import('../views/gojs/activeModel.vue')
+  // }
 ]
 
 const router = createRouter({

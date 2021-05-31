@@ -1,4 +1,5 @@
 import * as go from 'gojs'
+import { nodeData, linkData } from '../testData'
 
 import type { PropertyType, RelationshipType } from '../type'
 
@@ -97,14 +98,14 @@ function LinkDrawn(event: go.DiagramEvent) {
     diagram: { model },
     subject: { data }
   } = event
-  model.removeLinkData(data)
+  ;(model as go.GraphLinksModel).removeLinkData(data)
   data.relationship = 'generalization'
-  model.addLinkData(data)
+  ;(model as go.GraphLinksModel).addLinkData(data)
   console.log(data, 'data')
 }
 
 // 给节点添加接口
-function makePort(name: string, align: go.Spot, spot: go.Spot, output: boolean, input: boolean) {
+function makePort(name: string, align: go.Spot, spot: go.Spot, output: boolean, input: boolean, visible = true) {
   const horizontal = align.equals(go.Spot.Top) || align.equals(go.Spot.Bottom)
   return make(go.Shape, {
     fill: 'transparent',
@@ -119,6 +120,7 @@ function makePort(name: string, align: go.Spot, spot: go.Spot, output: boolean, 
     toSpot: spot,
     toLinkable: input,
     cursor: 'pointer',
+    visible: visible,
     mouseEnter: function (e: go.InputEvent, port: go.GraphObject) {
       if (!e.diagram.isReadOnly && port instanceof go.Shape) port.fill = 'rgba(255,0,255,0.5)'
     },
@@ -138,14 +140,14 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
     LinkDrawn
   })
 
-  const diagramLayout = make(go.TreeLayout, {
-    angle: 90,
-    isOngoing: false,
-    path: go.TreeLayout.PathSource,
-    setsPortSpot: false,
-    setsChildPortSpot: false,
-    arrangement: go.TreeLayout.ArrangementHorizontal
-  })
+  // const diagramLayout = make(go.TreeLayout, {
+  // angle: 90,
+  // isOngoing: false,
+  // path: go.TreeLayout.PathSource,
+  // setsPortSpot: false,
+  // setsChildPortSpot: false,
+  // arrangement: go.TreeLayout.ArrangementHorizontal
+  // })
 
   const propertyTemplate = make(
     go.Panel,
@@ -228,13 +230,23 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
     make(go.TextBlock, { isMultiline: false, editable: true }, new go.Binding('text', 'type').makeTwoWay())
   )
 
-  myDiagram.layout = diagramLayout
+  function nodeStyle() {
+    return [
+      new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+      {
+        // the Node.location is at the center of each node
+        locationSpot: go.Spot.Center
+      }
+    ]
+  }
+
+  // myDiagram.layout = diagramLayout
 
   myDiagram.nodeTemplate = make(
     go.Node,
     'Auto',
+    nodeStyle(),
     {
-      // location: new go.Point(983.398234059116, 50.5)
       locationSpot: go.Spot.Center,
       fromSpot: go.Spot.AllSides,
       toSpot: go.Spot.AllSides
@@ -342,7 +354,7 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
         )
       )
     ),
-    // four named ports, one on each side:
+    // 添加四个连线点:
     makePort('T', go.Spot.Top, go.Spot.TopSide, true, true),
     makePort('L', go.Spot.Left, go.Spot.LeftSide, true, true),
     makePort('R', go.Spot.Right, go.Spot.RightSide, true, true),
@@ -351,7 +363,7 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
 
   myDiagram.linkTemplate = make(
     go.Link,
-    { routing: go.Link.Normal, isLayoutPositioned: false },
+    { routing: go.Link.OrientPlus90, isLayoutPositioned: false },
     new go.Binding('isLayoutPositioned', 'relationship', convertIsTreeLink),
     make(go.Shape, {}, new go.Binding('strokeDashArray', 'relationship', convertIsDashed)),
     make(
@@ -367,6 +379,15 @@ export function init(templeteRef: HTMLDivElement): go.Diagram {
       new go.Binding('fill', 'relationship', convertToArrowColor)
     )
   )
+
+  myDiagram.model = make(go.GraphLinksModel, {
+    linkFromPortIdProperty: 'fromPort',
+    linkToPortIdProperty: 'toPort',
+    copiesArrays: true,
+    copiesArrayObjects: true,
+    nodeDataArray: nodeData,
+    linkDataArray: linkData
+  })
 
   return myDiagram
 }

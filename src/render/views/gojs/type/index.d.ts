@@ -11,6 +11,7 @@ export interface NodeData {
   name: string
   type?: string
   location?: { x: number; y: number }
+  loc?: string
   properties?: NodeProperty[]
   methods?: NodeMethod[]
 }
