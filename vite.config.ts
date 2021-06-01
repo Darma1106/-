@@ -17,7 +17,7 @@ export default defineConfig({
       '/@': root
     }
   },
-  base: '.',
+  base: './',
   css: {
     preprocessorOptions: {
       less: {

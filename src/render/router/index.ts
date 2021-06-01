@@ -16,12 +16,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../views/gojs/activeModel.vue')
       }
     ]
+  },
+  {
+    path: '/base',
+    name: '模板测试',
+    component: () => import('../views/baseDiagram/base.vue')
   }
-  // {
-  //   path: '/home/activeModel',
-  //   name: '活动模型',
-  //   component: () => import('../views/gojs/activeModel.vue')
-  // }
 ]
 
 const router = createRouter({
