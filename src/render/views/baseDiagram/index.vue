@@ -9,7 +9,7 @@
 import { defineComponent, onMounted, PropType, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
-import type { NodeTemplate } from './type'
+import type { Template } from './type'
 
 const make = go.GraphObject.make
 
@@ -18,7 +18,10 @@ export default defineComponent({
   components: {},
   props: {
     nodeMap: {
-      type: Array as PropType<NodeTemplate[]>
+      type: Array as PropType<Template<go.Node>[]>
+    },
+    linkMap: {
+      type: Array as PropType<Template<go.Link>[]>
     }
   },
   setup(props) {
@@ -28,65 +31,19 @@ export default defineComponent({
 
     function init(templeteRef: HTMLDivElement): go.Diagram {
       const myDiagram = make(go.Diagram, templeteRef, {
-        ChangedSelection: (a) => {
-          console.log(a.diagram.selection.first()?.location)
+        ChangedSelection: ({ diagram, subject }) => {
+          let select = diagram.selection.first()?.data
         }
       })
-      // 分配模板
+      // 分配节点模板
       props.nodeMap?.forEach(({ name, template }) => {
-        console.log({ name, template })
-
         myDiagram.nodeTemplateMap.add(name, template)
       })
 
-      const linkSelectionAdornmentTemplate = make(
-        go.Adornment,
-        'Link',
-        make(go.Shape, { isPanelMain: true, fill: null, stroke: 'deepskyblue', strokeWidth: 0 })
-      )
-
-      myDiagram.linkTemplate = make(
-        go.Link, // the whole link panel
-        { selectable: true, selectionAdornmentTemplate: linkSelectionAdornmentTemplate },
-        { relinkableFrom: true, relinkableTo: true, reshapable: true },
-        {
-          routing: go.Link.AvoidsNodes,
-          curve: go.Link.JumpOver,
-          corner: 5,
-          toShortLength: 4
-        },
-        new go.Binding('points').makeTwoWay(),
-        make(
-          go.Shape, // the link path shape
-          { isPanelMain: true, strokeWidth: 2 }
-        ),
-        make(
-          go.Shape, // the arrowhead
-          { toArrow: 'Standard', stroke: null }
-        ),
-        make(
-          go.Panel,
-          'Auto',
-          new go.Binding('visible', 'isSelected').ofObject(),
-          make(
-            go.Shape,
-            'RoundedRectangle', // the link shape
-            { fill: '#F8F8F8', stroke: null }
-          ),
-          make(
-            go.TextBlock,
-            {
-              textAlign: 'center',
-              font: '10pt helvetica, arial, sans-serif',
-              stroke: '#919191',
-              margin: 2,
-              minSize: new go.Size(10, NaN),
-              editable: true
-            },
-            new go.Binding('text').makeTwoWay()
-          )
-        )
-      )
+      // 分配连线模板
+      props.linkMap?.forEach(({ name, template }) => {
+        myDiagram.linkTemplateMap.add(name, template)
+      })
 
       // 渲染操作面板
       make(
@@ -95,40 +52,6 @@ export default defineComponent({
         {
           maxSelectionCount: 1,
           nodeTemplateMap: myDiagram.nodeTemplateMap, // share the templates used by myDiagram
-          // simplify the link template, just in this Palette
-          linkTemplate: make(
-            go.Link,
-            {
-              // because the GridLayout.alignment is Location and the nodes have locationSpot == Spot.Center,
-              // to line up the Link in the same manner we have to pretend the Link has the same location spot
-              locationSpot: go.Spot.Center,
-              selectionAdornmentTemplate: make(
-                go.Adornment,
-                'Link',
-                { locationSpot: go.Spot.Center },
-                make(go.Shape, { isPanelMain: true, fill: null, stroke: 'deepskyblue', strokeWidth: 0 }),
-                make(
-                  go.Shape, // the arrowhead
-                  { toArrow: 'Standard', stroke: null }
-                )
-              )
-            },
-            {
-              routing: go.Link.AvoidsNodes,
-              curve: go.Link.JumpOver,
-              corner: 5,
-              toShortLength: 4
-            },
-            new go.Binding('points'),
-            make(
-              go.Shape, // the link path shape
-              { isPanelMain: true, strokeWidth: 2 }
-            ),
-            make(
-              go.Shape, // the arrowhead
-              { toArrow: 'Standard', stroke: null }
-            )
-          ),
           model: new go.GraphLinksModel(getTemplateModel())
         }
       )
@@ -137,8 +60,27 @@ export default defineComponent({
         linkFromPortIdProperty: 'fromPort',
         linkToPortIdProperty: 'toPort',
         copiesArrays: true,
-        copiesArrayObjects: true
+        copiesArrayObjects: true,
+        nodeDataArray: [
+          {
+            key: 1,
+            category: 'template2',
+            text: 'Alpha',
+            loc: '-900 0'
+          },
+          {
+            key: 2,
+            category: 'template2',
+            text: 'Alpha2',
+            loc: '-500 200'
+          }
+        ],
+        linkDataArray: [
+          { from: 1, to: 2, category: 'type1', toPort: 'B', fromPort: 'B' },
+          { from: 1, to: 2, category: 'type2', toPort: 'T', fromPort: 'T' }
+        ]
       })
+      // myDiagram.setProperties()
 
       return myDiagram
     }
@@ -152,8 +94,8 @@ export default defineComponent({
       return model
     }
 
-    function getDiagram(): go.Diagram {
-      return diagram as go.Diagram
+    function getDiagram(): go.Diagram | null {
+      return diagram
     }
 
     onMounted(() => {

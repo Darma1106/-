@@ -1,14 +1,15 @@
 import { ArrowTypeValue } from './enum'
-import type { Node, Diagram } from 'gojs'
+import type { Node, Link, Diagram } from 'gojs'
 
 export type ArrowType = keyof typeof ArrowTypeValue
 
-export interface NodeTemplate {
+export interface Template<T> {
   name: string
-  template: Node
+  template: T
 }
 
 export interface BaseDiagramInstance {
   getDiagram: () => Diagram
-  NodeMap: NodeTemplate[]
+  NodeMap: Template<Node>[]
+  LinkMap: Template<Link>[]
 }

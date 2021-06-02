@@ -8,14 +8,24 @@
       :tab="pane.title"
       :closable="pane.closable"
     >
-      <!-- <router-view /> -->
-      <component :is="pane.component" v-if="pane.key == activeKey"></component>
+      <a-dropdown v-model:visible="visible" :trigger="['contextmenu']">
+        <component :is="pane.component" v-if="pane.key == activeKey"></component>
+
+        <template #overlay>
+          <a-menu ref="target">
+            <a-menu-item key="1">1st menu item</a-menu-item>
+            <a-menu-item key="2">2nd menu item</a-menu-item>
+            <a-menu-item key="3">3rd menu item</a-menu-item>
+          </a-menu>
+        </template>
+      </a-dropdown>
     </a-tab-pane>
   </a-tabs>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, Ref, watch } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 import type { Pane } from './type'
 import UmlClass from '/@/views/gojs/umlClass.vue'
 import ActiveModel from '/@/views/gojs/activeModel.vue'
@@ -26,6 +36,14 @@ export default defineComponent({
     ActiveModel
   },
   setup() {
+    const target = ref(null)
+    const visible = ref(false)
+
+    // 控制右键菜单消失
+    onClickOutside(target, () => {
+      visible.value = false
+    })
+
     const panes: Ref<Pane[]> = ref([
       { title: 'Tab 1', content: 'Content of Tab 1', key: '1', closable: true, component: 'ActiveModel' },
       { title: 'Tab 2', content: 'Content of Tab 2', key: '2', closable: true, component: 'UmlClass' }
@@ -43,7 +61,7 @@ export default defineComponent({
         content: `Content of new Tab ${activeKey.value}`,
         key: activeKey.value,
         closable: true,
-        component: 'PartTwo'
+        component: 'UmlClass'
       })
     }
 
@@ -70,6 +88,8 @@ export default defineComponent({
 
     return {
       panes,
+      target,
+      visible,
       activeKey,
       onEdit,
       add
