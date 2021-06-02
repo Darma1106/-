@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Tabs from '/@/component/tabs/index.vue'
+import Tabs from './tabs/index.vue'
 export default defineComponent({
   components: { Tabs }
 })

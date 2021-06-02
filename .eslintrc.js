@@ -79,6 +79,13 @@ module.exports = {
       rules: {
         '@typescript-eslint/explicit-module-boundary-types': ['error']
       }
+    },
+    {
+      files: ['*.vue'],
+      rules: {
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': ['off']
+      }
     }
   ]
 }

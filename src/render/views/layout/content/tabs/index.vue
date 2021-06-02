@@ -17,18 +17,18 @@
 <script lang="ts">
 import { defineComponent, ref, Ref, watch } from 'vue'
 import type { Pane } from './type'
-import Gojs from '/@/views/gojs/index.vue'
+import UmlClass from '/@/views/gojs/umlClass.vue'
 import ActiveModel from '/@/views/gojs/activeModel.vue'
 
 export default defineComponent({
   components: {
-    Gojs,
+    UmlClass,
     ActiveModel
   },
   setup() {
     const panes: Ref<Pane[]> = ref([
       { title: 'Tab 1', content: 'Content of Tab 1', key: '1', closable: true, component: 'ActiveModel' },
-      { title: 'Tab 2', content: 'Content of Tab 2', key: '2', closable: true, component: 'Gojs' }
+      { title: 'Tab 2', content: 'Content of Tab 2', key: '2', closable: true, component: 'UmlClass' }
     ])
     const activeKey = ref(panes.value[0].key)
     const newTabIndex = ref(0)

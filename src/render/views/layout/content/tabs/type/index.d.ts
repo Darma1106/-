@@ -3,5 +3,5 @@ export interface Pane {
   content?: string
   key: string
   closable: boolean
-  component: any
+  component: string
 }
