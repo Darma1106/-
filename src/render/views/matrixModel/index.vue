@@ -54,7 +54,7 @@ const columns: ColumnProps[] = [
   }
 ]
 
-const tableData: TableData[] = [
+const data: TableData[] = reactive([
   {
     key: '1',
     name: '指标1',
@@ -79,9 +79,7 @@ const tableData: TableData[] = [
     '333333': 0,
     '444444': 1
   }
-]
-
-const data: TableData[] = reactive(tableData)
+])
 
 interface TableData {
   key: string

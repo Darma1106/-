@@ -22,6 +22,15 @@ export default defineComponent({
     },
     linkMap: {
       type: Array as PropType<Template<go.Link>[]>
+    },
+    diagramEvents: {
+      type: Object as PropType<go.DiagramEventsInterface>
+    },
+    layoutModel: {
+      type: Object as PropType<go.Layout>
+    },
+    defaultLinkType: {
+      type: String
     }
   },
   setup(props) {
@@ -31,9 +40,7 @@ export default defineComponent({
 
     function init(templeteRef: HTMLDivElement): go.Diagram {
       const myDiagram = make(go.Diagram, templeteRef, {
-        ChangedSelection: ({ diagram, subject }) => {
-          let select = diagram.selection.first()?.data
-        }
+        LinkDrawn
       })
       // 分配节点模板
       props.nodeMap?.forEach(({ name, template }) => {
@@ -56,33 +63,34 @@ export default defineComponent({
         }
       )
 
+      if (props.layoutModel) {
+        myDiagram.layout = props.layoutModel
+      }
+
       myDiagram.model = make(go.GraphLinksModel, {
         linkFromPortIdProperty: 'fromPort',
         linkToPortIdProperty: 'toPort',
         copiesArrays: true,
         copiesArrayObjects: true,
-        nodeDataArray: [
-          {
-            key: 1,
-            category: 'template2',
-            text: 'Alpha',
-            loc: '-900 0'
-          },
-          {
-            key: 2,
-            category: 'template2',
-            text: 'Alpha2',
-            loc: '-500 200'
-          }
-        ],
-        linkDataArray: [
-          { from: 1, to: 2, category: 'type1', toPort: 'B', fromPort: 'B' },
-          { from: 1, to: 2, category: 'type2', toPort: 'T', fromPort: 'T' }
-        ]
+        nodeDataArray: [],
+        linkDataArray: []
       })
       // myDiagram.setProperties()
 
       return myDiagram
+    }
+
+    // 连线事件
+    function LinkDrawn(event: go.DiagramEvent) {
+      if (props.defaultLinkType) {
+        const {
+          diagram: { model },
+          subject: { data }
+        } = event
+        ;(model as go.GraphLinksModel).removeLinkData(data)
+        data.category = props.defaultLinkType
+        ;(model as go.GraphLinksModel).addLinkData(data)
+      }
     }
 
     // 获取节点模板,加入nodeMap

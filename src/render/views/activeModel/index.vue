@@ -1,16 +1,16 @@
 <template>
   <div class="base">
-    <button @click="xians">显示</button><BaseDiagram ref="baseDiagramRef" :node-map="nodeMap" :link-map="linkMap" />
+    <BaseDiagram ref="baseDiagramRef" :node-map="nodeMap" :link-map="linkMap" default-link-type="type1" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import * as go from 'gojs'
-import BaseDiagram from './index.vue'
-import { linkSelectionHeighlight } from './util/link'
-import { makePort } from './util/node'
-import type { Template, BaseDiagramInstance } from './type'
+import BaseDiagram from '../baseDiagram/index.vue'
+import { linkSelectionHeighlight } from '../baseDiagram/util/link'
+import { makePort } from '../baseDiagram/util/node'
+import type { Template, BaseDiagramInstance } from '../baseDiagram/type'
 
 export default defineComponent({
   name: '',
@@ -24,8 +24,7 @@ export default defineComponent({
       return [
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         {
-          locationSpot: go.Spot.Center,
-          resizable: true
+          locationSpot: go.Spot.Center
         }
       ]
     }
@@ -158,14 +157,9 @@ export default defineComponent({
       }
     ]
 
-    function xians() {
-      console.log(baseDiagramRef.value?.getDiagram())
-    }
-
     return {
       nodeMap,
       linkMap,
-      xians,
       baseDiagramRef
     }
   }
@@ -174,6 +168,6 @@ export default defineComponent({
 
 <style lang="less" scope>
 .base {
-  height: 100vh;
+  height: 100%;
 }
 </style>
