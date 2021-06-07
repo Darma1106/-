@@ -55,7 +55,7 @@
     "dayjs": "^1.10.4",
     "electron-is-dev": "^1.2.0",
     "electron-store": "^6.0.0",
-    "gojs": "^2.1.40",
+    "gojs": "2.1.32",
     "less": "^4.1.1",
     "less-loader": "^8.1.1",
     "qs": "^6.10.1",
