@@ -30,6 +30,28 @@ export default defineComponent({
         template: make(
           go.Node,
           'Auto',
+          {
+            contextMenu: make(
+              'ContextMenu',
+              make('ContextMenuButton', make(go.TextBlock, 'Vacate Position'), {
+                click: function (e, obj) {
+                  console.log(111)
+                }
+              }),
+              make('ContextMenuButton', make(go.TextBlock, 'Remove Role'), {
+                click: function (e, obj) {
+                  console.log(111)
+                }
+              }),
+              make('ContextMenuButton', make(go.TextBlock, 'Remove Department'), {
+                click: function (e, obj) {
+                  console.log(111)
+                }
+              }),
+              { visible: false },
+              new go.Binding('visible', 'showContext')
+            )
+          },
           make(go.Shape, 'RoundedRectangle', {
             stroke: '#217AB1',
             strokeWidth: 1,
@@ -38,6 +60,7 @@ export default defineComponent({
             // width: 80,
             height: 30
           }),
+
           make(
             go.TextBlock,
             {
@@ -80,7 +103,8 @@ export default defineComponent({
     return {
       nodeMap,
       linkMap,
-      layoutModel
+      layoutModel,
+      baseDiagramRef
     }
   }
 })

@@ -9,7 +9,7 @@
 import { defineComponent, onMounted, PropType, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
-import type { Template } from './type'
+import type { Template, DiagramData } from './type'
 
 const make = go.GraphObject.make
 
@@ -26,6 +26,7 @@ export default defineComponent({
     diagramEvents: {
       type: Object as PropType<go.DiagramEventsInterface>
     },
+    // 布局模式
     layoutModel: {
       type: Object as PropType<go.Layout>
     },
@@ -40,7 +41,8 @@ export default defineComponent({
 
     function init(templeteRef: HTMLDivElement): go.Diagram {
       const myDiagram = make(go.Diagram, templeteRef, {
-        LinkDrawn
+        LinkDrawn,
+        externalobjectsdropped
       })
       // 分配节点模板
       props.nodeMap?.forEach(({ name, template }) => {
@@ -53,15 +55,11 @@ export default defineComponent({
       })
 
       // 渲染操作面板
-      make(
-        go.Palette,
-        unrefElement(editRef), // must name or refer to the DIV HTML element
-        {
-          maxSelectionCount: 1,
-          nodeTemplateMap: myDiagram.nodeTemplateMap, // share the templates used by myDiagram
-          model: new go.GraphLinksModel(getTemplateModel())
-        }
-      )
+      make(go.Palette, unrefElement(editRef), {
+        maxSelectionCount: 1,
+        nodeTemplateMap: myDiagram.nodeTemplateMap,
+        model: new go.GraphLinksModel(getTemplateModel())
+      })
 
       if (props.layoutModel) {
         myDiagram.layout = props.layoutModel
@@ -75,18 +73,18 @@ export default defineComponent({
         nodeDataArray: [],
         linkDataArray: []
       })
-      // myDiagram.setProperties()
 
       return myDiagram
     }
 
+    // 从面板拖拽后给予右键菜单
+    function externalobjectsdropped({ diagram }: go.DiagramEvent) {
+      diagram.model.setDataProperty(diagram.selection.first()?.data, 'showContext', true)
+    }
+
     // 连线事件
-    function LinkDrawn(event: go.DiagramEvent) {
+    function LinkDrawn({ diagram: { model }, subject: { data } }: go.DiagramEvent) {
       if (props.defaultLinkType) {
-        const {
-          diagram: { model },
-          subject: { data }
-        } = event
         ;(model as go.GraphLinksModel).removeLinkData(data)
         data.category = props.defaultLinkType
         ;(model as go.GraphLinksModel).addLinkData(data)
@@ -95,9 +93,9 @@ export default defineComponent({
 
     // 获取节点模板,加入nodeMap
     function getTemplateModel() {
-      const model: { text: string; category: string }[] = []
+      const model: { text: string; category: string; showContext: boolean }[] = []
       props.nodeMap?.forEach(({ name }) => {
-        model.push({ text: 'text', category: name })
+        model.push({ text: 'text', category: name, showContext: false })
       })
       return model
     }
@@ -106,10 +104,16 @@ export default defineComponent({
       return diagram
     }
 
+    function addNode(node: go.ObjectData): void {
+      if (diagram) {
+        diagram.model.addNodeData(node)
+      }
+    }
+
     onMounted(() => {
       diagram = init(unrefElement(activeModelRef))
     })
-    return { activeModelRef, editRef, getDiagram }
+    return { activeModelRef, editRef, getDiagram, addNode }
   }
 })
 </script>
@@ -120,7 +124,7 @@ export default defineComponent({
   border: 2px solid red;
 }
 .editor {
-  width: 105px;
+  width: 150px;
   height: 100%;
   margin-right: 2px;
   background-color: whitesmoke;
