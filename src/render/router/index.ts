@@ -8,19 +8,14 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('../views/layout/index.vue'),
-    children: [
-      {
-        path: '/home/activeModel',
-        name: '活动模型',
-        component: () => import('../views/gojs/activeModel.vue')
-      }
-    ]
-  },
-  {
-    path: '/base',
-    name: '模板测试',
-    component: () => import('../views/baseDiagram/base.vue')
+    component: () => import('../views/layout/index.vue')
+    // children: [
+    //   {
+    //     path: '/home/activeModel',
+    //     name: '活动模型',
+    //     component: () => import('../views/gojs/activeModel.vue')
+    //   }
+    // ]
   },
   {
     path: '/contextMenu',

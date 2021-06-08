@@ -1,6 +1,6 @@
 <template>
   <div class="base">
-    <BaseDiagram ref="baseDiagramRef" :node-map="nodeMap" :link-map="linkMap" default-link-type="type1" />
+    <BaseDiagram ref="baseDiagramRef" :node-map="nodeMap" :link-map="linkMap" default-link-type="type2" />
   </div>
 </template>
 
@@ -46,7 +46,7 @@ export default defineComponent({
           make(
             go.Panel,
             'Auto',
-            make(go.Shape, 'RoundedRectangle', { fill: '#CADAA9', strokeWidth: 0, width: 80, height: 80 }),
+            make(go.Shape, 'RoundedRectangle', { fill: '#CADAA9', strokeWidth: 0, width: 100, height: 100 }),
             make(
               go.TextBlock,
               textStyle(),
@@ -69,47 +69,6 @@ export default defineComponent({
     ]
 
     const linkMap: Template<go.Link>[] = [
-      {
-        name: 'type1',
-        template: make(
-          go.Link,
-          { selectable: true, selectionAdornmentTemplate: linkSelectionHeighlight('red') },
-          { relinkableFrom: true, relinkableTo: true, reshapable: true },
-          {
-            routing: go.Link.AvoidsNodes,
-            curve: go.Link.JumpOver,
-            corner: 5,
-            toShortLength: 4
-          },
-          new go.Binding('points').makeTwoWay(),
-          make(
-            go.Shape, // 线
-            { isPanelMain: true, strokeWidth: 2 }
-          ),
-          make(
-            go.Shape, // 箭头
-            { toArrow: 'Diamond', stroke: null }
-          ),
-          make(
-            go.Panel, // 线中文字区
-            'Auto',
-            new go.Binding('visible', 'isSelected').ofObject(),
-            make(go.Shape, 'RoundedRectangle', { fill: '#F8F8F8', stroke: null }),
-            make(
-              go.TextBlock,
-              {
-                textAlign: 'center',
-                font: '10pt helvetica, arial, sans-serif',
-                stroke: '#919191',
-                margin: 2,
-                minSize: new go.Size(10, NaN),
-                editable: true
-              },
-              new go.Binding('text').makeTwoWay()
-            )
-          )
-        )
-      },
       {
         name: 'type2',
         template: make(
@@ -134,18 +93,24 @@ export default defineComponent({
           make(
             go.Panel,
             'Auto',
-            new go.Binding('visible', 'isSelected').ofObject(),
+            {
+              visible: true
+            },
+            // new go.Binding('visible', 'isSelected').ofObject() ||
+            new go.Binding('visible', 'text', (text) => {
+              return text.length != 0
+            }),
             make(
               go.Shape,
               'RoundedRectangle', // 线中文字区
-              { fill: '#F8F8F8', stroke: null }
+              { fill: '#f2f2f2', stroke: null }
             ),
             make(
               go.TextBlock,
               {
                 textAlign: 'center',
-                font: '10pt helvetica, arial, sans-serif',
-                stroke: '#919191',
+                font: '12pt helvetica, arial, sans-serif',
+                stroke: '#000',
                 margin: 2,
                 minSize: new go.Size(10, NaN),
                 editable: true

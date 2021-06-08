@@ -32,3 +32,80 @@ export function makePort(
     }
   })
 }
+
+export function FigureButton(fig: string, propname = 'figure'): go.Shape {
+  return make(go.Shape, {
+    width: 32,
+    height: 32,
+    scale: 0.5,
+    fill: 'lightgray',
+    figure: fig,
+    margin: 1,
+    background: 'transparent',
+    mouseEnter: (e: go.InputEvent, shape: go.GraphObject): void => {
+      ;(shape as go.Shape).fill = 'dodgerblue'
+    },
+    mouseLeave: (e: go.InputEvent, shape: go.GraphObject): void => {
+      ;(shape as go.Shape).fill = 'lightgray'
+    },
+    click: ClickFunction(propname, fig),
+    contextClick: ClickFunction(propname, fig)
+  })
+}
+
+export function LightFillButtons(): go.Panel[] {
+  // used by multiple context menus
+  return [
+    make(
+      'ContextMenuButton',
+      make(
+        go.Panel,
+        'Horizontal',
+        ColorButton('white', 'fill'),
+        ColorButton('beige', 'fill'),
+        ColorButton('aliceblue', 'fill'),
+        ColorButton('lightyellow', 'fill')
+      )
+    ),
+    make(
+      'ContextMenuButton',
+      make(
+        go.Panel,
+        'Horizontal',
+        ColorButton('lightgray', 'fill'),
+        ColorButton('lightgreen', 'fill'),
+        ColorButton('lightblue', 'fill'),
+        ColorButton('pink', 'fill')
+      )
+    )
+  ]
+}
+
+// Create a context menu button for setting a data property with a color value.
+function ColorButton(color: string, propname = 'color') {
+  return make(go.Shape, {
+    width: 16,
+    height: 16,
+    stroke: 'lightgray',
+    fill: color,
+    margin: 1,
+    background: 'transparent',
+    mouseEnter: function (e: go.InputEvent, shape: go.GraphObject) {
+      ;(shape as go.Shape).stroke = 'dodgerblue'
+    },
+    mouseLeave: function (e: go.InputEvent, shape: go.GraphObject) {
+      ;(shape as go.Shape).stroke = 'lightgray'
+    },
+    click: ClickFunction(propname, color),
+    contextClick: ClickFunction(propname, color)
+  })
+}
+
+function ClickFunction(propname: string, value: string) {
+  return function (e: go.InputEvent, obj: go.GraphObject) {
+    e.handled = true // don't let the click bubble up
+    e.diagram.model.commit(function (model) {
+      model.set((obj.part as go.Adornment).adornedPart?.data, propname, value)
+    })
+  }
+}

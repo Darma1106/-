@@ -16,24 +16,27 @@
 <script lang="ts">
 import { defineComponent, ref, Ref, watch } from 'vue'
 import type { Pane } from './type'
-import UmlClass from '/@/views/gojs/umlClass.vue'
+import UmlClass from '/@/views/umlClass/index.vue'
 import ActiveModel from '/@/views/activeModel/index.vue'
 import MatrixModel from '/@/views/matrixModel/index.vue'
 import OrganizationModel from '/@/views/organizationModel/index.vue'
+import sequenceModel from '/@/views/sequenceModel/index.vue'
 
 export default defineComponent({
   components: {
     UmlClass,
     ActiveModel,
     MatrixModel,
-    OrganizationModel
+    OrganizationModel,
+    sequenceModel
   },
   setup() {
     const panes: Ref<Pane[]> = ref([
-      { title: 'Tab 1', content: 'Content of Tab 1', key: '1', closable: true, component: 'OrganizationModel' },
-      { title: 'Tab 2', content: 'Content of Tab 2', key: '2', closable: true, component: 'UmlClass' },
-      { title: 'Tab 3', content: 'Content of Tab 3', key: '3', closable: true, component: 'MatrixModel' },
-      { title: 'Tab 4', content: 'Content of Tab 4', key: '4', closable: true, component: 'ActiveModel' }
+      { title: 'Organization', content: 'Content of Tab 1', key: '1', closable: true, component: 'OrganizationModel' },
+      { title: 'UmlClass', content: 'Content of Tab 2', key: '2', closable: true, component: 'UmlClass' },
+      { title: 'Matrix', content: 'Content of Tab 3', key: '3', closable: true, component: 'MatrixModel' },
+      { title: 'Active', content: 'Content of Tab 4', key: '4', closable: true, component: 'ActiveModel' },
+      { title: 'sequence', content: 'Content of Tab 5', key: '5', closable: true, component: 'sequenceModel' }
     ])
     const activeKey = ref(panes.value[0].key)
     const newTabIndex = ref(0)

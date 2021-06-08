@@ -146,28 +146,28 @@ export default defineComponent({
             FigureButton('Diamond')
           )
         ),
-        make(
-          'ContextMenuButton',
-          make(
-            go.Panel,
-            'Horizontal',
-            FigureButton('Parallelogram2'),
-            FigureButton('ManualOperation'),
-            FigureButton('Procedure'),
-            FigureButton('Cylinder1')
-          )
-        ),
-        make(
-          'ContextMenuButton',
-          make(
-            go.Panel,
-            'Horizontal',
-            FigureButton('Terminator'),
-            FigureButton('CreateRequest'),
-            FigureButton('Document'),
-            FigureButton('TriangleDown')
-          )
-        ),
+        // make(
+        //   'ContextMenuButton',
+        //   make(
+        //     go.Panel,
+        //     'Horizontal',
+        //     FigureButton('Parallelogram2'),
+        //     FigureButton('ManualOperation'),
+        //     FigureButton('Procedure'),
+        //     FigureButton('Cylinder1')
+        //   )
+        // ),
+        // make(
+        //   'ContextMenuButton',
+        //   make(
+        //     go.Panel,
+        //     'Horizontal',
+        //     FigureButton('Terminator'),
+        //     FigureButton('CreateRequest'),
+        //     FigureButton('Document'),
+        //     FigureButton('TriangleDown')
+        //   )
+        // ),
         LightFillButtons(),
         DarkColorButtons(),
         StrokeOptionsButtons()
@@ -583,7 +583,7 @@ export default defineComponent({
         height: 32,
         scale: 0.5,
         fill: 'lightgray',
-        figure: 'Square',
+        figure: fig,
         margin: 1,
         background: 'transparent',
         mouseEnter: (e: go.InputEvent, shape: go.GraphObject): void => {
