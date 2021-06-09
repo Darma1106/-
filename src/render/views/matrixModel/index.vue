@@ -1,29 +1,36 @@
 <template>
   <div class="matrix-model">
-    <a-table :columns="columns" :data-source="data">
+    <a-table :columns="columns" :data-source="data" :pagination="false">
       <template #ability="scope">
         <a-dropdown :trigger="['click']">
-          <span @click="dian(scope)">{{ scope.text == '0' ? '弱' : '强' }}</span>
+          <div style="height: 26px; cursor: pointer" @click="dian(scope)">
+            {{ getRelation(scope.text) }}
+          </div>
           <template #overlay>
-            <a-menu>
+            <a-menu style="width: 100px">
               <a-menu-item key="0">
-                <a @click="setS"> 强关系 </a>
+                <a @click="setRelation(1)"> 强关系 </a>
               </a-menu-item>
               <a-menu-item key="1">
-                <a @click="setA"> 弱关系 </a>
+                <a @click="setRelation(0)"> 弱关系 </a>
+              </a-menu-item>
+              <a-menu-item key="2">
+                <a @click="setRelation('')"> 无关系 </a>
               </a-menu-item>
             </a-menu>
           </template>
         </a-dropdown>
       </template>
     </a-table>
+    <a-button type="primary" @click="addRow">增加指标</a-button>
+    <a-button type="primary" @click="addColumn">增加能力</a-button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import type { ColumnProps } from 'ant-design-vue/lib/table/interface'
-const columns: ColumnProps[] = [
+const columns: ColumnProps[] = reactive([
   {
     dataIndex: 'name',
     key: 'name'
@@ -52,7 +59,7 @@ const columns: ColumnProps[] = [
     dataIndex: '444444',
     slots: { customRender: 'ability' }
   }
-]
+])
 
 const data: TableData[] = reactive([
   {
@@ -101,22 +108,51 @@ export default defineComponent({
       selection = scope
       console.log(scope)
     }
-    function setS() {
+    function setRelation(relation: number | string) {
       if (selection) {
-        data[selection.index][`${selection.column.dataIndex}`] = 1
+        data[selection.index][`${selection.column.dataIndex}`] = relation
       }
     }
-    function setA() {
-      if (selection) {
-        data[selection.index][`${selection.column.dataIndex}`] = 0
+    function addColumn() {
+      let column: ColumnProps = {
+        title: `能力${columns.length}`,
+        key: `${columns.length}`.repeat(6),
+        dataIndex: `${columns.length}`.repeat(6),
+        slots: { customRender: 'ability' }
       }
+      columns.push(column)
+      data.forEach((item) => {
+        item[`${columns.length}`.repeat(6)] = ''
+      })
+    }
+    function addRow() {
+      let indicator: TableData = { key: `${data.length + 1}`, name: `指标${data.length + 1}` }
+      data.push(indicator)
+    }
+    function getRelation(level: number) {
+      let result = ''
+      switch (level) {
+        case 0:
+          result = '弱'
+          break
+        case 1:
+          result = '强'
+
+          break
+
+        default:
+          break
+      }
+      return result
     }
     return {
       data,
       columns,
       dian,
-      setS,
-      setA
+      setRelation,
+      addColumn,
+      getRelation,
+      addRow
     }
   }
 })

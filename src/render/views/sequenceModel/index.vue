@@ -1,9 +1,13 @@
 <template>
-  <div id="myDiagramDiv" style="height: 100%"></div>
+  <div class="sequence-model">
+    <div ref="editRef" class="editor"></div>
+    <div ref="activeModelRef" class="active-model">123</div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, nextTick, onMounted, Ref, ref } from 'vue'
+import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 const make = go.GraphObject.make
 
@@ -11,7 +15,9 @@ export default defineComponent({
   name: '',
   components: {},
   setup() {
-    function init() {
+    const activeModelRef: Ref<HTMLDivElement | null> = ref(null)
+    const editRef: Ref<HTMLDivElement | null> = ref(null)
+    function init(templeteRef: HTMLDivElement): go.Diagram {
       // some parameters
       const LinePrefix = 20 // vertical starting point in document for all Messages and Activations
       const LineSuffix = 30 // vertical length beyond the last message time
@@ -122,10 +128,10 @@ export default defineComponent({
       // end MessageLink
       // A custom LinkingTool that fixes the "time" (i.e. the Y coordinate)
       // for both the temporaryLink and the actual newly created Link
-      function MessagingTool(this: any) {
+      function MessagingTool(this: go.LinkingTool) {
         go.LinkingTool.call(this)
         this.temporaryLink = make(
-          MessageLink,
+          MessageLink as any,
           make(go.Shape, 'Rectangle', { stroke: 'magenta', strokeWidth: 2 }),
           make(go.Shape, { toArrow: 'OpenTriangle', stroke: 'magenta' })
         )
@@ -220,12 +226,14 @@ export default defineComponent({
 
       const myDiagram = make(
         go.Diagram,
-        'myDiagramDiv', // must be the ID or reference to an HTML DIV
+        templeteRef, // must be the ID or reference to an HTML DIV
         {
+          // 'animationManager.initialAnimationStyle': go.AnimationManager.None,
+          'animationManager.isEnabled': false,
           allowCopy: false,
-          linkingTool: make(MessagingTool), // defined below
+          linkingTool: make(MessagingTool as any), // defined below
           'resizingTool.isGridSnapEnabled': true,
-          draggingTool: make(MessageDraggingTool), // defined below
+          draggingTool: make(MessageDraggingTool as any), // defined below
           'draggingTool.gridSnapCellSize': new go.Size(1, MessageSpacing / 4),
           'draggingTool.isGridSnapEnabled': true,
           // // automatically extend Lifelines as Activities are moved or resized
@@ -258,7 +266,8 @@ export default defineComponent({
             go.TextBlock,
             {
               margin: 15,
-              font: '400 12pt Source Sans Pro, sans-serif'
+              font: '400 12pt Source Sans Pro, sans-serif',
+              editable: true
             },
             new go.Binding('text', 'text')
           )
@@ -325,7 +334,7 @@ export default defineComponent({
       )
       // define the Message Link template.
       myDiagram.linkTemplate = make(
-        MessageLink, // defined below
+        MessageLink as any, // defined below
         { selectionAdorned: true, curviness: 0 },
         make(go.Shape, 'Rectangle', { stroke: 'black' }),
         make(go.Shape, { toArrow: 'OpenTriangle', stroke: 'black' }),
@@ -364,48 +373,111 @@ export default defineComponent({
           }
         }
       }
+      console.log(myDiagram.nodeTemplateMap, 'map')
+      // 渲染操作面板
+      make(go.Palette, unrefElement(editRef), {
+        'animationManager.isEnabled': false,
+        maxSelectionCount: 1,
+        groupTemplate: make(
+          go.Group,
+          'Vertical',
+          {
+            locationSpot: go.Spot.Bottom,
+            locationObjectName: 'HEADER',
+            minLocation: new go.Point(0, 0),
+            maxLocation: new go.Point(9999, 0),
+            selectionObjectName: 'HEADER'
+          },
+          new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+          make(
+            go.Panel,
+            'Auto',
+            { name: 'HEADER' },
+            make(go.Shape, 'Rectangle', {
+              fill: make(go.Brush, 'Linear', { 0: '#bbdefb', 1: go.Brush.darkenBy('#bbdefb', 0.1) }),
+              stroke: null
+            }),
+            make(
+              go.TextBlock,
+              {
+                margin: 15,
+                font: '400 12pt Source Sans Pro, sans-serif',
+                editable: true
+              },
+              new go.Binding('text', 'text')
+            )
+          )
+        ),
+        // nodeTemplateMap: new go.Map([make(go.Node)]),
+        model: new go.GraphLinksModel([{ key: '1', text: 'text', isGroup: true, duration: 9 }])
+        // model: new go.GraphLinksModel(getTemplateModel())
+      })
+
       return myDiagram
     }
 
     onMounted(() => {
-      const diagram = init()
-      const data = {
-        class: 'go.GraphLinksModel',
-        nodeDataArray: [
-          // { key: 'Fred', text: 'Fred: Patron', isGroup: true, loc: '0 0', duration: 9 },
-          // { key: 'Bob', text: 'Bob: Waiter', isGroup: true, loc: '100 0', duration: 9 },
-          // { key: 'Hank', text: 'Hank: Cook', isGroup: true, loc: '200 0', duration: 9 },
-          // { key: 'Renee', text: 'Renee: Cashier', isGroup: true, loc: '300 0', duration: 9 },
-          { key: '1', text: '作战时序图节点1', isGroup: true, loc: '0 0', duration: 9 },
-          { key: '2', text: '作战时序图节点2', isGroup: true, loc: '250 0', duration: 9 },
-          { key: '3', text: '作战时序图节点3', isGroup: true, loc: '500 0', duration: 9 },
-          { group: '2', start: 1, duration: 2 },
-          { group: '3', start: 3, duration: 3 }
+      nextTick(() => {
+        const diagram = init(unrefElement(activeModelRef))
+        const data = {
+          class: 'go.GraphLinksModel',
+          nodeDataArray: [
+            // { key: 'Fred', text: 'Fred: Patron', isGroup: true, loc: '0 0', duration: 9 },
+            // { key: 'Bob', text: 'Bob: Waiter', isGroup: true, loc: '100 0', duration: 9 },
+            // { key: 'Hank', text: 'Hank: Cook', isGroup: true, loc: '200 0', duration: 9 },
+            // { key: 'Renee', text: 'Renee: Cashier', isGroup: true, loc: '300 0', duration: 9 },
+            { key: '1', text: '作战时序图节点1', isGroup: true, loc: '300 0', duration: 9 },
+            { key: '2', text: '作战时序图节点2', isGroup: true, loc: '550 0', duration: 9 },
+            { key: '3', text: '作战时序图节点3', isGroup: true, loc: '800 0', duration: 9 },
+            { group: '2', start: 1, duration: 2 },
+            { group: '3', start: 3, duration: 3 }
 
-          // { group: 'Bob', start: 1, duration: 2 },
-          // { group: 'Hank', start: 2, duration: 3 },
-          // { group: 'Fred', start: 3, duration: 1 },
-          // { group: 'Bob', start: 5, duration: 1 },
-          // { group: 'Fred', start: 6, duration: 2 },
-          // { group: 'Renee', start: 8, duration: 1 }
-        ],
-        linkDataArray: [
-          { from: '1', to: '2', text: '作战时序图节点1_作战时序图节点2', time: 1 },
-          { from: '2', to: '3', text: '作战时序图节点2_作战时序图节点3', time: 3 },
-          { from: '3', to: '2', text: '作战时序图节点3_作战时序图节点2', time: 6 }
+            // { group: 'Bob', start: 1, duration: 2 },
+            // { group: 'Hank', start: 2, duration: 3 },
+            // { group: 'Fred', start: 3, duration: 1 },
+            // { group: 'Bob', start: 5, duration: 1 },
+            // { group: 'Fred', start: 6, duration: 2 },
+            // { group: 'Renee', start: 8, duration: 1 }
+          ],
+          linkDataArray: [
+            { from: '1', to: '2', text: '作战时序图节点1_作战时序图节点2', time: 1 },
+            { from: '2', to: '3', text: '作战时序图节点2_作战时序图节点3', time: 3 },
+            { from: '3', to: '2', text: '作战时序图节点3_作战时序图节点2', time: 6 }
 
-          //  { from: 'Fred', to: 'Bob', text: 'order', time: 1 },
-          // { from: 'Bob', to: 'Hank', text: 'order food', time: 2 },
-          // { from: 'Bob', to: 'Fred', text: 'serve drinks', time: 3 },
-          // { from: 'Hank', to: 'Bob', text: 'finish cooking', time: 5 },
-          // { from: 'Bob', to: 'Fred', text: 'serve food', time: 6 },
-          // { from: 'Fred', to: 'Renee', text: 'pay', time: 8 }
-        ]
-      }
-      diagram.model = go.Model.fromJson(data)
+            //  { from: 'Fred', to: 'Bob', text: 'order', time: 1 },
+            // { from: 'Bob', to: 'Hank', text: 'order food', time: 2 },
+            // { from: 'Bob', to: 'Fred', text: 'serve drinks', time: 3 },
+            // { from: 'Hank', to: 'Bob', text: 'finish cooking', time: 5 },
+            // { from: 'Bob', to: 'Fred', text: 'serve food', time: 6 },
+            // { from: 'Fred', to: 'Renee', text: 'pay', time: 8 }
+          ]
+        }
+        diagram.model = go.Model.fromJson(data)
+      })
     })
+    return {
+      activeModelRef,
+      editRef
+    }
   }
 })
 </script>
 
-<style lang="less"></style>
+<style lang="less" scoped>
+.sequence-model {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  .active-model {
+    flex: 1;
+  }
+  .editor {
+    width: 150px;
+    height: 100%;
+    margin-right: 2px;
+    background-color: whitesmoke;
+    border: solid 1px black;
+  }
+}
+</style>

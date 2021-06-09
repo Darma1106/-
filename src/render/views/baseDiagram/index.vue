@@ -1,12 +1,12 @@
 <template>
-  <div style="position: relative; height: 100%">
-    <div ref="activeModelRef" class="active-model">123</div>
+  <div class="base-diagram">
+    <div ref="activeModelRef" class="main">123</div>
     <div ref="editRef" class="editor"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, Ref, ref } from 'vue'
+import { defineComponent, nextTick, onMounted, PropType, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 import type { Template, DiagramData } from './type'
@@ -41,6 +41,7 @@ export default defineComponent({
 
     function init(templeteRef: HTMLDivElement): go.Diagram {
       const myDiagram = make(go.Diagram, templeteRef, {
+        'animationManager.isEnabled': false,
         LinkDrawn,
         externalobjectsdropped
       })
@@ -57,6 +58,7 @@ export default defineComponent({
       // 渲染操作面板
       make(go.Palette, unrefElement(editRef), {
         maxSelectionCount: 1,
+        'animationManager.isEnabled': false,
         nodeTemplateMap: myDiagram.nodeTemplateMap,
         model: new go.GraphLinksModel(getTemplateModel())
       })
@@ -111,7 +113,9 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      diagram = init(unrefElement(activeModelRef))
+      nextTick(() => {
+        diagram = init(unrefElement(activeModelRef))
+      })
     })
     return { activeModelRef, editRef, getDiagram, addNode }
   }
@@ -119,18 +123,22 @@ export default defineComponent({
 </script>
 
 <style lang="less" scope>
-.active-model {
+.base-diagram {
+  position: relative;
   height: 100%;
-  border: 2px solid red;
-}
-.editor {
-  width: 150px;
-  height: 100%;
-  margin-right: 2px;
-  background-color: whitesmoke;
-  border: solid 1px black;
-  position: absolute;
-  top: 0;
-  z-index: 9999;
+  .main {
+    height: 100%;
+    border: 2px solid red;
+  }
+  .editor {
+    width: 150px;
+    height: 100%;
+    margin-right: 2px;
+    background-color: whitesmoke;
+    border: solid 1px black;
+    position: absolute;
+    top: 0;
+    z-index: 9999;
+  }
 }
 </style>
