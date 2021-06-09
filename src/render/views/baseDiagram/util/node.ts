@@ -82,7 +82,7 @@ export function LightFillButtons(): go.Panel[] {
 }
 
 // Create a context menu button for setting a data property with a color value.
-function ColorButton(color: string, propname = 'color') {
+export function ColorButton(color: string, propname = 'color'): go.Shape {
   return make(go.Shape, {
     width: 16,
     height: 16,
