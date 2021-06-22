@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import ContextButton from '/@/component/menuPanel/components/contextButton.vue'
+import ContextButton from '@/component/menuPanel/components/contextButton.vue'
 import type { toolConfig } from '@/component/menuPanel/type'
 
 export default defineComponent({

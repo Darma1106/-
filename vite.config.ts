@@ -14,7 +14,7 @@ export default defineConfig({
   root,
   resolve: {
     alias: {
-      '/@': root
+      '@': root
     }
   },
   base: './',

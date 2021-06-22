@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import HeadMenuItem from '/@/component/headMenuItem/index.vue'
+import HeadMenuItem from '@/component/headMenuItem/index.vue'
 import ToolBar from './toolBar.vue'
 import type { MenuItem } from '@/component/headMenuItem/type'
 

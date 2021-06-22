@@ -21,12 +21,12 @@ const routes: RouteRecordRaw[] = [
     path: '/contextMenu',
     name: '右键菜单模板',
     component: () => import('../views/baseDiagram/contextMenu.vue')
+  },
+  {
+    path: '/test',
+    name: '测试',
+    component: () => import('../views/test/index.vue')
   }
-  // {
-  //   path: '/matrixModel',
-  //   name: '矩阵模型',
-  //   component: () => import('../views/matrixModel/index.vue')
-  // }
 ]
 
 const router = createRouter({

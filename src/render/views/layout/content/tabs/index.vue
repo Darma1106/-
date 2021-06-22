@@ -16,11 +16,11 @@
 <script lang="ts">
 import { defineComponent, ref, Ref, watch } from 'vue'
 import type { Pane } from './type'
-import UmlClass from '/@/views/umlClass/index.vue'
-import ActiveModel from '/@/views/activeModel/index.vue'
-import MatrixModel from '/@/views/matrixModel/index.vue'
-import OrganizationModel from '/@/views/organizationModel/index.vue'
-import sequenceModel from '/@/views/sequenceModel/index.vue'
+import UmlClass from '@/views/umlClass/index.vue'
+import ActiveModel from '@/views/activeModel/index.vue'
+import MatrixModel from '@/views/matrixModel/index.vue'
+import OrganizationModel from '@/views/organizationModel/index.vue'
+import sequenceModel from '@/views/sequenceModel/index.vue'
 
 export default defineComponent({
   components: {
