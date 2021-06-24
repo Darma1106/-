@@ -1,5 +1,5 @@
 import service from '../http'
-import { HttpResponse } from '../../types'
+import { HttpResponse } from '../../types/global'
 /**
  * @interface loginParams -登录参数
  * @property {string} createDate  - 创建时间
@@ -43,9 +43,7 @@ export default class TaskService {
    * @param {TaskInfo} params  - 查询条件
    * @return {HttpResponse<TaskInfo>} result
    */
-  static async getTaskList(
-    params?: TaskInfo
-  ): Promise<HttpResponse<TaskInfo[]>> {
+  static async getTaskList(params?: TaskInfo): Promise<HttpResponse<TaskInfo[]>> {
     return service.get('/task/find', { params: params })
   }
 

@@ -1,9 +1,12 @@
 import service from '../http'
-import { HttpResponse } from '../../types'
+import { HttpResponse } from '../../types/global'
 /**
- * @interface loginParams -登录参数
- * @property {string} username -用户名
- * @property {string} password -用户密码
+ * @interface ProjectInfo -工程信息
+ * @property {string} id -工程编号
+ * @property {string} name -工程名称
+ * @property {string} background -工程背景
+ * @property {string} cjid -采集编号
+ * @property {string} createTime -创建时间
  */
 export interface ProjectInfo {
   id?: string
@@ -12,16 +15,14 @@ export interface ProjectInfo {
   cjid?: string
   createTime?: string
 }
-//封装User类型的接口方法
+//封装Project类型的接口方法
 export default class ProjectService {
   /**
-   * @description 查询User的信息
-   * @param {number} teamId - 所要查询的团队ID
+   * @description 查询Project的信息
+   * @param {number} ProjectInfo - 模糊查询条件
    * @return {HttpResponse} result
    */
-  static async gettingProjects(
-    filter?: ProjectInfo
-  ): Promise<HttpResponse<ProjectInfo[]>> {
+  static async gettingProjects(filter?: ProjectInfo): Promise<HttpResponse<ProjectInfo[]>> {
     return service.get('/project/findLike', { params: filter })
   }
 

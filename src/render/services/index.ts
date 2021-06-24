@@ -12,5 +12,4 @@
 // export { API }
 
 export { default as ProjectService } from './module/projectService'
-export { default as UserService } from './module/userService'
 export { default as TaskService } from './module/taskService'

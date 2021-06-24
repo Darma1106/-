@@ -8,3 +8,7 @@ declare interface Array<T> {
   clean: () => void
   delete: (index: number) => T
 }
+
+interface AnyObject {
+  [key: string]: any
+}

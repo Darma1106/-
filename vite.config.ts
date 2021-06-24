@@ -23,10 +23,7 @@ export default defineConfig({
       less: {
         modifyVars: {
           // 更改主题在这里
-          hack: `true; @import (reference) "${resolve('src/render/style/var.less')}";`
-          // 'primary-color': '#ddd'
-          // 'link-color': '#1DA57A',
-          // 'border-radius-base': '2px'
+          hack: `true; @import (reference) "${resolve('src/render/assets/style/var.less')}";`
         },
         javascriptEnabled: true
       }

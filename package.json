@@ -61,7 +61,8 @@
     "qs": "^6.10.1",
     "vite-plugin-style-import": "^0.10.0",
     "vue": "^3.0.11",
-    "vue-router": "^4.0.0-beta.13"
+    "vue-router": "^4.0.0-beta.13",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.1",
