@@ -1,83 +1,59 @@
 <template>
-  <a-tabs v-model:activeKey="activeKey" class="tabs" hide-add type="editable-card" @edit="onEdit"
+  <a-tabs :active-key="activeTab?.key" class="tabs" hide-add type="editable-card" @edit="onEdit" @change="onTabChange"
     ><a-tab-pane
       v-for="pane in panes"
-      v-show="pane.key == activeKey"
+      v-show="pane.key == activeTab?.key"
       :key="pane.key"
       class="tab-panel"
       :tab="pane.title"
       :closable="pane.closable"
-      ><component :is="pane.component" v-if="pane.key == activeKey"></component></a-tab-pane
+      ><component :is="pane.component" v-show="pane.key == activeTab?.key"></component></a-tab-pane
   ></a-tabs>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, watch } from 'vue'
-import UmlClass from '@/views/umlClass/UmlClass.vue'
-import ActiveModel from '@/views/activeModel/ActiveModel.vue'
-import MatrixModel from '@/views/matrixModel/MatrixModel.vue'
-import OrganizationModel from '@/views/organizationModel/OrganizationModel.vue'
-import sequenceModel from '@/views/sequenceModel/SequenceModel.vue'
-import type { Pane } from './type'
-
+import { defineComponent, defineAsyncComponent, computed, onMounted } from 'vue'
+import { useStore } from '@/store'
 export default defineComponent({
   components: {
-    UmlClass,
-    ActiveModel,
-    MatrixModel,
-    OrganizationModel,
-    sequenceModel
+    UmlClass: defineAsyncComponent(() => import('@/views/umlClass/UmlClass.vue')),
+    ActiveModel: defineAsyncComponent(() => import('@/views/activeModel/ActiveModel.vue')),
+    MatrixModel: defineAsyncComponent(() => import('@/views/matrixModel/MatrixModel.vue')),
+    OrganizationModel: defineAsyncComponent(() => import('@/views/organizationModel/OrganizationModel.vue')),
+    SequenceModel: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue'))
   },
   setup() {
-    const panes: Ref<Pane[]> = ref([
-      { title: 'Organization', content: 'Content of Tab 1', key: '1', closable: true, component: 'OrganizationModel' },
-      { title: 'UmlClass', content: 'Content of Tab 2', key: '2', closable: true, component: 'UmlClass' },
-      { title: 'Matrix', content: 'Content of Tab 3', key: '3', closable: true, component: 'MatrixModel' },
-      { title: 'Active', content: 'Content of Tab 4', key: '4', closable: true, component: 'ActiveModel' },
-      { title: 'sequence', content: 'Content of Tab 5', key: '5', closable: true, component: 'sequenceModel' }
-    ])
-    const activeKey = ref(panes.value[0].key)
-    const newTabIndex = ref(0)
+    const store = useStore()
+    const activeTab = computed(() => store.state.tabs.activeTab)
+    const panes = computed(() => store.state.tabs.panes)
 
-    watch(activeKey, (val) => {
-      console.log(val)
-    })
     const add = () => {
-      activeKey.value = `newTab${newTabIndex.value++}`
-      panes.value.push({
-        title: `New Tab ${activeKey.value}`,
-        content: `Content of new Tab ${activeKey.value}`,
-        key: activeKey.value,
-        closable: true,
-        component: 'UmlClass'
-      })
+      store.dispatch('tabs/add', { title: 'sequence222', key: '12', closable: true, component: 'SequenceModel' })
     }
 
+    // 删除tab页
     const remove = (targetKey: string) => {
-      let lastIndex = 0
-      panes.value.forEach((pane, i) => {
-        if (pane.key === targetKey) {
-          lastIndex = i - 1
-        }
-      })
-      panes.value = panes.value.filter((pane) => pane.key !== targetKey)
-      if (panes.value.length && activeKey.value === targetKey) {
-        if (lastIndex >= 0) {
-          activeKey.value = panes.value[lastIndex].key
-        } else {
-          activeKey.value = panes.value[0].key
-        }
-      }
+      store.dispatch('tabs/remove', targetKey)
     }
 
     const onEdit = (targetKey: string) => {
       remove(targetKey)
     }
 
+    const onTabChange = (targetKey: string) => {
+      store.dispatch('tabs/change', targetKey)
+    }
+
+    // 默认选中第一个
+    onMounted(() => {
+      onTabChange(panes.value[0].key)
+    })
+
     return {
       panes,
-      activeKey,
+      activeTab,
       onEdit,
+      onTabChange,
       add
     }
   }

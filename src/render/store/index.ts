@@ -1,19 +1,26 @@
 import { InjectionKey } from 'vue'
-import { createStore, useStore as baseUseStore, Store } from 'vuex'
+import { createStore, useStore as baseUseStore } from 'vuex'
 import { loadModules, context, modules } from './modules'
 
+import type { Store } from 'vuex'
+import type { StoreTabs } from './modules/tabs'
+
 export interface State {
-  [key: string]: any
+  tabs: StoreTabs
+  test: { text: string }
 }
 
-export const key: InjectionKey<Store<State>> = Symbol()
+export const key: InjectionKey<Store<State>> = Symbol('vue-store')
 
 const store = createStore({
   modules
 })
 
-export function useStore(): Store<any> {
-  return baseUseStore()
+console.log(store, 'store')
+
+// 重写useStore
+export function useStore<T = State>(): Store<T> {
+  return baseUseStore<T>(key)
 }
 
 // 热重载

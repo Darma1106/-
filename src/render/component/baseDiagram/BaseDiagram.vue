@@ -1,7 +1,7 @@
 <template>
   <div class="base-diagram">
-    <div ref="activeModelRef" class="main">123</div>
     <div ref="editRef" class="editor"></div>
+    <div ref="activeModelRef" class="main"></div>
   </div>
 </template>
 
@@ -122,13 +122,14 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .base-diagram {
   position: relative;
   height: 100%;
+  display: flex;
+  flex-direction: row;
   .main {
-    height: 100%;
-    border: 2px solid red;
+    flex: 1;
   }
   .editor {
     width: 150px;
@@ -136,9 +137,6 @@ export default defineComponent({
     margin-right: 2px;
     background-color: whitesmoke;
     border: solid 1px black;
-    position: absolute;
-    top: 0;
-    z-index: 9999;
   }
 }
 </style>
