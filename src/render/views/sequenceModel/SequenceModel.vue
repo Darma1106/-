@@ -8,7 +8,6 @@
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
-import { eventController } from '@/composition/b-hooks/useEvent'
 import * as go from 'gojs'
 const make = go.GraphObject.make
 
@@ -16,11 +15,6 @@ export default defineComponent({
   name: '',
   components: {},
   setup() {
-    const { onSave } = eventController
-    onSave(() => {
-      console.log('sequence-model')
-    }, 'sequence')
-
     const activeModelRef: Ref<HTMLDivElement | null> = ref(null)
     const editRef: Ref<HTMLDivElement | null> = ref(null)
     function init(templeteRef: HTMLDivElement): go.Diagram {
