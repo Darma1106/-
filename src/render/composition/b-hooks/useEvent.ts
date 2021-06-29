@@ -21,31 +21,6 @@ export type EventType = keyof typeof EventTypeValue
 type EventMap = {
   [key in EventTypeValue]?: CallbackMap
 }
-// onSave(callback,id)
-
-//
-// function eventFilter() {}
-
-// export default function useEvent(): Events {
-//   // const save: Ref<CallbackMap> = ref({})
-//   const eventMap: Ref<EventMap> = ref({})
-//   const onSave = (saveFunc: Callback, componentId: string) => {
-//     if (!eventMap.value.save) {
-//       eventMap.value.save = {}
-//     }
-//     eventMap.value.save[componentId] = saveFunc
-//   }
-//   const eventCon = (event: EventType, componentId: string) => {
-//     switch (event) {
-//       case 'save':
-//         if (eventMap.value.save) eventMap.value.save[componentId]()
-
-//         break
-//     }
-//   }
-
-//   return { onSave, eventCon }
-// }
 
 class EventController {
   eventMap: EventMap = {}
@@ -67,4 +42,8 @@ class EventController {
   }
 }
 
-export const eventController = new EventController()
+const eventController = new EventController()
+
+export default function useEvent(): EventController {
+  return eventController
+}
