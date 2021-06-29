@@ -1,18 +1,25 @@
 <template>
   <div class="tool-bar">
     <ContextButton :item-info="itemInfo" />
+    <button @click="add">save</button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import ContextButton from '@/component/panelItem/contextButton.vue'
+import { eventController } from '@/composition/b-hooks/useEvent'
 import type { toolConfig } from '@/component/panelItem/type'
 
 export default defineComponent({
   name: 'ToolBar',
   components: { ContextButton },
   setup() {
+    const { eventSwitch } = eventController
+
+    const add = () => {
+      eventSwitch('save', 'Uml')
+    }
     const itemInfo: toolConfig = reactive({
       name: '123',
       title: '下拉按钮',
@@ -34,7 +41,7 @@ export default defineComponent({
         { title: '子菜单2', name: 'zicaidan2', disable: true }
       ]
     })
-    return { itemInfo }
+    return { itemInfo, add }
   }
 })
 </script>
