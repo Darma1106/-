@@ -56,7 +56,8 @@ module.exports = {
         semi: false,
         arrowParens: 'always',
         jsxBracketSameLine: true,
-        trailingComma: 'none'
+        trailingComma: 'none',
+        endOfLine: 'auto'
       }
     ]
   },
