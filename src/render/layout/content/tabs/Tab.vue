@@ -1,19 +1,19 @@
 <template>
-  <a-tabs :active-key="activeTab?.key" class="tabs" hide-add type="editable-card" @edit="onEdit" @change="onTabChange"
+  <a-tabs :active-key="activeTab" class="tabs" hide-add type="editable-card" @edit="onEdit" @change="change"
     ><a-tab-pane
-      v-for="pane in panes"
-      v-show="pane.key == activeTab?.key"
+      v-for="pane in tabs"
+      v-show="pane.key == activeTab"
       :key="pane.key"
       class="tab-panel"
       :tab="pane.title"
       :closable="pane.closable"
-      ><component :is="pane.component" v-show="pane.key == activeTab?.key"></component></a-tab-pane
+      ><component :is="pane.component" v-show="pane.key == activeTab" :tab-id="pane.key"></component></a-tab-pane
   ></a-tabs>
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, computed, onMounted } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent, defineAsyncComponent, onMounted, watch } from 'vue'
+import { useTabs } from '@/composition'
 export default defineComponent({
   components: {
     UmlClass: defineAsyncComponent(() => import('@/views/umlClass/UmlClass.vue')),
@@ -23,38 +23,24 @@ export default defineComponent({
     SequenceModel: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue'))
   },
   setup() {
-    const store = useStore()
-    const activeTab = computed(() => store.state.tabs.activeTab)
-    const panes = computed(() => store.state.tabs.panes)
-
-    const add = () => {
-      store.dispatch('tabs/add', { title: 'sequence222', key: '12', closable: true, component: 'SequenceModel' })
-    }
-
-    // 删除tab页
-    const remove = (targetKey: string) => {
-      store.dispatch('tabs/remove', targetKey)
-    }
+    const { tabs, activeTab, add, change, remove } = useTabs()
 
     const onEdit = (targetKey: string) => {
       remove(targetKey)
     }
 
-    const onTabChange = (targetKey: string) => {
-      store.dispatch('tabs/change', targetKey)
-    }
-
     // 默认选中第一个
     onMounted(() => {
-      onTabChange(panes.value[0].key)
+      change(tabs.value[0].key)
     })
 
     return {
-      panes,
+      tabs,
       activeTab,
-      onEdit,
-      onTabChange,
-      add
+      add,
+      change,
+      remove,
+      onEdit
     }
   }
 })
@@ -74,6 +60,10 @@ export default defineComponent({
   ::v-deep(.ant-tabs-top-content, .ant-tabs-bottom-content) {
     height: calc(100% - 40px);
     width: 100%;
+  }
+
+  ::v-deep(.ant-tabs-nav .ant-tabs-tab-active) {
+    font-weight: normal;
   }
 }
 </style>

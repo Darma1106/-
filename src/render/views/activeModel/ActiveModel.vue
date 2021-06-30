@@ -10,12 +10,26 @@ import * as go from 'gojs'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 import { linkSelectionHeighlight } from '@/component/baseDiagram/util/link'
 import { makePort } from '@/component/baseDiagram/util/node'
+import { useEvent } from '@/composition'
+
 import type { Template, BaseDiagramInstance } from '@/component/baseDiagram/type'
 
 export default defineComponent({
   name: '',
   components: { BaseDiagram },
-  setup() {
+  props: {
+    tabId: {
+      type: String
+    }
+  },
+  setup(props) {
+    const { onSave } = useEvent()
+    if (props.tabId) {
+      onSave(() => {
+        console.log(`${props.tabId}活动模型`)
+      }, props.tabId)
+    }
+
     const make = go.GraphObject.make
 
     let baseDiagramRef = ref<BaseDiagramInstance | null>(null)

@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { Ref } from 'vue'
+// import type { Ref } from 'vue'
 
 export interface Pane {
   title: string
@@ -8,49 +8,59 @@ export interface Pane {
   component: string
 }
 
-export interface UseTabs {
-  tabs: Ref<Pane[]>
-  activePane: Ref<Pane | undefined>
-  add: (pane: Pane) => void
-  remove: (targetKey: string) => void
-  change: (targetKey: string) => void
-}
+// export interface UseTabs {
+//   tabs: Ref<Pane[]>
+//   activePane: Ref<Pane | undefined>
+//   add: (pane: Pane) => void
+//   remove: (targetKey: string) => void
+//   change: (targetKey: string) => void
+// }
 
-export default function useTabs(): UseTabs {
-  const tabs = ref<Pane[]>([])
-  const activePane = ref<Pane | undefined>(undefined)
-  const remove = (targetKey: string): void => {
+class UseTabs {
+  public tabs = ref<Pane[]>([
+    { title: 'Organization', key: '1', closable: true, component: 'OrganizationModel' },
+    { title: 'UmlClass', key: '2', closable: true, component: 'UmlClass' },
+    { title: 'Matrix', key: '3', closable: true, component: 'MatrixModel' },
+    { title: 'Active', key: '4', closable: true, component: 'ActiveModel' },
+    { title: 'Active1', key: '7', closable: true, component: 'ActiveModel' },
+    { title: 'sequence', key: '5', closable: true, component: 'SequenceModel' }
+  ])
+
+  public activeTab = ref<string | undefined>(undefined)
+
+  remove = (targetKey: string): void => {
     let lastIndex = 0
-    tabs.value.forEach((pane, i) => {
+    this.tabs.value.forEach((pane, i) => {
       if (pane.key === targetKey) {
         lastIndex = i - 1
       }
     })
-    tabs.value = tabs.value.filter((pane) => pane.key !== targetKey)
-    if (tabs.value.length && activePane.value?.key === targetKey) {
+    this.tabs.value = this.tabs.value.filter((pane) => pane.key !== targetKey)
+    if (this.tabs.value.length && this.activeTab.value === targetKey) {
       if (lastIndex >= 0) {
-        activePane.value = tabs.value[lastIndex]
+        this.activeTab.value = this.tabs.value[lastIndex].key
       } else {
-        activePane.value = tabs.value[0]
+        this.activeTab.value = this.tabs.value[0].key
       }
     }
   }
-  const add = (pane: Pane): void => {
-    activePane.value = pane
-    tabs.value.push(pane)
-  }
-  const change = (targetKey: string): void => {
-    const target = tabs.value.find((pane) => pane.key === targetKey)
-    if (target) {
-      activePane.value = target
-    }
+
+  add = (pane: Pane): void => {
+    this.activeTab.value = pane.key
+    this.tabs.value.push(pane)
   }
 
-  return {
-    tabs,
-    activePane,
-    add,
-    change,
-    remove
+  change = (targetKey: string): void => {
+    this.activeTab.value = targetKey
   }
+
+  search = (targetKey: string): Pane | undefined => {
+    return this.tabs.value.find((pane) => pane.key == targetKey)
+  }
+}
+
+const tabsInstance = new UseTabs()
+
+export default function useTabs(): UseTabs {
+  return tabsInstance
 }

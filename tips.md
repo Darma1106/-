@@ -1,3 +1,7 @@
+## gojs 去水印
+
+`"7eba17a4ca3b1a8346" => function(){return true;}`然后强制 vite 重新打包并清理缓存
+
 ## ~~修改了 gojs 源码中 Model 的接口类型改为了 GraphLinksModel~~ 当使用到 Model 类型的相关 API 时用 as GraphLinksModel 强转成 GraphLinksModel 类型
 
 原因:GraphLinksModel 继承与 Model 但是拓展了 addLinkData、removeLinkData 等关于连线的方法

@@ -1,11 +1,9 @@
-// import { ref, Ref } from 'vue'
+import { readonly } from 'vue'
+import useTabs from './useTabs'
+
 type Callback = () => void
 
-interface EventController {
-  eventMap: EventMap
-  onSave: (saveFunc: Callback, componentId: string) => void
-  eventSwitch: (event: EventType, componentId: string) => void
-}
+const { activeTab } = useTabs()
 
 interface CallbackMap {
   [key: string]: Callback
@@ -23,7 +21,11 @@ type EventMap = {
 }
 
 class EventController {
-  eventMap: EventMap = {}
+  private eventMap: EventMap = {}
+
+  getEventMap = () => {
+    return readonly(this.eventMap)
+  }
 
   onSave = (saveFunc: Callback, componentId: string) => {
     if (!this.eventMap.save) {
@@ -32,12 +34,11 @@ class EventController {
     this.eventMap.save[componentId] = saveFunc
   }
 
-  eventSwitch = (event: EventType, componentId: string) => {
-    switch (event) {
-      case 'save':
-        if (this.eventMap.save) this.eventMap.save[componentId]()
-
-        break
+  // 事件触发器
+  eventSwitch = (event: EventType, componentId = activeTab.value) => {
+    if (componentId) {
+      const eventCallback = this.eventMap[event]?.[componentId]
+      if (eventCallback) eventCallback()
     }
   }
 }

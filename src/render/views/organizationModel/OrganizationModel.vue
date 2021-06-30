@@ -22,15 +22,29 @@ import {
   SpotButton
 } from '@/component/baseDiagram/util/link'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
+
+import { useEvent } from '@/composition'
+
 import type { Template, BaseDiagramInstance } from '@/component/baseDiagram/type'
 
 const make = go.GraphObject.make
 export default defineComponent({
   name: '',
   components: { BaseDiagram },
-  setup() {
+  props: {
+    tabId: {
+      type: String
+    }
+  },
+  setup(props) {
     let baseDiagramRef = ref<BaseDiagramInstance | null>(null)
 
+    const { onSave } = useEvent()
+    if (props.tabId) {
+      onSave(() => {
+        console.log(`${props.tabId}组织模型`)
+      }, props.tabId)
+    }
     const nodeMap: Template<go.Node>[] = [
       {
         name: 'normal',
