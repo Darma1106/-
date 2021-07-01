@@ -1,8 +1,9 @@
 <template>
-  <div style="position: relative; height: 100%">
-    <div ref="activeModelRef" class="active-model">123</div>
+  <div style="position: relative; height: 90%">
+    <div ref="activeModelRef" class="active-model"></div>
     <div ref="editRef" class="editor"></div>
   </div>
+  <button style="border: 2px solid blue" @click="show">show Json</button>
 </template>
 
 <script lang="ts">
@@ -10,7 +11,7 @@ import { defineComponent, onMounted, PropType, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 
-import type { NodeTemplate } from './type'
+import type { Template } from './type'
 
 const make = go.GraphObject.make
 
@@ -19,7 +20,7 @@ export default defineComponent({
   components: {},
   props: {
     nodeMap: {
-      type: Array as PropType<NodeTemplate[]>
+      type: Array as PropType<Template<go.Node>[]>
     }
   },
   setup(props) {
@@ -88,7 +89,7 @@ export default defineComponent({
           resizeCellSize: new go.Size(20, 20)
         },
         // these Bindings are TwoWay because the DraggingTool and ResizingTool modify the target properties
-        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+        new go.Binding('location', 'locate', go.Point.parse).makeTwoWay(go.Point.stringify),
         new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
         make(
           go.Shape,
@@ -108,7 +109,7 @@ export default defineComponent({
           new go.Binding('figure'),
           new go.Binding('fill'),
           new go.Binding('stroke', 'color'),
-          new go.Binding('strokeWidth', 'thickness'),
+          new go.Binding('strokeWidth', 'weight'),
           new go.Binding('strokeDashArray', 'dash')
         ),
         // this Shape prevents mouse events from reaching the middle of the port
@@ -198,12 +199,14 @@ export default defineComponent({
           handlesDragDropForMembers: true, // don't need to define handlers on Nodes and Links
           mouseDrop: function (e, grp) {
             // add dropped nodes as members of the group
-            var ok = grp.addMembers(grp.diagram.selection, true)
-            if (!ok) grp.diagram.currentTool.doCancel()
+            if (grp.diagram) {
+              const ok = (grp as go.Group).addMembers(grp.diagram.selection, true)
+              if (!ok) grp.diagram.currentTool.doCancel()
+            }
           },
           avoidable: false
         },
-        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+        new go.Binding('location', 'locate', go.Point.parse).makeTwoWay(go.Point.stringify),
         make(
           go.Panel,
           'Auto',
@@ -225,7 +228,7 @@ export default defineComponent({
             },
             new go.Binding('fill'),
             new go.Binding('stroke', 'color'),
-            new go.Binding('strokeWidth', 'thickness'),
+            new go.Binding('strokeWidth', 'weight'),
             new go.Binding('strokeDashArray', 'dash')
           ),
           make(go.Placeholder, { background: 'transparent', margin: 10 })
@@ -288,28 +291,28 @@ export default defineComponent({
           go.Shape,
           { strokeWidth: 2 },
           new go.Binding('stroke', 'color'),
-          new go.Binding('strokeWidth', 'thickness'),
+          new go.Binding('strokeWidth', 'weight'),
           new go.Binding('strokeDashArray', 'dash')
         ),
         make(
           go.Shape,
-          { fromArrow: 'Backward', strokeWidth: 0, scale: 4 / 3, visible: false },
+          { fromArrow: 'X', strokeWidth: 0, scale: 4 / 3, visible: false },
           new go.Binding('visible', 'dir', function (dir) {
             return dir === 2
           }),
           new go.Binding('fill', 'color'),
-          new go.Binding('scale', 'thickness', function (t) {
+          new go.Binding('scale', 'weight', function (t) {
             return (2 + t) / 3
           })
         ),
         make(
           go.Shape,
-          { toArrow: 'Standard', strokeWidth: 0, scale: 4 / 3 },
+          { toArrow: 'OpposingDirectionDoubleArrow', strokeWidth: 0, scale: 4 / 3 },
           new go.Binding('visible', 'dir', function (dir) {
             return dir >= 1
           }),
           new go.Binding('fill', 'color'),
-          new go.Binding('scale', 'thickness', function (t) {
+          new go.Binding('scale', 'weight', function (t) {
             return (2 + t) / 3
           })
         ),
@@ -330,9 +333,9 @@ export default defineComponent({
             isPanelMain: true,
             stroke: 'transparent',
             strokeWidth: 6,
-            pathPattern: makeAdornmentPathPattern(2) // == thickness or strokeWidth
+            pathPattern: makeAdornmentPathPattern(2) // == weight or strokeWidth
           },
-          new go.Binding('pathPattern', 'thickness', makeAdornmentPathPattern)
+          new go.Binding('pathPattern', 'weight', makeAdornmentPathPattern)
         ),
         CMButton({ alignmentFocus: new go.Spot(0, 0, -6, -4) })
       )
@@ -373,17 +376,17 @@ export default defineComponent({
       const data = {
         class: 'GraphLinksModel',
         nodeDataArray: [
-          { key: 1, loc: '0 0', text: 'Alpha', details: 'some information about Alpha and its importance' },
-          { key: 2, loc: '170 0', text: 'Beta', color: 'blue', thickness: 2, figure: 'Procedure' },
-          { key: 3, loc: '0 100', text: 'Gamma', color: 'green', figure: 'Cylinder1' },
-          { key: 4, loc: '80 180', text: 'Delta', color: 'red', figure: 'Terminator', size: '80 40' },
-          { key: 5, loc: '350 -50', text: 'Zeta', group: 7, color: 'blue', figure: 'CreateRequest' },
-          { key: 6, loc: '350 50', text: 'Eta', group: 7, figure: 'Document', fill: 'lightyellow' },
+          { key: 1, locate: '0 0', text: 'Alpha', details: 'some information about Alpha and its importance' },
+          { key: 2, locate: '170 0', text: 'Beta', color: 'blue', weight: 2, figure: 'Procedure' },
+          { key: 3, locate: '0 100', text: 'Gamma', color: 'green', figure: 'Cylinder1' },
+          { key: 4, locate: '80 180', text: 'Delta', color: 'red', figure: 'Terminator', size: '80 40' },
+          { key: 5, locate: '350 -50', text: 'Zeta', group: 7, color: 'blue', figure: 'CreateRequest' },
+          { key: 6, locate: '350 50', text: 'Eta', group: 7, figure: 'Document', fill: 'lightyellow' },
           { key: 7, isGroup: true, text: 'Theta', color: 'green', fill: 'lightgreen' },
-          { key: 8, loc: '520 50', text: 'Iota', fill: 'pink' }
+          { key: 8, locate: '520 50', text: 'Iota', fill: 'pink' }
         ],
         linkDataArray: [
-          { from: 1, to: 2, dash: [6, 3], thickness: 4 },
+          { from: 1, to: 2, dash: [6, 3], weight: 4 },
           { from: 1, to: 3, dash: [2, 4], color: 'green', text: 'label' },
           { from: 3, to: 4, color: 'red', text: 'a red label', fromSpot: 'RightSide' },
           { from: 2, to: 1 },
@@ -400,7 +403,7 @@ export default defineComponent({
       return myDiagram
     }
 
-    function ArrowButton(num) {
+    function ArrowButton(num: number) {
       var geo = 'M0 0 M16 16 M0 8 L16 8  M12 11 L16 8 L12 5'
       if (num === 0) {
         geo = 'M0 0 M16 16 M0 8 L16 8'
@@ -525,7 +528,7 @@ export default defineComponent({
     }
 
     // Create a context menu button for setting a data property with a stroke width value.
-    function ThicknessButton(sw: any, propname = 'thickness') {
+    function ThicknessButton(sw: any, propname = 'weight') {
       return make(go.Shape, 'LineH', {
         width: 16,
         height: 16,
@@ -645,7 +648,7 @@ export default defineComponent({
       })
     }
 
-    function ClickFunction(propname: string, value: string) {
+    function ClickFunction(propname: string, value: string | number) {
       return function (e: go.InputEvent, obj: go.GraphObject) {
         e.handled = true // don't let the click bubble up
         e.diagram.model.commit(function (model) {
@@ -730,10 +733,16 @@ export default defineComponent({
       return diagram as go.Diagram
     }
 
+    const show = () => {
+      if (diagram) {
+        console.log(diagram.model.toJson())
+      }
+    }
+
     onMounted(() => {
       diagram = init(unrefElement(activeModelRef))
     })
-    return { activeModelRef, editRef, getDiagram }
+    return { activeModelRef, editRef, getDiagram, show }
   }
 })
 </script>

@@ -1,12 +1,6 @@
 <template>
   <div class="organization-model">
-    <BaseDiagram
-      ref="baseDiagramRef"
-      :node-map="nodeMap"
-      :link-map="linkMap"
-      default-link-type="cost"
-      :layout-model="layoutModel"
-    />
+    <BaseDiagram ref="baseDiagramRef" :node-map="nodeMap" :link-map="linkMap" default-link-type="cost" />
   </div>
 </template>
 
@@ -37,7 +31,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    let baseDiagramRef = ref<BaseDiagramInstance | null>(null)
+    const baseDiagramRef = ref<BaseDiagramInstance | null>(null)
 
     const { onSave } = useEvent()
     if (props.tabId) {
@@ -56,8 +50,8 @@ export default defineComponent({
             locationObjectName: 'SHAPE',
             desiredSize: new go.Size(120, 60),
             minSize: new go.Size(40, 40),
-            // resizable: true,
-            // resizeCellSize: new go.Size(20, 20),
+            resizable: true,
+            resizeCellSize: new go.Size(20, 20),
             contextMenu: make(
               'ContextMenu',
               make(

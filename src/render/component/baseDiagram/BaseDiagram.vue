@@ -1,7 +1,8 @@
 <template>
   <div class="base-diagram">
     <div ref="editRef" class="editor"></div>
-    <div ref="activeModelRef" class="main"></div>
+    <div ref="mainRef" class="main"></div>
+    <button @click="show">show Json</button>
   </div>
 </template>
 
@@ -17,6 +18,10 @@ export default defineComponent({
   name: '',
   components: {},
   props: {
+    editor: {
+      type: Boolean,
+      default: true
+    },
     nodeMap: {
       type: Array as PropType<Template<go.Node>[]>
     },
@@ -35,7 +40,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const activeModelRef: Ref<HTMLDivElement | null> = ref(null)
+    const mainRef: Ref<HTMLDivElement | null> = ref(null)
     const editRef: Ref<HTMLDivElement | null> = ref(null)
     let diagram: go.Diagram | null = null
 
@@ -56,12 +61,14 @@ export default defineComponent({
       })
 
       // 渲染操作面板
-      make(go.Palette, unrefElement(editRef), {
-        maxSelectionCount: 1,
-        'animationManager.isEnabled': false,
-        nodeTemplateMap: myDiagram.nodeTemplateMap,
-        model: new go.GraphLinksModel(getTemplateModel())
-      })
+      if (props.editor) {
+        make(go.Palette, unrefElement(editRef), {
+          maxSelectionCount: 1,
+          'animationManager.isEnabled': false,
+          nodeTemplateMap: myDiagram.nodeTemplateMap,
+          model: new go.GraphLinksModel(getTemplateModel())
+        })
+      }
 
       if (props.layoutModel) {
         myDiagram.layout = props.layoutModel
@@ -114,10 +121,15 @@ export default defineComponent({
 
     onMounted(() => {
       nextTick(() => {
-        diagram = init(unrefElement(activeModelRef))
+        diagram = init(unrefElement(mainRef))
       })
     })
-    return { activeModelRef, editRef, getDiagram, addNode }
+    const show = () => {
+      if (diagram) {
+        console.log(diagram.model.toJson())
+      }
+    }
+    return { mainRef, editRef, getDiagram, addNode, show }
   }
 })
 </script>
