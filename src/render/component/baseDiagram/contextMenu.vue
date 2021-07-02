@@ -39,16 +39,16 @@ export default defineComponent({
         ),
         'draggingTool.isGridSnapEnabled': true,
         handlesDragDropForTopLevelParts: true,
-        mouseDrop: function (e) {
+        mouseDrop: function (e: go.InputEvent) {
           // when the selection is dropped in the diagram's background,
           // make sure the selected Parts no longer belong to any Group
-          var ok = e.diagram.commandHandler.addTopLevelParts(e.diagram.selection, true)
+          const ok = e.diagram.commandHandler.addTopLevelParts(e.diagram.selection, true)
           if (!ok) e.diagram.currentTool.doCancel()
         },
         // commandHandler: make(DrawCommandHandler), // support offset copy-and-paste
         'clickCreatingTool.archetypeNodeData': { text: 'NEW NODE' }, // create a new node by double-clicking in background
         PartCreated: function (e) {
-          var node = e.subject // the newly inserted Node -- now need to snap its location to the grid
+          const node = e.subject // the newly inserted Node -- now need to snap its location to the grid
           node.location = node.location.copy().snapToGridPoint(e.diagram.grid.gridOrigin, e.diagram.grid.gridCellSize)
           setTimeout(function () {
             // and have the user start editing its text
@@ -57,7 +57,7 @@ export default defineComponent({
         },
         'commandHandler.archetypeGroupData': { isGroup: true, text: 'NEW GROUP' },
         SelectionGrouped: function (e) {
-          var group = e.subject
+          const group = e.subject
           setTimeout(function () {
             // and have the user start editing its text
             e.diagram.commandHandler.editTextBlock()
@@ -65,9 +65,9 @@ export default defineComponent({
         },
         LinkRelinked: function (e) {
           // re-spread the connections of other links connected with both old and new nodes
-          var oldnode = e.parameter.part
+          const oldnode = e.parameter.part
           oldnode.invalidateConnectedLinks()
-          var link = e.subject
+          const link = e.subject
           if (e.diagram.toolManager.linkingTool.isForwards) {
             link.toNode.invalidateConnectedLinks()
           } else {
@@ -185,7 +185,7 @@ export default defineComponent({
         CMButton({ alignment: new go.Spot(0.75, 0) })
       )
 
-      // Group template
+      // Group模板
 
       myDiagram.groupTemplate = make(
         go.Group,
@@ -197,8 +197,8 @@ export default defineComponent({
           selectionObjectName: 'BODY',
           computesBoundsAfterDrag: true, // allow dragging out of a Group that uses a Placeholder
           handlesDragDropForMembers: true, // don't need to define handlers on Nodes and Links
-          mouseDrop: function (e, grp) {
-            // add dropped nodes as members of the group
+          mouseDrop: function (e: go.InputEvent, grp: go.GraphObject) {
+            // 动态增加、减少group的元素
             if (grp.diagram) {
               const ok = (grp as go.Group).addMembers(grp.diagram.selection, true)
               if (!ok) grp.diagram.currentTool.doCancel()
@@ -264,7 +264,7 @@ export default defineComponent({
         DarkColorButtons(),
         StrokeOptionsButtons()
       )
-      // Link template
+      // Link模板
 
       myDiagram.linkTemplate = make(
         go.Link,
@@ -404,7 +404,7 @@ export default defineComponent({
     }
 
     function ArrowButton(num: number) {
-      var geo = 'M0 0 M16 16 M0 8 L16 8  M12 11 L16 8 L12 5'
+      let geo = 'M0 0 M16 16 M0 8 L16 8  M12 11 L16 8 L12 5'
       if (num === 0) {
         geo = 'M0 0 M16 16 M0 8 L16 8'
       } else if (num === 2) {
@@ -414,10 +414,10 @@ export default defineComponent({
         geometryString: geo,
         margin: 2,
         background: 'transparent',
-        mouseEnter: function (e, shape) {
+        mouseEnter: function (e: go.InputEvent, shape) {
           shape.background = 'dodgerblue'
         },
-        mouseLeave: function (e, shape) {
+        mouseLeave: function (e: go.InputEvent, shape) {
           shape.background = 'transparent'
         },
         click: ClickFunction('dir', num),
@@ -425,11 +425,15 @@ export default defineComponent({
       })
     }
 
-    function AllSidesButton(to) {
-      var setter = function (e, shape) {
+    function AllSidesButton(to: boolean) {
+      const setter = function (e: go.InputEvent, shape: any) {
         e.handled = true
         e.diagram.model.commit(function (m) {
-          var link = shape.part.adornedPart
+          console.log(to, 'ASB')
+
+          // console.log(shape.part.adornedPart, 'ASB')
+
+          const link = shape.part.adornedPart
           m.set(link.data, to ? 'toSpot' : 'fromSpot', go.Spot.stringify(go.Spot.AllSides))
           // re-spread the connections of other links connected with the node
           ;(to ? link.toNode : link.fromNode).invalidateConnectedLinks()
@@ -439,10 +443,13 @@ export default defineComponent({
         width: 12,
         height: 12,
         fill: 'transparent',
-        mouseEnter: function (e, shape) {
+        mouseEnter: function (e: go.InputEvent, shape: go.GraphObject) {
+          console.log(shape, 'mouseEnter')
+
           shape.background = 'dodgerblue'
         },
-        mouseLeave: function (e, shape) {
+        mouseLeave: function (e: go.InputEvent, shape: go.GraphObject) {
+          console.log(shape, 'mouseLeave')
           shape.background = 'transparent'
         },
         click: setter,
@@ -450,9 +457,9 @@ export default defineComponent({
       })
     }
 
-    function SpotButton(spot, to) {
-      var ang = 0
-      var side = go.Spot.RightSide
+    function SpotButton(spot: go.Spot, to: boolean) {
+      let ang = 0
+      let side = go.Spot.RightSide
       if (spot.equals(go.Spot.Top)) {
         ang = 270
         side = go.Spot.TopSide
@@ -464,10 +471,10 @@ export default defineComponent({
         side = go.Spot.BottomSide
       }
       if (!to) ang -= 180
-      var setter = function (e, shape) {
+      const setter = function (e: go.InputEvent, shape) {
         e.handled = true
         e.diagram.model.commit(function (m) {
-          var link = shape.part.adornedPart
+          const link = shape.part.adornedPart
           m.set(link.data, to ? 'toSpot' : 'fromSpot', go.Spot.stringify(side))
           // re-spread the connections of other links connected with the node
           ;(to ? link.toNode : link.fromNode).invalidateConnectedLinks()
@@ -479,10 +486,10 @@ export default defineComponent({
         geometryString: 'M0 0 M12 12 M12 6 L1 6 L4 4 M1 6 L4 8',
         angle: ang,
         background: 'transparent',
-        mouseEnter: function (e, shape) {
+        mouseEnter: function (e: go.InputEvent, shape) {
           shape.background = 'dodgerblue'
         },
-        mouseLeave: function (e, shape) {
+        mouseLeave: function (e: go.InputEvent, shape) {
           shape.background = 'transparent'
         },
         click: setter,
@@ -657,34 +664,46 @@ export default defineComponent({
       }
     }
 
-    function makeArrowButton(spot, fig) {
-      var maker = function (e, shape) {
+    // 四周拓展 fig是拓展按钮形状
+    function makeArrowButton(spot: go.Spot, fig: string) {
+      const maker = function (e: go.InputEvent, shape: go.GraphObject) {
         e.handled = true
-        e.diagram.model.commit(function (m) {
-          var selnode = shape.part.adornedPart
-          // create a new node in the direction of the spot
-          var p = new go.Point().setRectSpot(selnode.actualBounds, spot)
-          p.subtract(selnode.location)
-          p.scale(2, 2)
-          p.x += Math.sign(p.x) * 60
-          p.y += Math.sign(p.y) * 60
-          p.add(selnode.location)
-          p.snapToGridPoint(e.diagram.grid.gridOrigin, e.diagram.grid.gridCellSize)
-          // make the new node a copy of the selected node
-          var nodedata = m.copyNodeData(selnode.data)
-          // add to same group as selected node
-          m.setGroupKeyForNodeData(nodedata, m.getGroupKeyForNodeData(selnode.data))
-          m.addNodeData(nodedata) // add to model
-          // create a link from the selected node to the new node
-          var linkdata = { from: selnode.key, to: m.getKeyForNodeData(nodedata) }
-          m.addLinkData(linkdata) // add to model
-          // move the new node to the computed location, select it, and start to edit it
-          var newnode = e.diagram.findNodeForData(nodedata)
-          newnode.location = p
-          e.diagram.select(newnode)
-          setTimeout(function () {
-            e.diagram.commandHandler.editTextBlock()
-          }, 20)
+        e.diagram.model.commit(function (model: go.Model) {
+          // 此m其实为GraphLinksModel类型
+          const graphLinksModel: go.GraphLinksModel = model as go.GraphLinksModel
+          const selectNode: go.Part | null = (shape.part as go.Adornment).adornedPart
+          // 排除selnode为null的情况
+          if (selectNode) {
+            // 在Node的Spot方向上创建一个新节点
+            const point = new go.Point().setRectSpot(selectNode.actualBounds, spot)
+            point.subtract(selectNode.location)
+            point.scale(2, 2)
+            point.x += Math.sign(point.x) * 60
+            point.y += Math.sign(point.y) * 60
+            point.add(selectNode.location)
+            point.snapToGridPoint(e.diagram.grid.gridOrigin, e.diagram.grid.gridCellSize)
+            // 将Node的信息复制到新的Node
+            const nodeData = graphLinksModel.copyNodeData(selectNode.data)
+            // 排除nodeData为null的情况
+            if (nodeData) {
+              // 将新Node加入至原Node的Group里面
+              graphLinksModel.setGroupKeyForNodeData(nodeData, graphLinksModel.getGroupKeyForNodeData(selectNode.data))
+              graphLinksModel.addNodeData(nodeData) // 将Node数据加入到Model
+              // 创建一条连接两个Node的Link
+              const linkdata = { from: selectNode.key, to: graphLinksModel.getKeyForNodeData(nodeData) }
+              graphLinksModel.addLinkData(linkdata) // 将Link数据加入到Model
+              // 将新Node移动到目标位置并进入编辑模式
+              const newNode = e.diagram.findNodeForData(nodeData)
+              // 排除newNode为null的情况
+              if (newNode) {
+                newNode.location = point
+                e.diagram.select(newNode)
+                setTimeout(function () {
+                  e.diagram.commandHandler.editTextBlock()
+                }, 20)
+              }
+            }
+          }
         })
       }
       return make(go.Shape, {
@@ -712,7 +731,7 @@ export default defineComponent({
           geometryString: 'F1 M0 0 M0 4h4v4h-4z M6 4h4v4h-4z M12 4h4v4h-4z M0 12',
           isActionable: true,
           cursor: 'context-menu',
-          click: function (e, shape) {
+          click: function (e: go.InputEvent, shape) {
             e.diagram.commandHandler.showContextMenu(shape.part.adornedPart)
           }
         },
