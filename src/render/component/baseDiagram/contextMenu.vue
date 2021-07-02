@@ -47,7 +47,7 @@ export default defineComponent({
         },
         // commandHandler: make(DrawCommandHandler), // support offset copy-and-paste
         'clickCreatingTool.archetypeNodeData': { text: 'NEW NODE' }, // create a new node by double-clicking in background
-        PartCreated: function (e) {
+        PartCreated: function (e: go.DiagramEvent) {
           const node = e.subject // the newly inserted Node -- now need to snap its location to the grid
           node.location = node.location.copy().snapToGridPoint(e.diagram.grid.gridOrigin, e.diagram.grid.gridCellSize)
           setTimeout(function () {
@@ -56,7 +56,7 @@ export default defineComponent({
           }, 20)
         },
         'commandHandler.archetypeGroupData': { isGroup: true, text: 'NEW GROUP' },
-        SelectionGrouped: function (e) {
+        SelectionGrouped: function (e: go.DiagramEvent) {
           const group = e.subject
           setTimeout(function () {
             // and have the user start editing its text
@@ -197,7 +197,7 @@ export default defineComponent({
           selectionObjectName: 'BODY',
           computesBoundsAfterDrag: true, // allow dragging out of a Group that uses a Placeholder
           handlesDragDropForMembers: true, // don't need to define handlers on Nodes and Links
-          mouseDrop: function (e: go.InputEvent, grp: go.GraphObject) {
+          mouseDrop: function (__e: go.InputEvent, grp: go.GraphObject) {
             // 动态增加、减少group的元素
             if (grp.diagram) {
               const ok = (grp as go.Group).addMembers(grp.diagram.selection, true)
@@ -296,22 +296,24 @@ export default defineComponent({
         ),
         make(
           go.Shape,
-          { fromArrow: 'X', strokeWidth: 0, scale: 4 / 3, visible: false },
+          { fromArrow: 'OpposingDirectionDoubleArrow', strokeWidth: 0, scale: 4 / 3, visible: false },
           new go.Binding('visible', 'dir', function (dir) {
             return dir === 2
           }),
           new go.Binding('fill', 'color'),
+          new go.Binding('fromArrow'),
           new go.Binding('scale', 'weight', function (t) {
             return (2 + t) / 3
           })
         ),
         make(
           go.Shape,
-          { toArrow: 'OpposingDirectionDoubleArrow', strokeWidth: 0, scale: 4 / 3 },
+          { toArrow: 'Diamond', strokeWidth: 0, scale: 4 / 3 },
           new go.Binding('visible', 'dir', function (dir) {
             return dir >= 1
           }),
           new go.Binding('fill', 'color'),
+          new go.Binding('toArrow'),
           new go.Binding('scale', 'weight', function (t) {
             return (2 + t) / 3
           })
@@ -386,9 +388,16 @@ export default defineComponent({
           { key: 8, locate: '520 50', text: 'Iota', fill: 'pink' }
         ],
         linkDataArray: [
-          { from: 1, to: 2, dash: [6, 3], weight: 4 },
+          { from: 1, to: 2, dash: [3, 6], weight: 4 },
           { from: 1, to: 3, dash: [2, 4], color: 'green', text: 'label' },
-          { from: 3, to: 4, color: 'red', text: 'a red label', fromSpot: 'RightSide' },
+          {
+            from: 3,
+            to: 4,
+            color: 'red',
+            text: 'a red label',
+            fromSpot: 'RightSide',
+            toArrow: 'OpposingDirectionDoubleArrow'
+          },
           { from: 2, to: 1 },
           { from: 5, to: 6, text: 'in a group' },
           { from: 2, to: 7 },
@@ -403,6 +412,7 @@ export default defineComponent({
       return myDiagram
     }
 
+    // 箭头数量设置
     function ArrowButton(num: number) {
       let geo = 'M0 0 M16 16 M0 8 L16 8  M12 11 L16 8 L12 5'
       if (num === 0) {
@@ -414,10 +424,10 @@ export default defineComponent({
         geometryString: geo,
         margin: 2,
         background: 'transparent',
-        mouseEnter: function (e: go.InputEvent, shape) {
+        mouseEnter: function (__e: go.InputEvent, shape: go.GraphObject) {
           shape.background = 'dodgerblue'
         },
-        mouseLeave: function (e: go.InputEvent, shape) {
+        mouseLeave: function (__e: go.InputEvent, shape: go.GraphObject) {
           shape.background = 'transparent'
         },
         click: ClickFunction('dir', num),
@@ -425,31 +435,27 @@ export default defineComponent({
       })
     }
 
+    // 全方向按钮(中心)
     function AllSidesButton(to: boolean) {
-      const setter = function (e: go.InputEvent, shape: any) {
+      const setter = function (e: go.InputEvent, shape: go.GraphObject) {
         e.handled = true
         e.diagram.model.commit(function (m) {
-          console.log(to, 'ASB')
-
-          // console.log(shape.part.adornedPart, 'ASB')
-
-          const link = shape.part.adornedPart
-          m.set(link.data, to ? 'toSpot' : 'fromSpot', go.Spot.stringify(go.Spot.AllSides))
-          // re-spread the connections of other links connected with the node
-          ;(to ? link.toNode : link.fromNode).invalidateConnectedLinks()
+          const link: go.Link | null = (shape.part as go.Adornment).adornedPart as go.Link
+          if (link && link.toNode && link.fromNode) {
+            m.set(link.data, to ? 'toSpot' : 'fromSpot', go.Spot.stringify(go.Spot.AllSides))
+            // re-spread the connections of other links connected with the node
+            ;(to ? link.toNode : link.fromNode).invalidateConnectedLinks()
+          }
         })
       }
       return make(go.Shape, {
         width: 12,
         height: 12,
         fill: 'transparent',
-        mouseEnter: function (e: go.InputEvent, shape: go.GraphObject) {
-          console.log(shape, 'mouseEnter')
-
+        mouseEnter: function (__e: go.InputEvent, shape: go.GraphObject) {
           shape.background = 'dodgerblue'
         },
-        mouseLeave: function (e: go.InputEvent, shape: go.GraphObject) {
-          console.log(shape, 'mouseLeave')
+        mouseLeave: function (__e: go.InputEvent, shape: go.GraphObject) {
           shape.background = 'transparent'
         },
         click: setter,
@@ -458,38 +464,41 @@ export default defineComponent({
     }
 
     function SpotButton(spot: go.Spot, to: boolean) {
-      let ang = 0
+      // 图标角度
+      let angle = 0
       let side = go.Spot.RightSide
       if (spot.equals(go.Spot.Top)) {
-        ang = 270
+        angle = 270
         side = go.Spot.TopSide
       } else if (spot.equals(go.Spot.Left)) {
-        ang = 180
+        angle = 180
         side = go.Spot.LeftSide
       } else if (spot.equals(go.Spot.Bottom)) {
-        ang = 90
+        angle = 90
         side = go.Spot.BottomSide
       }
-      if (!to) ang -= 180
-      const setter = function (e: go.InputEvent, shape) {
+      if (!to) angle -= 180
+      const setter = function (e: go.InputEvent, shape: go.GraphObject) {
         e.handled = true
         e.diagram.model.commit(function (m) {
-          const link = shape.part.adornedPart
-          m.set(link.data, to ? 'toSpot' : 'fromSpot', go.Spot.stringify(side))
-          // re-spread the connections of other links connected with the node
-          ;(to ? link.toNode : link.fromNode).invalidateConnectedLinks()
+          const link: go.Link | null = (shape.part as go.Adornment).adornedPart as go.Link
+          if (link && link.toNode && link.fromNode) {
+            m.set(link.data, to ? 'toSpot' : 'fromSpot', go.Spot.stringify(side))
+            // re-spread the connections of other links connected with the node
+            ;(to ? link.toNode : link.fromNode).invalidateConnectedLinks()
+          }
         })
       }
       return make(go.Shape, {
         alignment: spot,
         alignmentFocus: spot.opposite(),
         geometryString: 'M0 0 M12 12 M12 6 L1 6 L4 4 M1 6 L4 8',
-        angle: ang,
+        angle: angle,
         background: 'transparent',
-        mouseEnter: function (e: go.InputEvent, shape) {
+        mouseEnter: function (__e: go.InputEvent, shape: go.GraphObject) {
           shape.background = 'dodgerblue'
         },
-        mouseLeave: function (e: go.InputEvent, shape) {
+        mouseLeave: function (__e: go.InputEvent, shape: go.GraphObject) {
           shape.background = 'transparent'
         },
         click: setter,
@@ -497,12 +506,13 @@ export default defineComponent({
       })
     }
 
-    function makeAdornmentPathPattern(w) {
+    // 路径辅助
+    function makeAdornmentPathPattern(width: number) {
       return make(go.Shape, {
         stroke: 'dodgerblue',
         strokeWidth: 2,
         strokeCap: 'square',
-        geometryString: 'M0 0 M4 2 H3 M4 ' + (w + 4).toString() + ' H3'
+        geometryString: 'M0 0 M4 2 H3 M4 ' + (width + 4).toString() + ' H3'
       })
     }
 
@@ -535,17 +545,17 @@ export default defineComponent({
     }
 
     // Create a context menu button for setting a data property with a stroke width value.
-    function ThicknessButton(sw: any, propname = 'weight') {
+    function ThicknessButton(sw: number, propname = 'weight') {
       return make(go.Shape, 'LineH', {
         width: 16,
         height: 16,
         strokeWidth: sw,
         margin: 1,
         background: 'transparent',
-        mouseEnter: function (e: go.InputEvent, shape: go.GraphObject) {
+        mouseEnter: function (__e: go.InputEvent, shape: go.GraphObject) {
           ;(shape as go.Shape).background = 'dodgerblue'
         },
-        mouseLeave: function (e: go.InputEvent, shape: go.GraphObject) {
+        mouseLeave: function (__e: go.InputEvent, shape: go.GraphObject) {
           ;(shape as go.Shape).background = 'transparent'
         },
         click: ClickFunction(propname, sw),
@@ -554,7 +564,7 @@ export default defineComponent({
     }
 
     // Create a context menu button for setting a data property with a stroke dash Array value.
-    function DashButton(dash: any, propname = 'dash') {
+    function DashButton(dash: number[] | null, propname = 'dash') {
       return make(go.Shape, 'LineH', {
         width: 24,
         height: 16,
@@ -562,10 +572,10 @@ export default defineComponent({
         strokeDashArray: dash,
         margin: 1,
         background: 'transparent',
-        mouseEnter: function (e: go.InputEvent, shape: go.GraphObject) {
+        mouseEnter: function (__e: go.InputEvent, shape: go.GraphObject) {
           ;(shape as go.Shape).background = 'dodgerblue'
         },
-        mouseLeave: function (e: go.InputEvent, shape: go.GraphObject) {
+        mouseLeave: function (__e: go.InputEvent, shape: go.GraphObject) {
           ;(shape as go.Shape).background = 'transparent'
         },
         click: ClickFunction(propname, dash),
@@ -596,10 +606,10 @@ export default defineComponent({
         figure: fig,
         margin: 1,
         background: 'transparent',
-        mouseEnter: (e: go.InputEvent, shape: go.GraphObject): void => {
+        mouseEnter: (__e: go.InputEvent, shape: go.GraphObject): void => {
           ;(shape as go.Shape).fill = 'dodgerblue'
         },
-        mouseLeave: (e: go.InputEvent, shape: go.GraphObject): void => {
+        mouseLeave: (__e: go.InputEvent, shape: go.GraphObject): void => {
           ;(shape as go.Shape).fill = 'lightgray'
         },
         click: ClickFunction(propname, fig),
@@ -607,8 +617,8 @@ export default defineComponent({
       })
     }
 
+    // 颜色填充菜单
     function LightFillButtons() {
-      // used by multiple context menus
       return [
         make(
           'ContextMenuButton',
@@ -644,10 +654,10 @@ export default defineComponent({
         fill: color,
         margin: 1,
         background: 'transparent',
-        mouseEnter: function (e: go.InputEvent, shape: go.GraphObject) {
+        mouseEnter: function (__e: go.InputEvent, shape: go.GraphObject) {
           ;(shape as go.Shape).stroke = 'dodgerblue'
         },
-        mouseLeave: function (e: go.InputEvent, shape: go.GraphObject) {
+        mouseLeave: function (__e: go.InputEvent, shape: go.GraphObject) {
           ;(shape as go.Shape).stroke = 'lightgray'
         },
         click: ClickFunction(propname, color),
@@ -655,7 +665,7 @@ export default defineComponent({
       })
     }
 
-    function ClickFunction(propname: string, value: string | number) {
+    function ClickFunction(propname: string, value: string | number | number[] | null) {
       return function (e: go.InputEvent, obj: go.GraphObject) {
         e.handled = true // don't let the click bubble up
         e.diagram.model.commit(function (model) {
@@ -721,7 +731,7 @@ export default defineComponent({
     }
 
     // create a button that brings up the context menu
-    function CMButton(options) {
+    function CMButton(options: any) {
       return make(
         go.Shape,
         {
@@ -731,8 +741,11 @@ export default defineComponent({
           geometryString: 'F1 M0 0 M0 4h4v4h-4z M6 4h4v4h-4z M12 4h4v4h-4z M0 12',
           isActionable: true,
           cursor: 'context-menu',
-          click: function (e: go.InputEvent, shape) {
-            e.diagram.commandHandler.showContextMenu(shape.part.adornedPart)
+          click: function (e: go.InputEvent, shape: go.GraphObject) {
+            const adornedPart = (shape.part as go.Adornment).adornedPart
+            if (adornedPart) {
+              e.diagram.commandHandler.showContextMenu(adornedPart)
+            }
           }
         },
         options || {}
