@@ -23,7 +23,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .head-menu-item {
   color: @base-font-color;
   // border: 2px solid red;

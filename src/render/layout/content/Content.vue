@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content class="layout-content"><tabs /></a-layout-content>
+  <div class="layout-content"><tabs /></div>
 </template>
 
 <script lang="ts">
@@ -10,9 +10,8 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .layout-content {
-  background: #fff;
-  // border: 2px solid blue;
+  height: 100%;
 }
 </style>

@@ -43,7 +43,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .context-button {
   cursor: pointer;
   height: 65px;

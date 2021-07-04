@@ -1,12 +1,11 @@
 <template>
-  <a-layout-sider class="layout-sider">Sider123</a-layout-sider>
+  <div class="layout-sider">Sider123</div>
 </template>
 
 <script setup lang="ts"></script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .layout-sider {
-  background: #fff;
-  border: 2px solid #ddd;
+  height: 100%;
 }
 </style>

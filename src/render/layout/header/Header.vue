@@ -1,10 +1,8 @@
 <template>
-  <a-layout-header class="layout-header">
-    <div class="menu-bar">
-      <HeadMenuItem v-for="item in 5" :key="item" :item-list="itemList" />
-    </div>
-    <ToolBar />
-  </a-layout-header>
+  <div class="menu-bar">
+    <HeadMenuItem v-for="item in 5" :key="item" class="menu-bar-item" :item-list="itemList" />
+  </div>
+  <ToolBar />
 </template>
 
 <script lang="ts">
@@ -29,20 +27,12 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scope>
-.layout-header {
-  background-color: @header-color;
-  padding: 0;
-  height: auto;
-  line-height: normal;
-  border-bottom: 2px solid #ddd;
-
-  .menu-bar {
-    height: 30px;
-    line-height: 30px;
-    > * {
-      margin-left: 20px;
-    }
+<style lang="less" scoped>
+.menu-bar {
+  height: 30px;
+  line-height: 30px;
+  ::v-deep(.menu-bar-item) {
+    margin-left: 20px;
   }
 }
 </style>

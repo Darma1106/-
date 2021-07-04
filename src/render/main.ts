@@ -1,14 +1,20 @@
 import { createApp } from 'vue'
 import { arrayExtend } from '@/common/arrayExtend'
+import { useAntd } from './common/useAntd'
 
-import Antd from 'ant-design-vue'
+// import Antd from 'ant-design-vue'
+
 import App from './App.vue'
 import router from './router/index'
 import store, { key } from './store'
 
-import 'ant-design-vue/dist/antd.css'
+// import 'ant-design-vue/dist/antd.css'
 import '@/assets/style/var.less'
 
-createApp(App).use(router).use(store, key).use(Antd).mount('#app')
+const app = createApp(App)
+
+app.use(router).use(store, key).mount('#app')
+
+useAntd(app)
 
 arrayExtend()

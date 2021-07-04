@@ -145,7 +145,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .base {
   height: 100%;
 }

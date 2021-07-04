@@ -258,7 +258,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .organization-model {
   height: 100%;
 }

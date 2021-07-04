@@ -779,7 +779,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .active-model {
   height: 100vh;
   border: 2px solid red;

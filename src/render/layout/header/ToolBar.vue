@@ -49,7 +49,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .tool-bar {
   height: 95px;
   background: #fbe7e6;
