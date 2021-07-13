@@ -1,6 +1,12 @@
 <template>
   <div class="organization-model">
-    <BaseDiagram ref="baseDiagramRef" :node-map="nodeMap" :link-map="linkMap" default-link-type="cost" />
+    <BaseDiagram
+      ref="baseDiagramRef"
+      :node-map="nodeMap"
+      :link-map="linkMap"
+      default-link-type="cost"
+      :layout-model="layoutModel"
+    />
   </div>
 </template>
 
@@ -102,42 +108,42 @@ export default defineComponent({
             new go.Binding('stroke', 'color')
           )
         )
-      },
-      {
-        name: 'type1',
-        template: make(
-          go.Node,
-          'Auto',
-          make(go.Shape, 'Rectangle', {
-            stroke: '#000',
-            strokeWidth: 1,
-            fill: '#FACCA7',
-            minSize: new go.Size(100, 60),
-            // width: 80,
-            height: 30
-          }),
-
-          make(
-            go.TextBlock,
-            {
-              editable: true,
-              // width: 80,
-              stroke: '#000',
-              font: '14px Droid Serif, sans-serif',
-              textAlign: 'center',
-              verticalAlignment: go.Spot.Center,
-              overflow: go.TextBlock.OverflowEllipsis,
-              wrap: go.TextBlock.WrapFit
-            },
-            new go.Binding('text', 'text').makeTwoWay()
-          ),
-          // 加四个接入/出端口:
-          makePort('T', go.Spot.Top, go.Spot.TopSide, false, true),
-          makePort('L', go.Spot.Left, go.Spot.LeftSide, true, true),
-          makePort('R', go.Spot.Right, go.Spot.RightSide, true, true),
-          makePort('B', go.Spot.Bottom, go.Spot.BottomSide, true, false)
-        )
       }
+      // {
+      //   name: 'type1',
+      //   template: make(
+      //     go.Node,
+      //     'Auto',
+      //     make(go.Shape, 'Rectangle', {
+      //       stroke: '#000',
+      //       strokeWidth: 1,
+      //       fill: '#FACCA7',
+      //       minSize: new go.Size(100, 60),
+      //       // width: 80,
+      //       height: 30
+      //     }),
+
+      //     make(
+      //       go.TextBlock,
+      //       {
+      //         editable: true,
+      //         // width: 80,
+      //         stroke: '#000',
+      //         font: '14px Droid Serif, sans-serif',
+      //         textAlign: 'center',
+      //         verticalAlignment: go.Spot.Center,
+      //         overflow: go.TextBlock.OverflowEllipsis,
+      //         wrap: go.TextBlock.WrapFit
+      //       },
+      //       new go.Binding('text', 'text').makeTwoWay()
+      //     ),
+      //     // 加四个接入/出端口:
+      //     makePort('T', go.Spot.Top, go.Spot.TopSide, false, true),
+      //     makePort('L', go.Spot.Left, go.Spot.LeftSide, true, true),
+      //     makePort('R', go.Spot.Right, go.Spot.RightSide, true, true),
+      //     makePort('B', go.Spot.Bottom, go.Spot.BottomSide, true, false)
+      //   )
+      // }
     ]
 
     const linkMap: Template<go.Link>[] = [

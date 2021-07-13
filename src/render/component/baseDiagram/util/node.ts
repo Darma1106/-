@@ -109,3 +109,66 @@ function ClickFunction(propname: string, value: string) {
     })
   }
 }
+
+export function makeBaseNode(): go.Node {
+  return make(
+    go.Node,
+    'Auto',
+    {
+      // locationSpot: go.Spot.Center,
+      locationObjectName: 'SHAPE',
+      desiredSize: new go.Size(120, 60),
+      minSize: new go.Size(40, 40),
+      resizable: true,
+      resizeCellSize: new go.Size(20, 20),
+      contextMenu: make(
+        'ContextMenu',
+        make(
+          'ContextMenuButton',
+          make(
+            go.Panel,
+            'Horizontal',
+            FigureButton('Rectangle'),
+            FigureButton('RoundedRectangle'),
+            FigureButton('Ellipse'),
+            FigureButton('Diamond')
+          )
+        ),
+        LightFillButtons()
+      )
+    },
+    // these Bindings are TwoWay because the DraggingTool and ResizingTool modify the target properties
+    new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+    new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
+    make(
+      go.Shape,
+      {
+        // the border
+        name: 'SHAPE',
+        fill: 'white',
+        portId: '',
+        cursor: 'pointer',
+        fromLinkable: true,
+        toLinkable: true,
+        fromLinkableDuplicates: true,
+        toLinkableDuplicates: true,
+        fromSpot: go.Spot.AllSides,
+        toSpot: go.Spot.AllSides
+      },
+      new go.Binding('figure'),
+      new go.Binding('fill'),
+      new go.Binding('stroke', 'color'),
+      new go.Binding('strokeWidth', 'thickness'),
+      new go.Binding('strokeDashArray', 'dash')
+    ),
+    // this Shape prevents mouse events from reaching the middle of the port
+    make(go.Shape, { width: 100, height: 40, strokeWidth: 0, fill: 'transparent' }),
+    make(
+      go.TextBlock,
+      { margin: 1, textAlign: 'center', overflow: go.TextBlock.OverflowEllipsis, editable: true },
+      // this Binding is TwoWay due to the user editing the text with the TextEditingTool
+      new go.Binding('text').makeTwoWay(),
+      new go.Binding('stroke', 'color')
+    )
+  )
+}

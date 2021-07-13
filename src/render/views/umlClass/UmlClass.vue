@@ -26,6 +26,6 @@ export default defineComponent({
 <style lang="less" scoped>
 .diagram {
   height: 100%;
-  border: 2px solid red;
+  // border: 2px solid red;
 }
 </style>

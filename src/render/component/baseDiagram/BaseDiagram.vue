@@ -2,15 +2,16 @@
   <div class="base-diagram">
     <div ref="editRef" class="editor"></div>
     <div ref="mainRef" class="main"></div>
-    <button @click="show">show Json</button>
+    <!-- <button @click="show">show Json</button> -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, PropType, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
+import { GuidedDraggingTool } from '@/common/GuidedDraggingTool'
 import * as go from 'gojs'
-import type { Template } from './type'
+import type { Template, EditorData } from './type'
 
 const make = go.GraphObject.make
 
@@ -27,6 +28,12 @@ export default defineComponent({
     },
     linkMap: {
       type: Array as PropType<Template<go.Link>[]>
+    },
+    editorMap: {
+      type: Array as PropType<Template<go.Node>[]>
+    },
+    editorTemplate: {
+      type: Array as PropType<EditorData[]>
     },
     diagramEvents: {
       type: Object as PropType<go.DiagramEventsInterface>
@@ -47,6 +54,12 @@ export default defineComponent({
     function init(templeteRef: HTMLDivElement): go.Diagram {
       const myDiagram = make(go.Diagram, templeteRef, {
         'animationManager.isEnabled': false,
+        draggingTool: new GuidedDraggingTool(), // defined in GuidedDraggingTool.js
+        'draggingTool.horizontalGuidelineColor': 'blue',
+        'draggingTool.verticalGuidelineColor': 'blue',
+        'draggingTool.centerGuidelineColor': 'green',
+        'draggingTool.guidelineWidth': 1,
+        'undoManager.isEnabled': true, // enable undo & redo
         LinkDrawn,
         externalobjectsdropped
       })
@@ -62,12 +75,27 @@ export default defineComponent({
 
       // 渲染操作面板
       if (props.editor) {
-        make(go.Palette, unrefElement(editRef), {
+        const editorDiagram = make(go.Palette, unrefElement(editRef), {
           maxSelectionCount: 1,
           'animationManager.isEnabled': false,
-          nodeTemplateMap: myDiagram.nodeTemplateMap,
           model: new go.GraphLinksModel(getTemplateModel())
         })
+
+        // 操作面板模板类型
+        if (props.editorMap) {
+          props.editorMap.forEach(({ name, template }) => {
+            editorDiagram.nodeTemplateMap.add(name, template)
+          })
+        } else {
+          editorDiagram.nodeTemplateMap = myDiagram.nodeTemplateMap
+        }
+
+        // 操作面板模板数据
+        if (props.editorTemplate) {
+          editorDiagram.model = new go.GraphLinksModel(props.editorTemplate)
+        } else {
+          editorDiagram.model = new go.GraphLinksModel(getTemplateModel())
+        }
       }
 
       if (props.layoutModel) {
@@ -102,10 +130,17 @@ export default defineComponent({
 
     // 获取节点模板,加入nodeMap
     function getTemplateModel() {
-      const model: { text: string; category: string; showContext: boolean }[] = []
-      props.nodeMap?.forEach(({ name }) => {
-        model.push({ text: 'text', category: name, showContext: false })
-      })
+      const model: EditorData[] = []
+      if (props.editorMap) {
+        props.editorMap.forEach(({ name }) => {
+          model.push({ text: 'text', category: name, showContext: false })
+        })
+      } else {
+        props.nodeMap?.forEach(({ name }) => {
+          model.push({ text: 'text', category: name, showContext: false })
+        })
+      }
+
       return model
     }
 

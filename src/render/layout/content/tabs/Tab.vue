@@ -20,7 +20,8 @@ export default defineComponent({
     ActiveModel: defineAsyncComponent(() => import('@/views/activeModel/ActiveModel.vue')),
     MatrixModel: defineAsyncComponent(() => import('@/views/matrixModel/MatrixModel.vue')),
     OrganizationModel: defineAsyncComponent(() => import('@/views/organizationModel/OrganizationModel.vue')),
-    SequenceModel: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue'))
+    SequenceModel: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue')),
+    ProcessModel: defineAsyncComponent(() => import('@/views/processModel/ProcessModel.vue'))
   },
   setup() {
     const { tabs, activeTab, add, change, remove } = useTabs()

@@ -22,7 +22,7 @@ class UseTabs {
     { title: 'UmlClass', key: '2', closable: true, component: 'UmlClass' },
     { title: 'Matrix', key: '3', closable: true, component: 'MatrixModel' },
     { title: 'Active', key: '4', closable: true, component: 'ActiveModel' },
-    { title: 'Active1', key: '7', closable: true, component: 'ActiveModel' },
+    { title: 'ProcessModel', key: '7', closable: true, component: 'ProcessModel' },
     { title: 'sequence', key: '5', closable: true, component: 'SequenceModel' }
   ])
 

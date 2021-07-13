@@ -19,3 +19,9 @@ export interface DiagramData {
   nodeDataArray: ObjectData[]
   linkDataArray: ObjectData[]
 }
+
+export interface EditorData extends go.ObjectData {
+  text?: string
+  category: string
+  showContext: boolean
+}

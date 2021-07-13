@@ -1,179 +1,171 @@
 <template>
-  <div class="base">
-    <button @click="xians">显示</button><BaseDiagram ref="baseDiagramRef" :node-map="nodeMap" :link-map="linkMap" />
+  <div class="base-diagram">
+    <div ref="editRef" class="editor"></div>
+    <div ref="mainRef" class="main"></div>
+    <button @click="getJson">show Json</button>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { nextTick, onMounted, ref } from 'vue'
+import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
-import BaseDiagram from './BaseDiagram.vue'
-import { linkSelectionHeighlight } from './util/link'
-import { makePort } from './util/node'
-import type { Template, BaseDiagramInstance } from './type'
+import type { Ref } from 'vue'
+import type { Template, EditorData } from './type'
 
-export default defineComponent({
-  name: '',
-  components: { BaseDiagram },
-  setup() {
-    const make = go.GraphObject.make
+const make = go.GraphObject.make
 
-    let baseDiagramRef = ref<BaseDiagramInstance | null>(null)
+interface BaseDiagramProps {
+  editor?: boolean
+  nodeMap: Template<go.Node>[]
+  linkMap: Template<go.Link>[]
+  editorMap?: Template<go.Node>[]
+  editorTemplate?: EditorData[]
+  diagramEvents?: go.DiagramEventsInterface
+  layoutModel?: go.Layout
+  defaultLinkType: string
+}
 
-    function nodeStyle() {
-      return [
-        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-        {
-          locationSpot: go.Spot.Center,
-          resizable: true
-        }
-      ]
+const props = withDefaults(defineProps<BaseDiagramProps>(), {
+  editor: true
+})
+
+const mainRef: Ref<HTMLDivElement | null> = ref(null)
+const editRef: Ref<HTMLDivElement | null> = ref(null)
+// 画布实例
+let diagram: go.Diagram | null = null
+
+function init(templeteRef: HTMLDivElement): go.Diagram {
+  const myDiagram = make(go.Diagram, templeteRef, {
+    'animationManager.isEnabled': false,
+    LinkDrawn,
+    externalobjectsdropped
+  })
+  // 分配节点模板
+  props.nodeMap?.forEach(({ name, template }) => {
+    myDiagram.nodeTemplateMap.add(name, template)
+  })
+
+  // 分配连线模板
+  props.linkMap?.forEach(({ name, template }) => {
+    myDiagram.linkTemplateMap.add(name, template)
+  })
+
+  // 渲染操作面板
+  if (props.editor) {
+    const editorDiagram = make(go.Palette, unrefElement(editRef), {
+      maxSelectionCount: 1,
+      'animationManager.isEnabled': false,
+      model: new go.GraphLinksModel(getTemplateModel())
+    })
+
+    // 操作面板模板类型
+    if (props.editorMap) {
+      props.editorMap.forEach(({ name, template }) => {
+        editorDiagram.nodeTemplateMap.add(name, template)
+      })
+    } else {
+      editorDiagram.nodeTemplateMap = myDiagram.nodeTemplateMap
     }
 
-    function textStyle() {
-      return {
-        font: 'bold 11pt Helvetica, Arial, sans-serif',
-        stroke: 'black'
-      }
-    }
-
-    const nodeMap: Template<go.Node>[] = [
-      {
-        name: 'template2',
-        template: make(
-          go.Node,
-          'Table',
-          nodeStyle(),
-          make(
-            go.Panel,
-            'Auto',
-            make(go.Shape, 'RoundedRectangle', { fill: '#CADAA9', strokeWidth: 0, width: 80, height: 80 }),
-            make(
-              go.TextBlock,
-              textStyle(),
-              {
-                margin: 8,
-                maxSize: new go.Size(160, NaN),
-                wrap: go.TextBlock.WrapFit,
-                editable: true
-              },
-              new go.Binding('text').makeTwoWay()
-            )
-          ),
-          // 加四个接入/出端口:
-          makePort('T', go.Spot.Top, go.Spot.TopSide, false, true),
-          makePort('L', go.Spot.Left, go.Spot.LeftSide, true, true),
-          makePort('R', go.Spot.Right, go.Spot.RightSide, true, true),
-          makePort('B', go.Spot.Bottom, go.Spot.BottomSide, true, false)
-        )
-      }
-    ]
-
-    const linkMap: Template<go.Link>[] = [
-      {
-        name: 'type1',
-        template: make(
-          go.Link,
-          { selectable: true, selectionAdornmentTemplate: linkSelectionHeighlight('red') },
-          { relinkableFrom: true, relinkableTo: true, reshapable: true },
-          {
-            routing: go.Link.AvoidsNodes,
-            curve: go.Link.JumpOver,
-            corner: 5,
-            toShortLength: 4
-          },
-          new go.Binding('points').makeTwoWay(),
-          make(
-            go.Shape, // 线
-            { isPanelMain: true, strokeWidth: 2 }
-          ),
-          make(
-            go.Shape, // 箭头
-            { toArrow: 'Diamond', stroke: null }
-          ),
-          make(
-            go.Panel, // 线中文字区
-            'Auto',
-            new go.Binding('visible', 'isSelected').ofObject(),
-            make(go.Shape, 'RoundedRectangle', { fill: '#F8F8F8', stroke: null }),
-            make(
-              go.TextBlock,
-              {
-                textAlign: 'center',
-                font: '10pt helvetica, arial, sans-serif',
-                stroke: '#919191',
-                margin: 2,
-                minSize: new go.Size(10, NaN),
-                editable: true
-              },
-              new go.Binding('text').makeTwoWay()
-            )
-          )
-        )
-      },
-      {
-        name: 'type2',
-        template: make(
-          go.Link, // the whole link panel
-          { selectable: true, selectionAdornmentTemplate: linkSelectionHeighlight() },
-          { relinkableFrom: true, relinkableTo: true, reshapable: true },
-          {
-            routing: go.Link.AvoidsNodes,
-            curve: go.Link.JumpOver,
-            corner: 5,
-            toShortLength: 4
-          },
-          new go.Binding('points').makeTwoWay(),
-          make(
-            go.Shape, // 线
-            { isPanelMain: true, strokeWidth: 2 }
-          ),
-          make(
-            go.Shape, // 箭头
-            { toArrow: 'Standard', stroke: null }
-          ),
-          make(
-            go.Panel,
-            'Auto',
-            new go.Binding('visible', 'isSelected').ofObject(),
-            make(
-              go.Shape,
-              'RoundedRectangle', // 线中文字区
-              { fill: '#F8F8F8', stroke: null }
-            ),
-            make(
-              go.TextBlock,
-              {
-                textAlign: 'center',
-                font: '10pt helvetica, arial, sans-serif',
-                stroke: '#919191',
-                margin: 2,
-                minSize: new go.Size(10, NaN),
-                editable: true
-              },
-              new go.Binding('text').makeTwoWay()
-            )
-          )
-        )
-      }
-    ]
-
-    function xians() {
-      console.log(baseDiagramRef.value?.getDiagram())
-    }
-
-    return {
-      nodeMap,
-      linkMap,
-      xians,
-      baseDiagramRef
+    // 操作面板模板数据
+    if (props.editorTemplate) {
+      editorDiagram.model = new go.GraphLinksModel(props.editorTemplate)
+    } else {
+      editorDiagram.model = new go.GraphLinksModel(getTemplateModel())
     }
   }
+
+  if (props.layoutModel) {
+    myDiagram.layout = props.layoutModel
+  }
+
+  myDiagram.model = make(go.GraphLinksModel, {
+    linkFromPortIdProperty: 'fromPort',
+    linkToPortIdProperty: 'toPort',
+    copiesArrays: true,
+    copiesArrayObjects: true,
+    nodeDataArray: [],
+    linkDataArray: []
+  })
+
+  return myDiagram
+}
+
+// 从面板拖拽后给予右键菜单
+function externalobjectsdropped({ diagram }: go.DiagramEvent) {
+  diagram.model.setDataProperty(diagram.selection.first()?.data, 'showContext', true)
+}
+
+// 连线事件
+function LinkDrawn({ diagram: { model }, subject: { data } }: go.DiagramEvent) {
+  if (props.defaultLinkType) {
+    ;(model as go.GraphLinksModel).removeLinkData(data)
+    data.category = props.defaultLinkType
+    ;(model as go.GraphLinksModel).addLinkData(data)
+  }
+}
+
+// 获取节点模板,加入nodeMap
+function getTemplateModel() {
+  const model: EditorData[] = []
+  if (props.editorMap) {
+    props.editorMap.forEach(({ name }) => {
+      model.push({ text: 'text', category: name, showContext: false })
+    })
+  } else {
+    props.nodeMap?.forEach(({ name }) => {
+      model.push({ text: 'text', category: name, showContext: false })
+    })
+  }
+
+  return model
+}
+
+function getDiagram(): go.Diagram | null {
+  return diagram
+}
+
+function addNode(node: go.ObjectData): void {
+  if (diagram) {
+    diagram.model.addNodeData(node)
+  }
+}
+
+onMounted(() => {
+  nextTick(() => {
+    diagram = init(unrefElement(mainRef))
+  })
 })
+
+// 显示json
+const getJson = (): string => {
+  let jsonData = ''
+  if (diagram) {
+    jsonData = diagram.model.toJson()
+    console.log(jsonData)
+  }
+  return jsonData
+}
+
+defineExpose({ getJson, getDiagram, addNode })
 </script>
 
 <style lang="less" scoped>
-.base {
-  height: 100vh;
+.base-diagram {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  .main {
+    flex: 1;
+  }
+  .editor {
+    width: 150px;
+    height: 100%;
+    margin-right: 2px;
+    background-color: whitesmoke;
+    border: solid 1px black;
+  }
 }
 </style>

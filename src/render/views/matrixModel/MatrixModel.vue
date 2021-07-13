@@ -3,19 +3,19 @@
     <a-table :columns="columns" :data-source="data" :pagination="false">
       <template #ability="scope">
         <a-dropdown :trigger="['click']">
-          <div style="height: 26px; cursor: pointer" @click="dian(scope)">
+          <div style="height: 26px; cursor: pointer">
             {{ getRelation(scope.text) }}
           </div>
           <template #overlay>
             <a-menu style="width: 100px">
               <a-menu-item key="0">
-                <a @click="setRelation(1)"> 强关系 </a>
+                <a @click="setRelation(1, scope)"> 强关系 </a>
               </a-menu-item>
               <a-menu-item key="1">
-                <a @click="setRelation(0)"> 弱关系 </a>
+                <a @click="setRelation(0, scope)"> 弱关系 </a>
               </a-menu-item>
               <a-menu-item key="2">
-                <a @click="setRelation('')"> 无关系 </a>
+                <a @click="setRelation('', scope)"> 无关系 </a>
               </a-menu-item>
             </a-menu>
           </template>
@@ -28,9 +28,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, ref } from 'vue'
+import type { Ref } from 'vue'
 import type { ColumnProps } from 'ant-design-vue/lib/table/interface'
-const columns: ColumnProps[] = reactive([
+const columns: Ref<ColumnProps[]> = ref([
   {
     dataIndex: 'name',
     key: 'name'
@@ -61,7 +62,7 @@ const columns: ColumnProps[] = reactive([
   }
 ])
 
-const data: TableData[] = reactive([
+const data: Ref<TableData[]> = ref([
   {
     key: '1',
     name: '指标1',
@@ -103,31 +104,26 @@ interface Scope {
 
 export default defineComponent({
   setup() {
-    let selection: Scope | null = null
-    function dian(scope: Scope) {
-      selection = scope
-      console.log(scope)
-    }
-    function setRelation(relation: number | string) {
-      if (selection) {
-        data[selection.index][`${selection.column.dataIndex}`] = relation
+    function setRelation(relation: number | string, scope: Scope) {
+      if (scope) {
+        data.value[scope.index][`${scope.column.dataIndex}`] = relation
       }
     }
     function addColumn() {
       let column: ColumnProps = {
-        title: `能力${columns.length}`,
-        key: `${columns.length}`.repeat(6),
-        dataIndex: `${columns.length}`.repeat(6),
+        title: `能力${columns.value.length}`,
+        key: `${columns.value.length}`.repeat(6),
+        dataIndex: `${columns.value.length}`.repeat(6),
         slots: { customRender: 'ability' }
       }
-      columns.push(column)
-      data.forEach((item) => {
-        item[`${columns.length}`.repeat(6)] = ''
+      columns.value.push(column)
+      data.value.forEach((item) => {
+        item[`${columns.value.length}`.repeat(6)] = ''
       })
     }
     function addRow() {
-      let indicator: TableData = { key: `${data.length + 1}`, name: `指标${data.length + 1}` }
-      data.push(indicator)
+      let indicator: TableData = { key: `${data.value.length + 1}`, name: `指标${data.value.length + 1}` }
+      data.value.push(indicator)
     }
     function getRelation(level: number) {
       let result = ''
@@ -148,7 +144,6 @@ export default defineComponent({
     return {
       data,
       columns,
-      dian,
       setRelation,
       addColumn,
       getRelation,
@@ -158,4 +153,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scope></style>
+<style lang="less" scoped></style>
