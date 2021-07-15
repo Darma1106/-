@@ -1,27 +1,15 @@
 <template>
   <div class="organization-model">
-    <BaseDiagram
-      ref="baseDiagramRef"
-      :node-map="nodeMap"
-      :link-map="linkMap"
-      :editor-template="editorData"
-      default-link-type="default"
-    />
+    <BaseDiagram ref="baseDiagramRef" :editor-template="editorData" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import * as go from 'gojs'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
-
-import { defaultNodeMaker } from '@/component/baseDiagram/util/defaultNode/basenodeMaker'
-import { geonodeMaker } from '@/component/baseDiagram/util/defaultNode/geonodeMaker'
-import { defaultLineMaker } from '@/component/baseDiagram/util/defaultLine/defaultLineMaker'
-
 import { useEvent } from '@/composition'
 
-import type { Template, BaseDiagramInstance, EditorData } from '@/component/baseDiagram/type'
+import type { BaseDiagramInstance, EditorData } from '@/component/baseDiagram/type'
 
 export default defineComponent({
   name: '',
@@ -40,25 +28,6 @@ export default defineComponent({
         console.log(`${props.tabId}组织模型`)
       }, props.tabId)
     }
-
-    const nodeMap: Template<go.Node>[] = [
-      {
-        name: 'normal',
-        template: defaultNodeMaker()
-      },
-
-      {
-        name: 'geo',
-        template: geonodeMaker()
-      }
-    ]
-
-    const linkMap: Template<go.Link>[] = [
-      {
-        name: 'default',
-        template: defaultLineMaker()
-      }
-    ]
 
     const editorData: EditorData[] = [
       { key: 1, geo: 'close', color: 'white', category: 'geo', showContext: false },
@@ -88,8 +57,6 @@ export default defineComponent({
     ]
 
     return {
-      nodeMap,
-      linkMap,
       editorData,
       baseDiagramRef
     }

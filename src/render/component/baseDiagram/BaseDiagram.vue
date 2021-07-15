@@ -10,6 +10,9 @@
 import { defineComponent, nextTick, onMounted, PropType, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
+import { defaultNodeMaker } from '@/component/baseDiagram/util/defaultNode/basenodeMaker'
+import { geonodeMaker } from '@/component/baseDiagram/util/defaultNode/geonodeMaker'
+import { defaultLineMaker } from '@/component/baseDiagram/util/defaultLine/defaultLineMaker'
 import { supportLineMaker } from './util/diagram'
 import type { Template, EditorData } from './type'
 
@@ -44,7 +47,8 @@ export default defineComponent({
       default: false
     },
     defaultLinkType: {
-      type: String
+      type: String,
+      default: 'default'
     }
   },
   setup(props) {
@@ -64,9 +68,37 @@ export default defineComponent({
         }),
         supportLineMaker()
       )
+
+      const defaultNodeMap: Template<go.Node>[] = [
+        {
+          name: 'normal',
+          template: defaultNodeMaker()
+        },
+
+        {
+          name: 'geo',
+          template: geonodeMaker()
+        }
+      ]
+
+      defaultNodeMap.forEach(({ name, template }) => {
+        myDiagram.nodeTemplateMap.add(name, template)
+      })
+
       // 分配节点模板
       props.nodeMap?.forEach(({ name, template }) => {
         myDiagram.nodeTemplateMap.add(name, template)
+      })
+
+      const defaultLinkMap: Template<go.Link>[] = [
+        {
+          name: 'default',
+          template: defaultLineMaker()
+        }
+      ]
+
+      defaultLinkMap.forEach(({ name, template }) => {
+        myDiagram.linkTemplateMap.add(name, template)
       })
 
       // 分配连线模板

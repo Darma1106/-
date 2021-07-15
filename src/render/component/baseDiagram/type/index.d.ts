@@ -26,6 +26,7 @@ export type Icons = keyof typeof icons
 export interface EditorData extends go.ObjectData {
   text?: string
   category: string
+  fontColor?: string
   geo?: Icons
   showContext: boolean
 }
