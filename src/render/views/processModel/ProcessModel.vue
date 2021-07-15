@@ -5,7 +5,7 @@
       :node-map="nodeMap"
       :link-map="linkMap"
       :editor-template="editorData"
-      default-link-type="cost"
+      default-link-type="default"
     />
   </div>
 </template>
@@ -13,25 +13,16 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import * as go from 'gojs'
-import {
-  DarkColorButtons,
-  StrokeOptionsButtons,
-  ArrowButton,
-  AllSidesButton,
-  SpotButton
-} from '@/component/baseDiagram/util/link'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 
-import { makePort, FigureButton, LightFillButtons } from '@/component/baseDiagram/util/node'
+import { defaultNodeMaker } from '@/component/baseDiagram/util/defaultNode/basenodeMaker'
+import { geonodeMaker } from '@/component/baseDiagram/util/defaultNode/geonodeMaker'
+import { defaultLineMaker } from '@/component/baseDiagram/util/defaultLine/defaultLineMaker'
 
 import { useEvent } from '@/composition'
 
-import { icons, colors } from '@/common/icons'
-import type { Icons } from '@/common/icons'
-
 import type { Template, BaseDiagramInstance, EditorData } from '@/component/baseDiagram/type'
 
-const make = go.GraphObject.make
 export default defineComponent({
   name: '',
   components: { BaseDiagram },
@@ -49,373 +40,30 @@ export default defineComponent({
         console.log(`${props.tabId}组织模型`)
       }, props.tabId)
     }
+
     const nodeMap: Template<go.Node>[] = [
       {
         name: 'normal',
-        template: make(
-          go.Node,
-          'Auto',
-          {
-            // locationSpot: go.Spot.Center,
-            locationObjectName: 'SHAPE',
-            desiredSize: new go.Size(65, 65),
-            minSize: new go.Size(40, 40),
-            resizable: true,
-            resizeCellSize: new go.Size(20, 20),
-            contextMenu: make(
-              'ContextMenu',
-              make(
-                'ContextMenuButton',
-                make(
-                  go.Panel,
-                  'Horizontal',
-                  FigureButton('Rectangle'),
-                  FigureButton('RoundedRectangle'),
-                  FigureButton('Ellipse'),
-                  FigureButton('Diamond')
-                )
-              ),
-              LightFillButtons()
-            )
-          },
-          // these Bindings are TwoWay because the DraggingTool and ResizingTool modify the target properties
-          new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-          new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
-          make(
-            go.Shape,
-            {
-              // the border
-              name: 'SHAPE',
-              fill: 'white',
-              portId: '',
-              cursor: 'pointer',
-              fromLinkable: true,
-              toLinkable: true,
-              fromLinkableDuplicates: true,
-              toLinkableDuplicates: true,
-              fromSpot: go.Spot.AllSides,
-              toSpot: go.Spot.AllSides
-            },
-            new go.Binding('figure'),
-            new go.Binding('fill'),
-            new go.Binding('stroke', 'color'),
-            new go.Binding('strokeWidth', 'thickness'),
-            new go.Binding('strokeDashArray', 'dash')
-          ),
-          // this Shape prevents mouse events from reaching the middle of the port
-          make(go.Shape, { width: 100, height: 40, strokeWidth: 0, fill: 'transparent' }),
-          make(
-            go.TextBlock,
-            { margin: 1, textAlign: 'center', overflow: go.TextBlock.OverflowEllipsis, editable: true },
-            // this Binding is TwoWay due to the user editing the text with the TextEditingTool
-            new go.Binding('text').makeTwoWay(),
-            new go.Binding('stroke', 'color')
-          )
-        )
-      },
-      {
-        name: 'geo',
-        template: make(
-          go.Node,
-          'Auto',
-          {
-            // locationSpot: go.Spot.Center,
-            locationObjectName: 'SHAPE',
-            desiredSize: new go.Size(65, 65),
-            minSize: new go.Size(40, 40),
-            resizable: true,
-            resizeCellSize: new go.Size(20, 20),
-            contextMenu: make(
-              'ContextMenu',
-              make(
-                'ContextMenuButton',
-                make(
-                  go.Panel,
-                  'Horizontal',
-                  FigureButton('Rectangle'),
-                  FigureButton('RoundedRectangle'),
-                  FigureButton('Ellipse'),
-                  FigureButton('Diamond')
-                )
-              ),
-              LightFillButtons()
-            )
-          },
-          // these Bindings are TwoWay because the DraggingTool and ResizingTool modify the target properties
-          new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-          new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
-          make(
-            go.Shape,
-            'Diamond',
-            {
-              fill: 'lightcoral',
-              strokeWidth: 1,
-              width: 65,
-              height: 65,
-              name: 'SHAPE',
-              portId: '',
-              cursor: 'pointer',
-              fromLinkable: true,
-              toLinkable: true,
-              fromLinkableDuplicates: true,
-              toLinkableDuplicates: true,
-              fromSpot: go.Spot.AllSides,
-              toSpot: go.Spot.AllSides,
-              figure: 'Diamond'
-            },
-            new go.Binding('fill', 'color'),
-            new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)
-          ),
-          make(go.Shape, { margin: 3, fill: '#000', strokeWidth: 0 }, new go.Binding('geometry', 'geo', geoFunc)),
-          // Each node has a tooltip that reveals the name of its icon
-          {
-            toolTip: make(
-              'ToolTip',
-              { 'Border.stroke': colors['gray'], 'Border.strokeWidth': 2 },
-              make(
-                go.TextBlock,
-                { margin: 8, stroke: colors['gray'], font: 'bold 16px sans-serif' },
-                new go.Binding('text', 'geo')
-              )
-            )
-          }
-        )
-      },
-      {
-        name: 'geoNode',
-        template: make(
-          go.Node,
-          'Auto',
-          make(
-            go.Shape,
-            'Diamond',
-            {
-              fill: 'lightcoral',
-              strokeWidth: 1,
-              width: 65,
-              height: 65,
-              name: 'SHAPE',
-              portId: '',
-              cursor: 'pointer',
-              fromLinkable: true,
-              toLinkable: true,
-              fromLinkableDuplicates: true,
-              toLinkableDuplicates: true,
-              fromSpot: go.Spot.AllSides,
-              toSpot: go.Spot.AllSides,
-              figure: 'Diamond'
-            },
-            new go.Binding('fill', 'color')
-          ),
-          make(go.Shape, { margin: 3, fill: '#000', strokeWidth: 0 }, new go.Binding('geometry', 'geo', geoFunc)),
-          // Each node has a tooltip that reveals the name of its icon
-          {
-            toolTip: make(
-              'ToolTip',
-              { 'Border.stroke': colors['gray'], 'Border.strokeWidth': 2 },
-              make(
-                go.TextBlock,
-                { margin: 8, stroke: colors['gray'], font: 'bold 16px sans-serif' },
-                new go.Binding('text', 'geo')
-              )
-            )
-          }
-        )
-      },
-      {
-        name: 'StartEvent',
-        template: make(
-          go.Node,
-          'Auto',
-          make(go.Shape, 'Circle', { fill: 'white', strokeWidth: 1, width: 65, height: 65 })
-        )
+        template: defaultNodeMaker()
       },
 
       {
-        name: 'EndEvent',
-        template: make(
-          go.Node,
-          'Auto',
-          {
-            // locationSpot: go.Spot.Center,
-            locationObjectName: 'SHAPE',
-            desiredSize: new go.Size(65, 65),
-            minSize: new go.Size(40, 40),
-            resizable: true,
-            resizeCellSize: new go.Size(20, 20),
-            contextMenu: make(
-              'ContextMenu',
-              make(
-                'ContextMenuButton',
-                make(
-                  go.Panel,
-                  'Horizontal',
-                  FigureButton('Rectangle'),
-                  FigureButton('RoundedRectangle'),
-                  FigureButton('Ellipse'),
-                  FigureButton('Diamond')
-                )
-              ),
-              LightFillButtons()
-            )
-          },
-          // these Bindings are TwoWay because the DraggingTool and ResizingTool modify the target properties
-          new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-          new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
-          make(
-            go.Shape,
-            {
-              // the border
-              name: 'SHAPE',
-              fill: 'white',
-              portId: '',
-              cursor: 'pointer',
-              fromLinkable: true,
-              toLinkable: true,
-              fromLinkableDuplicates: true,
-              toLinkableDuplicates: true,
-              fromSpot: go.Spot.AllSides,
-              toSpot: go.Spot.AllSides,
-              figure: 'Circle',
-              strokeWidth: 3
-            },
-            new go.Binding('figure'),
-            new go.Binding('fill'),
-            new go.Binding('stroke', 'color'),
-            new go.Binding('strokeWidth', 'thickness'),
-            new go.Binding('strokeDashArray', 'dash')
-          ),
-          // this Shape prevents mouse events from reaching the middle of the port
-          make(go.Shape, { width: 100, height: 40, strokeWidth: 0, fill: 'transparent' }),
-          make(
-            go.TextBlock,
-            { margin: 1, textAlign: 'center', overflow: go.TextBlock.OverflowEllipsis, editable: true },
-            // this Binding is TwoWay due to the user editing the text with the TextEditingTool
-            new go.Binding('text').makeTwoWay(),
-            new go.Binding('stroke', 'color')
-          )
-        )
+        name: 'geo',
+        template: geonodeMaker()
       }
     ]
 
-    function geoFunc(geoname: Icons) {
-      let geo: string | go.Geometry = icons[geoname]
-      if (geo === undefined) geo = icons['heart'] // use this for an unknown icon name
-      if (typeof geo === 'string') {
-        geo = go.Geometry.parse(geo, true) // fill each geometry
-      }
-      return geo
-    }
-
     const linkMap: Template<go.Link>[] = [
       {
-        name: 'normal',
-        template: make(
-          go.Link,
-          go.Link.Orthogonal,
-          { corner: 5, relinkableFrom: true, relinkableTo: true },
-          make(go.Shape, { strokeWidth: 1.5, stroke: 'blue' })
-        )
-      },
-      {
-        name: 'cost',
-        template: make(
-          go.Link,
-          {
-            layerName: 'Foreground',
-            routing: go.Link.AvoidsNodes,
-            corner: 10,
-            toShortLength: 4, // assume arrowhead at "to" end, need to avoid bad appearance when path is thick
-            relinkableFrom: true,
-            relinkableTo: true,
-            reshapable: true,
-            resegmentable: true,
-            contextMenu: make(
-              'ContextMenu',
-              DarkColorButtons(),
-              StrokeOptionsButtons(),
-              make('ContextMenuButton', make(go.Panel, 'Horizontal', ArrowButton(0), ArrowButton(1))),
-              make(
-                'ContextMenuButton',
-                make(
-                  go.Panel,
-                  'Horizontal',
-                  make(
-                    go.Panel,
-                    'Spot',
-                    AllSidesButton(false),
-                    SpotButton(go.Spot.Top, false),
-                    SpotButton(go.Spot.Left, false),
-                    SpotButton(go.Spot.Right, false),
-                    SpotButton(go.Spot.Bottom, false)
-                  ),
-                  make(
-                    go.Panel,
-                    'Spot',
-                    { margin: new go.Margin(0, 0, 0, 2) },
-                    AllSidesButton(true),
-                    SpotButton(go.Spot.Top, true),
-                    SpotButton(go.Spot.Left, true),
-                    SpotButton(go.Spot.Right, true),
-                    SpotButton(go.Spot.Bottom, true)
-                  )
-                )
-              )
-            )
-          },
-          new go.Binding('fromSpot', 'fromSpot', go.Spot.parse),
-          new go.Binding('toSpot', 'toSpot', go.Spot.parse),
-          new go.Binding('fromShortLength', 'dir', function (dir) {
-            return dir === 2 ? 4 : 0
-          }),
-          new go.Binding('toShortLength', 'dir', function (dir) {
-            return dir >= 1 ? 4 : 0
-          }),
-          new go.Binding('points').makeTwoWay(), // TwoWay due to user reshaping with LinkReshapingTool
-          make(
-            go.Shape,
-            { strokeWidth: 2 },
-            new go.Binding('stroke', 'color'),
-            new go.Binding('strokeWidth', 'thickness'),
-            new go.Binding('strokeDashArray', 'dash')
-          ),
-          make(
-            go.Shape,
-            { fromArrow: 'Backward', strokeWidth: 0, scale: 4 / 3, visible: false },
-            new go.Binding('visible', 'dir', function (dir) {
-              return dir === 2
-            }),
-            new go.Binding('fill', 'color'),
-            new go.Binding('scale', 'thickness', function (t) {
-              return (2 + t) / 3
-            })
-          ),
-          make(
-            go.Shape,
-            { toArrow: 'Standard', strokeWidth: 0, scale: 4 / 3 },
-            new go.Binding('visible', 'dir', function (dir) {
-              return dir >= 1
-            }),
-            new go.Binding('fill', 'color'),
-            new go.Binding('scale', 'thickness', function (t) {
-              return (2 + t) / 3
-            })
-          ),
-          make(
-            go.TextBlock,
-            { alignmentFocus: new go.Spot(0, 1, -4, 0), editable: true },
-            new go.Binding('text').makeTwoWay(), // TwoWay due to user editing with TextEditingTool
-            new go.Binding('stroke', 'color')
-          )
-        )
+        name: 'default',
+        template: defaultLineMaker()
       }
     ]
 
     const editorData: EditorData[] = [
-      { key: 1, geo: 'close', color: colors['white'], category: 'geo', showContext: false },
+      { key: 1, geo: 'close', color: 'white', category: 'geo', showContext: false },
       {
         key: 2,
-        thickness: 3,
         figure: 'RoundedRectangle',
         fill: '#FFFEDF',
         text: '活动',
@@ -439,15 +87,10 @@ export default defineComponent({
       }
     ]
 
-    const layoutModel: go.Layout = make(go.TreeLayout, {
-      angle: 90,
-      layerStyle: go.TreeLayout.LayerUniform
-    })
     return {
       nodeMap,
       linkMap,
       editorData,
-      layoutModel,
       baseDiagramRef
     }
   }
