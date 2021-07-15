@@ -8,9 +8,12 @@
 
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
-import { GuidedDraggingTool } from '@/common/GuidedDraggingTool'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
+import { defaultNodeMaker } from '@/component/baseDiagram/util/defaultNode/basenodeMaker'
+import { geonodeMaker } from '@/component/baseDiagram/util/defaultNode/geonodeMaker'
+import { defaultLineMaker } from '@/component/baseDiagram/util/defaultLine/defaultLineMaker'
+import { supportLineMaker } from './util/diagram'
 import type { Ref } from 'vue'
 import type { Template, EditorData } from './type'
 
@@ -18,8 +21,8 @@ const make = go.GraphObject.make
 
 interface BaseDiagramProps {
   editor?: boolean
-  nodeMap: Template<go.Node>[]
-  linkMap: Template<go.Link>[]
+  nodeMap?: Template<go.Node>[]
+  linkMap?: Template<go.Link>[]
   editorMap?: Template<go.Node>[]
   editorTemplate?: EditorData[]
   diagramEvents?: go.DiagramEventsInterface
@@ -29,7 +32,7 @@ interface BaseDiagramProps {
 
 const props = withDefaults(defineProps<BaseDiagramProps>(), {
   editor: true,
-  defaultLinkType: 'baseLine',
+  defaultLinkType: 'default',
   treeLayout: false
 })
 
@@ -39,20 +42,47 @@ const editRef: Ref<HTMLDivElement | null> = ref(null)
 let diagram: go.Diagram | null = null
 
 function init(templeteRef: HTMLDivElement): go.Diagram {
-  const myDiagram = make(go.Diagram, templeteRef, {
-    'animationManager.isEnabled': false,
-    draggingTool: new GuidedDraggingTool(),
-    'draggingTool.horizontalGuidelineColor': 'blue',
-    'draggingTool.verticalGuidelineColor': 'blue',
-    'draggingTool.centerGuidelineColor': 'green',
-    'draggingTool.guidelineWidth': 1,
-    'undoManager.isEnabled': true,
-    LinkDrawn,
-    externalobjectsdropped
+  const myDiagram = make(
+    go.Diagram,
+    templeteRef, // 获取辅助线
+    Object.assign({
+      'animationManager.isEnabled': false,
+      LinkDrawn,
+      externalobjectsdropped
+    }),
+    supportLineMaker()
+  )
+
+  const defaultNodeMap: Template<go.Node>[] = [
+    {
+      name: 'normal',
+      template: defaultNodeMaker()
+    },
+
+    {
+      name: 'geo',
+      template: geonodeMaker()
+    }
+  ]
+
+  defaultNodeMap.forEach(({ name, template }) => {
+    myDiagram.nodeTemplateMap.add(name, template)
   })
+
   // 分配节点模板
   props.nodeMap?.forEach(({ name, template }) => {
     myDiagram.nodeTemplateMap.add(name, template)
+  })
+
+  const defaultLinkMap: Template<go.Link>[] = [
+    {
+      name: 'default',
+      template: defaultLineMaker()
+    }
+  ]
+
+  defaultLinkMap.forEach(({ name, template }) => {
+    myDiagram.linkTemplateMap.add(name, template)
   })
 
   // 分配连线模板
