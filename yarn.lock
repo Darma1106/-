@@ -367,6 +367,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/uuid@^8.3.1":
+  version "8.3.1"
+  resolved "https://registry.nlark.com/@types/uuid/download/@types/uuid-8.3.1.tgz?cache=0&sync_timestamp=1625250024595&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fuuid%2Fdownload%2F%40types%2Fuuid-8.3.1.tgz#1a32969cf8f0364b3d8c8af9cc3555b7805df14f"
+  integrity sha1-GjKWnPjwNks9jIr5zDVVt4Bd8U8=
+
 "@types/verror@^1.10.3":
   version "1.10.4"
   resolved "https://registry.npm.taobao.org/@types/verror/download/@types/verror-1.10.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fverror%2Fdownload%2F%40types%2Fverror-1.10.4.tgz#805c0612b3a0c124cf99f517364142946b74ba3b"
@@ -4200,6 +4205,11 @@ util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.nlark.com/util-deprecate/download/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
+
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.nlark.com/uuid/download/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha1-gNW1ztJxu5r2xEXyGhoExgbO++I=
 
 v8-compile-cache@^2.0.3:
   version "2.3.0"

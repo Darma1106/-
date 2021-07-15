@@ -13,6 +13,7 @@ import * as go from 'gojs'
 import { defaultNodeMaker } from '@/component/baseDiagram/util/defaultNode/basenodeMaker'
 import { geonodeMaker } from '@/component/baseDiagram/util/defaultNode/geonodeMaker'
 import { defaultLineMaker } from '@/component/baseDiagram/util/defaultLine/defaultLineMaker'
+import { v4 as uuidv4 } from 'uuid'
 import { supportLineMaker } from './util/diagram'
 import type { Ref } from 'vue'
 import type { Template, EditorData } from './type'
@@ -143,6 +144,7 @@ function externalobjectsdropped({ diagram }: go.DiagramEvent) {
 // 连线事件
 function LinkDrawn({ diagram: { model }, subject: { data } }: go.DiagramEvent) {
   if (props.defaultLinkType) {
+    data.id = uuidv4()
     ;(model as go.GraphLinksModel).removeLinkData(data)
     data.category = props.defaultLinkType
     ;(model as go.GraphLinksModel).addLinkData(data)
