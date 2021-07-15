@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
+import { GuidedDraggingTool } from '@/common/GuidedDraggingTool'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 import type { Ref } from 'vue'
@@ -22,12 +23,14 @@ interface BaseDiagramProps {
   editorMap?: Template<go.Node>[]
   editorTemplate?: EditorData[]
   diagramEvents?: go.DiagramEventsInterface
-  layoutModel?: go.Layout
-  defaultLinkType: string
+  treeLayout?: boolean
+  defaultLinkType?: string
 }
 
 const props = withDefaults(defineProps<BaseDiagramProps>(), {
-  editor: true
+  editor: true,
+  defaultLinkType: 'baseLine',
+  treeLayout: false
 })
 
 const mainRef: Ref<HTMLDivElement | null> = ref(null)
@@ -38,6 +41,12 @@ let diagram: go.Diagram | null = null
 function init(templeteRef: HTMLDivElement): go.Diagram {
   const myDiagram = make(go.Diagram, templeteRef, {
     'animationManager.isEnabled': false,
+    draggingTool: new GuidedDraggingTool(),
+    'draggingTool.horizontalGuidelineColor': 'blue',
+    'draggingTool.verticalGuidelineColor': 'blue',
+    'draggingTool.centerGuidelineColor': 'green',
+    'draggingTool.guidelineWidth': 1,
+    'undoManager.isEnabled': true,
     LinkDrawn,
     externalobjectsdropped
   })
@@ -76,13 +85,17 @@ function init(templeteRef: HTMLDivElement): go.Diagram {
     }
   }
 
-  if (props.layoutModel) {
-    myDiagram.layout = props.layoutModel
+  // 树形图
+  if (props.treeLayout) {
+    myDiagram.layout = make(go.TreeLayout, {
+      angle: 90,
+      layerStyle: go.TreeLayout.LayerUniform
+    })
   }
 
   myDiagram.model = make(go.GraphLinksModel, {
-    linkFromPortIdProperty: 'fromPort',
-    linkToPortIdProperty: 'toPort',
+    linkFromPortIdProperty: 'fromSpot',
+    linkToPortIdProperty: 'toSpot',
     copiesArrays: true,
     copiesArrayObjects: true,
     nodeDataArray: [],

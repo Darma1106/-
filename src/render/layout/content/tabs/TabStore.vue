@@ -1,7 +1,7 @@
 <template>
-  <a-tabs :active-key="activeTab" class="tabs" hide-add type="editable-card" @edit="onEdit" @change="change"
+  <a-tabs :active-key="activeTab" class="tabs" hide-add type="editable-card" @edit="onEdit" @change="onTabChange"
     ><a-tab-pane
-      v-for="pane in tabs"
+      v-for="pane in panes"
       v-show="pane.key == activeTab"
       :key="pane.key"
       class="tab-panel"
@@ -12,36 +12,57 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, onMounted } from 'vue'
-import { useTabs } from '@/composition'
+import { defineComponent, defineAsyncComponent, computed, onMounted } from 'vue'
+import { useStore } from '@/store'
 export default defineComponent({
   components: {
     UmlClass: defineAsyncComponent(() => import('@/views/umlClass/UmlClass.vue')),
     ActiveModel: defineAsyncComponent(() => import('@/views/activeModel/ActiveModel.vue')),
     MatrixModel: defineAsyncComponent(() => import('@/views/matrixModel/MatrixModel.vue')),
     OrganizationModel: defineAsyncComponent(() => import('@/views/organizationModel/OrganizationModel.vue')),
-    SequenceModel: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue')),
-    ProcessModel: defineAsyncComponent(() => import('@/views/processModel/ProcessModel.vue'))
+    SequenceModel: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue'))
   },
   setup() {
-    const { tabs, activeTab, add, change, remove } = useTabs()
+    const store = useStore()
+    const activeTab = computed(() => store.state.tabs.activeTab)
+    const panes = computed(() => store.state.tabs.panes)
+
+    const add = () => {
+      store.dispatch('tabs/add', { title: 'sequence222', key: '12', closable: true, component: 'SequenceModel' })
+      store.dispatch({
+        type: 'tabs/add',
+        payload: { title: 'sequence222', key: '12', closable: true, component: 'SequenceModel' }
+      })
+    }
+
+    setTimeout(() => {
+      add()
+    }, 3000)
+
+    // 删除tab页
+    const remove = (targetKey: string) => {
+      store.dispatch('tabs/remove', targetKey)
+    }
 
     const onEdit = (targetKey: string) => {
       remove(targetKey)
     }
 
+    const onTabChange = (targetKey: string) => {
+      store.dispatch('tabs/change', targetKey)
+    }
+
     // 默认选中第一个
     onMounted(() => {
-      change(tabs.value[0].key)
+      onTabChange(panes.value[0].key)
     })
 
     return {
-      tabs,
+      panes,
       activeTab,
-      add,
-      change,
-      remove,
-      onEdit
+      onEdit,
+      onTabChange,
+      add
     }
   }
 })
@@ -61,10 +82,6 @@ export default defineComponent({
   ::v-deep(.ant-tabs-top-content, .ant-tabs-bottom-content) {
     height: calc(100% - 40px);
     width: 100%;
-  }
-
-  ::v-deep(.ant-tabs-nav .ant-tabs-tab-active) {
-    font-weight: normal;
   }
 }
 </style>

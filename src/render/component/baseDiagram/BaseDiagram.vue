@@ -2,15 +2,15 @@
   <div class="base-diagram">
     <div ref="editRef" class="editor"></div>
     <div ref="mainRef" class="main"></div>
-    <!-- <button @click="show">show Json</button> -->
+    <!-- <button @click="getJson">show Json</button> -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, PropType, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
-import { GuidedDraggingTool } from '@/common/GuidedDraggingTool'
 import * as go from 'gojs'
+import { supportLineMaker } from './util/diagram'
 import type { Template, EditorData } from './type'
 
 const make = go.GraphObject.make
@@ -39,8 +39,9 @@ export default defineComponent({
       type: Object as PropType<go.DiagramEventsInterface>
     },
     // 布局模式
-    layoutModel: {
-      type: Object as PropType<go.Layout>
+    treeLayout: {
+      type: Boolean,
+      default: false
     },
     defaultLinkType: {
       type: String
@@ -52,17 +53,17 @@ export default defineComponent({
     let diagram: go.Diagram | null = null
 
     function init(templeteRef: HTMLDivElement): go.Diagram {
-      const myDiagram = make(go.Diagram, templeteRef, {
-        'animationManager.isEnabled': false,
-        draggingTool: new GuidedDraggingTool(), // defined in GuidedDraggingTool.js
-        'draggingTool.horizontalGuidelineColor': 'blue',
-        'draggingTool.verticalGuidelineColor': 'blue',
-        'draggingTool.centerGuidelineColor': 'green',
-        'draggingTool.guidelineWidth': 1,
-        'undoManager.isEnabled': true, // enable undo & redo
-        LinkDrawn,
-        externalobjectsdropped
-      })
+      const myDiagram = make(
+        go.Diagram,
+        templeteRef,
+        // 获取辅助线
+        Object.assign({
+          'animationManager.isEnabled': false,
+          LinkDrawn,
+          externalobjectsdropped
+        }),
+        supportLineMaker()
+      )
       // 分配节点模板
       props.nodeMap?.forEach(({ name, template }) => {
         myDiagram.nodeTemplateMap.add(name, template)
@@ -98,8 +99,11 @@ export default defineComponent({
         }
       }
 
-      if (props.layoutModel) {
-        myDiagram.layout = props.layoutModel
+      if (props.treeLayout) {
+        myDiagram.layout = make(go.TreeLayout, {
+          angle: 90,
+          layerStyle: go.TreeLayout.LayerUniform
+        })
       }
 
       myDiagram.model = make(go.GraphLinksModel, {
@@ -159,12 +163,12 @@ export default defineComponent({
         diagram = init(unrefElement(mainRef))
       })
     })
-    const show = () => {
+    const getJson = () => {
       if (diagram) {
         console.log(diagram.model.toJson())
       }
     }
-    return { mainRef, editRef, getDiagram, addNode, show }
+    return { mainRef, editRef, getDiagram, addNode, getJson }
   }
 })
 </script>

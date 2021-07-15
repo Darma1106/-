@@ -1,20 +1,10 @@
 import { ref } from 'vue'
-// import type { Ref } from 'vue'
-
 export interface Pane {
   title: string
   key: string
   closable: boolean
   component: string
 }
-
-// export interface UseTabs {
-//   tabs: Ref<Pane[]>
-//   activePane: Ref<Pane | undefined>
-//   add: (pane: Pane) => void
-//   remove: (targetKey: string) => void
-//   change: (targetKey: string) => void
-// }
 
 class UseTabs {
   public tabs = ref<Pane[]>([

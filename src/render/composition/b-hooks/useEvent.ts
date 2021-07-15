@@ -1,5 +1,8 @@
 import { readonly } from 'vue'
+import sotre from '@/store'
 import useTabs from './useTabs'
+
+console.log(sotre.state.tabs, 'store')
 
 type Callback = () => void
 
@@ -48,8 +51,9 @@ class EventController {
   // 事件触发器
   eventSwitch = (event: EventType, componentId = activeTab.value) => {
     if (componentId) {
-      const eventCallback = this.eventMap?.[componentId][event]
-      if (eventCallback) eventCallback()
+      const eventCallback = this.eventMap?.[componentId]
+
+      if (eventCallback) eventCallback[event]?.()
     }
   }
 }

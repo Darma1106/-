@@ -1,3 +1,4 @@
+import { icons } from '@/common/icons'
 import { ArrowTypeValue } from './enum'
 import type { Node, Link, Diagram, ObjectData } from 'gojs'
 
@@ -20,8 +21,19 @@ export interface DiagramData {
   linkDataArray: ObjectData[]
 }
 
+export type Icons = keyof typeof icons
+
 export interface EditorData extends go.ObjectData {
   text?: string
   category: string
+  geo?: Icons
   showContext: boolean
+}
+
+export interface NodeOption {
+  figure?: string
+  strokeWidth?: number
+  fill?: string
+  color?: string
+  contextMenu?: boolean
 }

@@ -12,7 +12,7 @@ export interface State {
 
 export const key: InjectionKey<Store<State>> = Symbol('vue-store')
 
-const store = createStore({
+const store: Store<State> = createStore({
   modules
 })
 

@@ -8,7 +8,7 @@ export interface Pane {
 }
 
 export interface StoreTabs {
-  activeTab?: Pane | undefined
+  activeTab?: string
   panes: Pane[]
 }
 
@@ -30,7 +30,9 @@ const store: Module<StoreTabs, unknown> = {
 
   mutations: {
     add(state: StoreTabs, paneInfo: Pane) {
-      state.activeTab = paneInfo
+      console.log(paneInfo, 'addFunc')
+
+      state.activeTab = paneInfo.key
       state.panes.push(paneInfo)
     },
 
@@ -42,20 +44,21 @@ const store: Module<StoreTabs, unknown> = {
         }
       })
       state.panes = state.panes.filter((pane) => pane.key !== targetKey)
-      if (state.panes.length && state.activeTab?.key === targetKey) {
+      if (state.panes.length && state.activeTab === targetKey) {
         if (lastIndex >= 0) {
-          state.activeTab = state.panes[lastIndex]
+          state.activeTab = state.panes[lastIndex].key
         } else {
-          state.activeTab = state.panes[0]
+          state.activeTab = state.panes[0].key
         }
       }
     },
 
     change(state: StoreTabs, targetKey: string) {
-      const target = state.panes.find((pane) => pane.key === targetKey)
-      if (target) {
-        state.activeTab = target
-      }
+      state.activeTab = targetKey
+    },
+
+    search(state: StoreTabs, targetKey: string): Pane | undefined {
+      return state.panes.find((pane) => pane.key == targetKey)
     }
   },
 
@@ -70,6 +73,10 @@ const store: Module<StoreTabs, unknown> = {
 
     change({ commit }, targetKey: string) {
       commit('change', targetKey)
+    },
+
+    search({ commit }, targetKey: string) {
+      commit('search', targetKey)
     }
   },
 
