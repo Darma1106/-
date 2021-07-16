@@ -10,8 +10,7 @@
 import { defineComponent, nextTick, onMounted, PropType, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
-import { defaultNodeMaker } from '@/component/baseDiagram/util/defaultNode/basenodeMaker'
-import { geonodeMaker } from '@/component/baseDiagram/util/defaultNode/geonodeMaker'
+import { geoNodeMaker, defaultNodeMaker } from '@/component/baseDiagram/util/defaultNode'
 import { defaultLineMaker } from '@/component/baseDiagram/util/defaultLine/defaultLineMaker'
 import { v4 as uuidv4 } from 'uuid'
 import { supportLineMaker } from './util/diagram'
@@ -78,7 +77,7 @@ export default defineComponent({
 
         {
           name: 'geo',
-          template: geonodeMaker()
+          template: geoNodeMaker()
         }
       ]
 
@@ -154,14 +153,16 @@ export default defineComponent({
     // 从面板拖拽后给予右键菜单
     function externalobjectsdropped({ diagram }: go.DiagramEvent) {
       diagram.model.setDataProperty(diagram.selection.first()?.data, 'showContext', true)
+      diagram.model.setDataProperty(diagram.selection.first()?.data, 'key', uuidv4())
     }
 
     // 连线事件
     function LinkDrawn({ diagram: { model }, subject: { data } }: go.DiagramEvent) {
       if (props.defaultLinkType) {
-        data.id = uuidv4()
         ;(model as go.GraphLinksModel).removeLinkData(data)
         data.category = props.defaultLinkType
+        data.id = uuidv4()
+        data.text = '流程条件'
         ;(model as go.GraphLinksModel).addLinkData(data)
       }
     }
