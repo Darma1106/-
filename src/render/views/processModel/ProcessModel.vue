@@ -56,7 +56,7 @@ export default defineComponent({
       }
     ]
 
-    const afterLink = (data: go.ObjectData) => {
+    const afterLink = ({ data }: go.ObjectData) => {
       data.text = '流程条件'
     }
 

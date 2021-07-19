@@ -1,6 +1,6 @@
 <template>
   <div class="organization-model">
-    <BaseDiagram ref="baseDiagramRef" :editor-template="editorData" />
+    <BaseDiagram ref="baseDiagramRef" :editor-template="editorData" :after-link="afterLink" />
   </div>
 </template>
 
@@ -30,6 +30,10 @@ export default defineComponent({
       }, props.tabId)
     }
 
+    const afterLink = ({ toNode, fromNode }: go.ObjectData, model: go.Model) => {
+      model.setDataProperty(toNode.data, 'pid', fromNode.data.key)
+    }
+
     const editorData: EditorData[] = [
       {
         key: 2,
@@ -43,7 +47,8 @@ export default defineComponent({
 
     return {
       baseDiagramRef,
-      editorData
+      editorData,
+      afterLink
     }
   }
 })

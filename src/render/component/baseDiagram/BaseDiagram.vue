@@ -2,7 +2,7 @@
   <div class="base-diagram">
     <div ref="editRef" class="editor"></div>
     <div ref="mainRef" class="main"></div>
-    <!-- <button @click="getJson">show Json</button> -->
+    <button @click="getJson">show Json</button>
   </div>
 </template>
 
@@ -17,7 +17,8 @@ import { supportLineMaker } from './util/diagram'
 import type { Template, EditorData, CommonNodeType, CommonLinkType } from './type'
 
 const make = go.GraphObject.make
-type AfterLink = (data: go.ObjectData) => void
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AfterLink = (subject: any, model: go.Model) => void
 
 export default defineComponent({
   name: '',
@@ -43,7 +44,7 @@ export default defineComponent({
       type: Object as PropType<go.DiagramEventsInterface>
     },
     afterLink: {
-      type: Object as PropType<AfterLink>
+      type: Function as PropType<AfterLink>
     },
     // 布局模式
     treeLayout: {
@@ -132,8 +133,6 @@ export default defineComponent({
       }
 
       myDiagram.model = make(go.GraphLinksModel, {
-        linkFromPortIdProperty: 'fromPort',
-        linkToPortIdProperty: 'toPort',
         copiesArrays: true,
         copiesArrayObjects: true,
         nodeDataArray: [],
@@ -150,15 +149,18 @@ export default defineComponent({
     }
 
     // 连线事件
-    function LinkDrawn({ diagram: { model }, subject: { data } }: go.DiagramEvent) {
+    // { diagram: { model }, subject: { data } }: go.DiagramEvent
+    function LinkDrawn({ diagram: { model }, subject }: go.DiagramEvent) {
+      console.log(diagram, subject)
+
       if (props.defaultLinkType) {
-        ;(model as go.GraphLinksModel).removeLinkData(data)
-        data.category = props.defaultLinkType
-        data.id = uuidv4()
+        ;(model as go.GraphLinksModel).removeLinkData(subject.data)
+        subject.data.category = props.defaultLinkType
+        subject.data.id = uuidv4()
         if (props.afterLink) {
-          props?.afterLink(data)
+          props?.afterLink(subject, model)
         }
-        ;(model as go.GraphLinksModel).addLinkData(data)
+        ;(model as go.GraphLinksModel).addLinkData(subject.data)
       }
     }
 
