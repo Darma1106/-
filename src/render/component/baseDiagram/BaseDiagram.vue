@@ -10,11 +10,11 @@
 import { defineComponent, nextTick, onMounted, PropType, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
-import { geoNodeMaker, defaultNodeMaker } from '@/component/baseDiagram/util/defaultNode'
-import { defaultLineMaker } from '@/component/baseDiagram/util/defaultLine/defaultLineMaker'
+import { commonNodeMap } from '@/component/baseDiagram/util/defaultNode'
+import { commonLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { v4 as uuidv4 } from 'uuid'
 import { supportLineMaker } from './util/diagram'
-import type { Template, EditorData } from './type'
+import type { Template, EditorData, CommonNodeType, CommonLinkType } from './type'
 
 const make = go.GraphObject.make
 
@@ -48,7 +48,7 @@ export default defineComponent({
     },
     defaultLinkType: {
       type: String,
-      default: 'default'
+      default: 'defaultLink'
     }
   },
   setup(props) {
@@ -69,37 +69,26 @@ export default defineComponent({
         supportLineMaker()
       )
 
-      const defaultNodeMap: Template<go.Node>[] = [
-        {
-          name: 'normal',
-          template: defaultNodeMaker()
-        },
-
-        {
-          name: 'geo',
-          template: geoNodeMaker()
+      // 注入默认Node类型
+      for (const key in commonNodeMap) {
+        if (Object.prototype.hasOwnProperty.call(commonNodeMap, key)) {
+          const element: go.Node = commonNodeMap[key as CommonNodeType]
+          myDiagram.nodeTemplateMap.add(key, element)
         }
-      ]
-
-      defaultNodeMap.forEach(({ name, template }) => {
-        myDiagram.nodeTemplateMap.add(name, template)
-      })
+      }
 
       // 分配节点模板
       props.nodeMap?.forEach(({ name, template }) => {
         myDiagram.nodeTemplateMap.add(name, template)
       })
 
-      const defaultLinkMap: Template<go.Link>[] = [
-        {
-          name: 'default',
-          template: defaultLineMaker()
+      // 注入默认Link类型
+      for (const key in commonLinkMap) {
+        if (Object.prototype.hasOwnProperty.call(commonLinkMap, key)) {
+          const element: go.Link = commonLinkMap[key as CommonLinkType]
+          myDiagram.linkTemplateMap.add(key, element)
         }
-      ]
-
-      defaultLinkMap.forEach(({ name, template }) => {
-        myDiagram.linkTemplateMap.add(name, template)
-      })
+      }
 
       // 分配连线模板
       props.linkMap?.forEach(({ name, template }) => {

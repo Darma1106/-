@@ -36,7 +36,7 @@ export default defineComponent({
         fill: 'green',
         fontColor: 'white',
         text: 'text',
-        category: 'normal',
+        category: 'defaultNode',
         showContext: false
       }
     ]

@@ -7,3 +7,12 @@ export enum ArrowTypeValue {
   BackwardBoomerang = 'BackwardBoomerang',
   SidewaysV = 'SidewaysV'
 }
+
+export enum CommonNodeTypeValue {
+  defaultNode = 'defaultNode',
+  geoNode = 'geoNode'
+}
+
+export enum CommonLinkTypeValue {
+  defaultLink = 'defaultLink'
+}

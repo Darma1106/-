@@ -36,7 +36,7 @@ export default defineComponent({
         figure: 'RoundedRectangle',
         fill: '#FFFEDF',
         text: 'text',
-        category: 'normal',
+        category: 'defaultNode',
         showContext: false
       }
     ]

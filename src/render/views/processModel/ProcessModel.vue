@@ -30,13 +30,13 @@ export default defineComponent({
     }
 
     const editorData: EditorData[] = [
-      { key: 1, geo: 'close', color: 'white', category: 'geo', showContext: false },
+      { key: 1, geo: 'close', color: 'white', category: 'geoNode', showContext: false },
       {
         key: 2,
         figure: 'RoundedRectangle',
         fill: '#FFFEDF',
         text: '活动',
-        category: 'normal',
+        category: 'defaultNode',
         showContext: false
       },
       {
@@ -44,14 +44,14 @@ export default defineComponent({
         thickness: 3,
         figure: 'Circle',
         text: '',
-        category: 'normal',
+        category: 'defaultNode',
         showContext: false
       },
       {
         key: 5,
         figure: 'Circle',
         text: '',
-        category: 'normal',
+        category: 'defaultNode',
         showContext: false
       }
     ]

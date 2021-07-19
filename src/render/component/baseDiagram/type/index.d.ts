@@ -1,5 +1,5 @@
 import { icons } from '@/common/icons'
-import { ArrowTypeValue } from './enum'
+import { ArrowTypeValue, CommonNodeTypeValue, CommonLinkTypeValue } from './enum'
 import type { Node, Link, Diagram, ObjectData } from 'gojs'
 
 export type ArrowType = keyof typeof ArrowTypeValue
@@ -37,4 +37,16 @@ export interface NodeOption {
   fill?: string
   color?: string
   contextMenu?: boolean
+}
+
+export type CommonNodeType = keyof typeof CommonNodeTypeValue
+
+export type CommonNodeMap = {
+  [key in CommonNodeType]: go.Node
+}
+
+export type CommonLinkType = keyof typeof CommonLinkTypeValue
+
+export type CommonLinkMap = {
+  [key in CommonLinkType]: go.Link
 }
