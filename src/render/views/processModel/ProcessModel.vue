@@ -1,6 +1,6 @@
 <template>
   <div class="organization-model">
-    <BaseDiagram ref="baseDiagramRef" :editor-template="editorData" />
+    <BaseDiagram ref="baseDiagramRef" :editor-template="editorData" :after-link="afterLink" />
   </div>
 </template>
 
@@ -56,9 +56,14 @@ export default defineComponent({
       }
     ]
 
+    const afterLink = (data: go.ObjectData) => {
+      data.text = '流程条件'
+    }
+
     return {
       editorData,
-      baseDiagramRef
+      baseDiagramRef,
+      afterLink
     }
   }
 })

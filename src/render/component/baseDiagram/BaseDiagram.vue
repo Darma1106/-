@@ -17,6 +17,7 @@ import { supportLineMaker } from './util/diagram'
 import type { Template, EditorData, CommonNodeType, CommonLinkType } from './type'
 
 const make = go.GraphObject.make
+type AfterLink = (data: go.ObjectData) => void
 
 export default defineComponent({
   name: '',
@@ -40,6 +41,9 @@ export default defineComponent({
     },
     diagramEvents: {
       type: Object as PropType<go.DiagramEventsInterface>
+    },
+    afterLink: {
+      type: Object as PropType<AfterLink>
     },
     // 布局模式
     treeLayout: {
@@ -151,7 +155,9 @@ export default defineComponent({
         ;(model as go.GraphLinksModel).removeLinkData(data)
         data.category = props.defaultLinkType
         data.id = uuidv4()
-        data.text = '流程条件'
+        if (props.afterLink) {
+          props?.afterLink(data)
+        }
         ;(model as go.GraphLinksModel).addLinkData(data)
       }
     }
