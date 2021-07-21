@@ -145,15 +145,15 @@ export function makeBaseNode(): go.Node {
       {
         // the border
         name: 'SHAPE',
-        fill: 'white',
-        portId: '',
-        cursor: 'pointer',
-        fromLinkable: true,
-        toLinkable: true,
-        fromLinkableDuplicates: true,
-        toLinkableDuplicates: true,
-        fromSpot: go.Spot.AllSides,
-        toSpot: go.Spot.AllSides
+        fill: 'white'
+        // portId: '',
+        // cursor: 'pointer',
+        // fromLinkable: true,
+        // toLinkable: true,
+        // fromLinkableDuplicates: true,
+        // toLinkableDuplicates: true,
+        // fromSpot: go.Spot.AllSides,
+        // toSpot: go.Spot.AllSides
       },
       new go.Binding('figure'),
       new go.Binding('fill'),

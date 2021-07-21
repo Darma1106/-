@@ -10,7 +10,8 @@ export enum ArrowTypeValue {
 
 export enum CommonNodeTypeValue {
   defaultNode = 'defaultNode',
-  geoNode = 'geoNode'
+  geoNode = 'geoNode',
+  pictureNode = 'pictureNode'
 }
 
 export enum CommonLinkTypeValue {

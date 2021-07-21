@@ -12,6 +12,8 @@ export interface Template<T> {
 export interface BaseDiagramInstance {
   getDiagram: () => Diagram
   addNode: (node: ObjectData) => void
+  getJson: () => string
+  renderJson: (json: string) => void
   NodeMap: Template<Node>[]
   LinkMap: Template<Link>[]
 }
@@ -28,10 +30,12 @@ export interface EditorData extends go.ObjectData {
   category: string
   fontColor?: string
   geo?: Icons
+  source?: string
   showContext: boolean
 }
 
 export interface NodeOption {
+  source?: string
   figure?: string
   strokeWidth?: number
   fill?: string

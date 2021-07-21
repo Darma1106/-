@@ -1,11 +1,10 @@
-import { ref, onMounted, onUnmounted, Ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import dayjs from 'dayjs'
-// import relativeTime from 'dayjs/plugin/relativeTime'
+import type { Ref } from 'vue'
+import type { ConfigType, Dayjs } from 'dayjs'
 
-// dayjs.extend(relativeTime)
-
-export default function useDate(d: dayjs.ConfigType = Date.now(), timeout = 0): Ref<dayjs.Dayjs> {
-  const date: Ref<dayjs.Dayjs> = ref(dayjs(d))
+export default function useDate(d: ConfigType = Date.now(), timeout = 0): Ref<Dayjs> {
+  const date: Ref<Dayjs> = ref(dayjs(d))
 
   if (timeout) {
     let timerId: number

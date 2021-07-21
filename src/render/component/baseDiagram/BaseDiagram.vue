@@ -198,9 +198,15 @@ export default defineComponent({
     const getJson = () => {
       if (diagram) {
         console.log(diagram.model.toJson())
+        return diagram.model.toJson()
       }
     }
-    return { mainRef, editRef, getDiagram, addNode, getJson }
+    const renderJson = (json: string) => {
+      if (diagram) {
+        diagram.model = go.Model.fromJson(json)
+      }
+    }
+    return { mainRef, editRef, getDiagram, addNode, getJson, renderJson }
   }
 })
 </script>

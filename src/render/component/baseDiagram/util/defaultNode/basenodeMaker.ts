@@ -41,7 +41,7 @@ export function basedNodeMaker(nodeTemplate: go.GraphObject, contextMenu = false
       new go.Binding('desiredSize', 'size', (size: string) => {
         // 给节点留出20px的连线触发区域
         const realSize = size
-          .split('')
+          .split(' ')
           .map((value) => Number(value) - 20)
           .join(' ')
         return go.Size.parse(realSize)

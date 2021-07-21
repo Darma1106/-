@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, nextTick, onMounted, ref } from 'vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 import { useEvent } from '@/composition'
 
@@ -25,9 +25,19 @@ export default defineComponent({
     const { onSave } = useEvent()
     if (props.tabId) {
       onSave(() => {
-        console.log(`${props.tabId}组织模型`)
+        if (props.tabId && baseDiagramRef.value) {
+          localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
+        }
       }, props.tabId)
     }
+
+    onMounted(() => {
+      nextTick(() => {
+        if (props.tabId && baseDiagramRef.value) {
+          baseDiagramRef.value.renderJson(localStorage.getItem(props.tabId) ?? '')
+        }
+      })
+    })
 
     const editorData: EditorData[] = [
       { key: 1, geo: 'close', color: 'white', category: 'geoNode', showContext: false },
@@ -53,6 +63,12 @@ export default defineComponent({
         text: '',
         category: 'defaultNode',
         showContext: false
+      },
+      {
+        key: 7,
+        source: 'https://pica.zhimg.com/v2-6d510e2f1c06efa66322e3ecf1a1cc9b_1440w.jpg?source=172ae18b',
+        showContext: false,
+        category: 'pictureNode'
       }
     ]
 

@@ -56,7 +56,7 @@ export function defaultLineMaker(): go.Link {
     new go.Binding('toShortLength', 'dir', function (dir) {
       return dir >= 1 ? 4 : 0
     }),
-    new go.Binding('points').makeTwoWay(), // TwoWay due to user reshaping with LinkReshapingTool
+    new go.Binding('points').makeTwoWay(),
     make(
       go.Shape,
       { strokeWidth: 2 },
