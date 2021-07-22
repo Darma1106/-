@@ -4,6 +4,11 @@ import type { Node, Link, Diagram, ObjectData } from 'gojs'
 
 export type ArrowType = keyof typeof ArrowTypeValue
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AfterLink = (subject: any, model: go.Model) => void
+
+export type AfterInit = (diagram: go.Diagram) => void
+
 export interface Template<T> {
   name: string
   template: T
@@ -11,6 +16,8 @@ export interface Template<T> {
 
 export interface BaseDiagramInstance {
   getDiagram: () => Diagram
+  getNodeArray: () => go.ObjectData[] | undefined
+  getLinkArray: () => go.ObjectData[] | undefined
   addNode: (node: ObjectData) => void
   getJson: () => string
   renderJson: (json: string) => void

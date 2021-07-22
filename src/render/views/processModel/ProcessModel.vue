@@ -1,5 +1,5 @@
 <template>
-  <div class="organization-model">
+  <div class="process-model">
     <BaseDiagram ref="baseDiagramRef" :editor-template="editorData" :after-link="afterLink" />
   </div>
 </template>
@@ -40,13 +40,14 @@ export default defineComponent({
     })
 
     const editorData: EditorData[] = [
-      { key: 1, geo: 'close', color: 'white', category: 'geoNode', showContext: false },
+      { key: 1, geo: 'close', color: 'white', category: 'geoNode', showContext: false, type: 'ExclusiveGateway' },
       {
         key: 2,
         figure: 'RoundedRectangle',
         fill: '#FFFEDF',
         text: '活动',
         category: 'defaultNode',
+        type: 'ServiceTask',
         showContext: false
       },
       {
@@ -55,6 +56,7 @@ export default defineComponent({
         figure: 'Circle',
         text: '',
         category: 'defaultNode',
+        type: 'EndEvent',
         showContext: false
       },
       {
@@ -62,6 +64,7 @@ export default defineComponent({
         figure: 'Circle',
         text: '',
         category: 'defaultNode',
+        type: 'StartEvent',
         showContext: false
       },
       {
@@ -86,7 +89,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.organization-model {
+.process-model {
   height: 100%;
 }
 </style>

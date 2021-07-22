@@ -14,11 +14,9 @@ import { commonNodeMap } from '@/component/baseDiagram/util/defaultNode'
 import { commonLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { v4 as uuidv4 } from 'uuid'
 import { supportLineMaker } from './util/diagram'
-import type { Template, EditorData, CommonNodeType, CommonLinkType } from './type'
+import type { Template, EditorData, CommonNodeType, CommonLinkType, AfterInit, AfterLink } from './type'
 
 const make = go.GraphObject.make
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AfterLink = (subject: any, model: go.Model) => void
 
 export default defineComponent({
   name: '',
@@ -45,6 +43,9 @@ export default defineComponent({
     },
     afterLink: {
       type: Function as PropType<AfterLink>
+    },
+    afterInit: {
+      type: Function as PropType<AfterInit>
     },
     // 布局模式
     treeLayout: {
@@ -193,20 +194,41 @@ export default defineComponent({
     onMounted(() => {
       nextTick(() => {
         diagram = init(unrefElement(mainRef))
+        if (props.afterInit) {
+          props.afterInit(diagram)
+        }
       })
     })
+
+    // 获取节点数组
+    const getNodeArray = () => {
+      if (diagram) {
+        return diagram.model.nodeDataArray
+      }
+    }
+
+    // 获取连线数组
+    const getLinkArray = () => {
+      if (diagram) {
+        return (diagram.model as go.GraphLinksModel).linkDataArray
+      }
+    }
+
+    // 获取画布json
     const getJson = () => {
       if (diagram) {
         console.log(diagram.model.toJson())
         return diagram.model.toJson()
       }
     }
+
+    // 渲染json至画布
     const renderJson = (json: string) => {
       if (diagram) {
         diagram.model = go.Model.fromJson(json)
       }
     }
-    return { mainRef, editRef, getDiagram, addNode, getJson, renderJson }
+    return { mainRef, editRef, getDiagram, addNode, getJson, renderJson, getNodeArray, getLinkArray }
   }
 })
 </script>
