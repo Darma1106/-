@@ -66,13 +66,13 @@ export default defineComponent({
         category: 'defaultNode',
         type: 'StartEvent',
         showContext: false
-      },
-      {
-        key: 7,
-        source: 'https://pica.zhimg.com/v2-6d510e2f1c06efa66322e3ecf1a1cc9b_1440w.jpg?source=172ae18b',
-        showContext: false,
-        category: 'pictureNode'
       }
+      // {
+      //   key: 7,
+      //   source: 'https://pica.zhimg.com/v2-6d510e2f1c06efa66322e3ecf1a1cc9b_1440w.jpg?source=172ae18b',
+      //   showContext: false,
+      //   category: 'pictureNode'
+      // }
     ]
 
     const afterLink = ({ data }: go.ObjectData) => {

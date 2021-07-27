@@ -1,27 +1,13 @@
 <template>
-  <div class="context-button">
-    <a-dropdown :trigger="['click']">
-      <div class="button-container" @click.prevent>
-        <div class="item-image">
-          <ApartmentOutlined />
-        </div>
-        <div class="item-title">
-          {{ itemInfo?.title }}
-        </div>
+  <div class="based-button" @click="handleClick">
+    <div class="button-container">
+      <div class="item-image">
+        <ApartmentOutlined />
       </div>
-      <template #overlay>
-        <a-menu>
-          <div v-for="context in itemInfo?.contextMenu" :key="context.name">
-            <a-sub-menu v-if="context.children" :key="context.name" :title="context.title" :disabled="context.disable">
-              <a-menu-item v-for="subItem in context.children" :key="subItem.name" :disabled="subItem.disable">{{
-                subItem.title
-              }}</a-menu-item>
-            </a-sub-menu>
-            <a-menu-item v-else :disabled="context.disable">{{ context.title }}</a-menu-item>
-          </div>
-        </a-menu>
-      </template>
-    </a-dropdown>
+      <div class="item-title">
+        {{ itemInfo?.title }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -31,7 +17,7 @@ import { ApartmentOutlined } from '@ant-design/icons-vue'
 import type { toolConfig } from './type'
 
 export default defineComponent({
-  name: 'ContextButton',
+  name: 'BasedButton',
   components: {
     ApartmentOutlined
   },
@@ -39,12 +25,20 @@ export default defineComponent({
     itemInfo: {
       type: Object as PropType<toolConfig>
     }
+  },
+  setup(props) {
+    const handleClick = () => {
+      if (props.itemInfo?.onclick) props.itemInfo.onclick()
+    }
+    return {
+      handleClick
+    }
   }
 })
 </script>
 
 <style lang="less" scoped>
-.context-button {
+.based-button {
   cursor: pointer;
   height: 100%;
   // width: 70px;

@@ -14,8 +14,8 @@ export function defaultNodeMaker(nodeOption?: NodeOption): go.Node {
       toLinkable: true,
       fromLinkableDuplicates: true,
       toLinkableDuplicates: true,
-      fromSpot: go.Spot.BottomSide,
-      toSpot: go.Spot.TopRightSides,
+      fromSpot: go.Spot.AllSides,
+      toSpot: go.Spot.AllSides,
       figure: nodeOption?.figure ?? 'Circle',
       strokeWidth: 1
     },

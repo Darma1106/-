@@ -4,6 +4,7 @@ export interface contextMenu {
   disable: boolean
   children?: contextMenu[]
 }
+
 export interface toolConfig {
   name: string
   title: string
@@ -12,4 +13,5 @@ export interface toolConfig {
   disable: boolean
   type: string
   contextMenu?: contextMenu[]
+  onclick?: () => void
 }

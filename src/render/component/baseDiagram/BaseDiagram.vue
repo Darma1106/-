@@ -2,7 +2,7 @@
   <div class="base-diagram">
     <div ref="editRef" class="editor"></div>
     <div ref="mainRef" class="main"></div>
-    <button @click="getJson">show Json</button>
+    <!-- <button @click="getJson">show Json</button> -->
   </div>
 </template>
 
@@ -127,10 +127,7 @@ export default defineComponent({
       }
 
       if (props.treeLayout) {
-        myDiagram.layout = make(go.TreeLayout, {
-          angle: 90,
-          layerStyle: go.TreeLayout.LayerUniform
-        })
+        myDiagram.layout = make(go.TreeLayout, { angle: 90, arrangement: go.TreeLayout.ArrangementFixedRoots })
       }
 
       myDiagram.model = make(go.GraphLinksModel, {
@@ -150,18 +147,17 @@ export default defineComponent({
     }
 
     // 连线事件
-    // { diagram: { model }, subject: { data } }: go.DiagramEvent
     function LinkDrawn({ diagram: { model }, subject }: go.DiagramEvent) {
-      console.log(diagram, subject)
-
+      // link的model是GraphLinksModel类型
+      const linkModel = model as go.GraphLinksModel
       if (props.defaultLinkType) {
-        ;(model as go.GraphLinksModel).removeLinkData(subject.data)
+        linkModel.removeLinkData(subject.data)
         subject.data.category = props.defaultLinkType
         subject.data.id = uuidv4()
         if (props.afterLink) {
           props?.afterLink(subject, model)
         }
-        ;(model as go.GraphLinksModel).addLinkData(subject.data)
+        linkModel.addLinkData(subject.data)
       }
     }
 

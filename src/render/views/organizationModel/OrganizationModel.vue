@@ -1,11 +1,11 @@
 <template>
   <div class="organization-model">
-    <BaseDiagram ref="baseDiagramRef" :editor-template="editorData" :after-link="afterLink" />
+    <BaseDiagram ref="baseDiagramRef" :editor-template="editorData" :after-link="afterLink" :tree-layout="true" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted, nextTick } from 'vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 
 import { useEvent } from '@/composition'
@@ -26,12 +26,24 @@ export default defineComponent({
     const { onSave } = useEvent()
     if (props.tabId) {
       onSave(() => {
-        console.log(`${props.tabId}组织模型`)
+        if (props.tabId && baseDiagramRef.value) {
+          localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
+        }
       }, props.tabId)
     }
 
+    onMounted(() => {
+      nextTick(() => {
+        const diagramJson = localStorage.getItem(props.tabId ?? '')
+        if (diagramJson && baseDiagramRef.value) {
+          baseDiagramRef.value.renderJson(diagramJson)
+        }
+      })
+    })
+
     const afterLink = ({ toNode, fromNode }: go.ObjectData, model: go.Model) => {
       model.setDataProperty(toNode.data, 'pid', fromNode.data.key)
+      console.log('pid', fromNode.data.key)
     }
 
     const editorData: EditorData[] = [

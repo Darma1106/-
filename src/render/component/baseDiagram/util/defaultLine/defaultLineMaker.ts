@@ -56,7 +56,8 @@ export function defaultLineMaker(): go.Link {
     new go.Binding('toShortLength', 'dir', function (dir) {
       return dir >= 1 ? 4 : 0
     }),
-    new go.Binding('points').makeTwoWay(),
+    // 线走向
+    // new go.Binding('points').makeTwoWay(),
     make(
       go.Shape,
       { strokeWidth: 2 },
