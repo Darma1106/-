@@ -1,70 +1,138 @@
 <template>
   <div class="detail-bar">
-    <a-form :layout="formState.layout" :model="formState" v-bind="formItemLayout">
-      <a-form-item label="Form Layout">
-        <a-radio-group v-model:value="formState.layout">
-          <a-radio-button value="horizontal">Horizontal</a-radio-button>
-          <a-radio-button value="vertical">Vertical</a-radio-button>
-          <a-radio-button value="inline">Inline</a-radio-button>
+    <a-form layout="inline" :model="formState">
+      <a-form-item label="字体">
+        <a-select v-model:value="formState.fontFamily" placeholder="please select your zone">
+          <a-select-option value="song">宋体</a-select-option>
+          <a-select-option value="hei">黑体</a-select-option>
+        </a-select>
+      </a-form-item>
+
+      <a-form-item label="字号">
+        <a-select v-model:value="formState.fontSize" placeholder="please select your zone">
+          <a-select-option value="20">20</a-select-option>
+          <a-select-option value="22">22</a-select-option>
+        </a-select>
+      </a-form-item>
+
+      <a-form-item>
+        <a-divider type="vertical" style="height: 20px; padding-top: 10px; background-color: #000" />
+      </a-form-item>
+
+      <a-form-item title="斜体">
+        <SwitchButton v-model:checked="formState.xieti"><ItalicOutlined /> </SwitchButton>
+      </a-form-item>
+      <a-form-item title="粗体">
+        <SwitchButton v-model:checked="formState.jiacu"><BoldOutlined /> </SwitchButton>
+      </a-form-item>
+
+      <a-form-item>
+        <a-radio-group v-model:value="formState.ailgn">
+          <a-radio-button value="left" title="左侧对齐"><AlignLeftOutlined /></a-radio-button>
+          <a-radio-button value="center" title="居中对齐"><AlignCenterOutlined /></a-radio-button>
+          <a-radio-button value="right" title="右侧对齐"><AlignRightOutlined /></a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="Field A">
-        <a-input v-model:value="formState.fieldA" placeholder="input placeholder" />
+
+      <a-form-item>
+        <a-divider type="vertical" style="height: 20px; padding-top: 10px; background-color: #000" />
       </a-form-item>
-      <a-form-item label="Field B">
-        <a-input v-model:value="formState.fieldB" placeholder="input placeholder" />
+
+      <a-form-item label="边框">
+        <a-input v-model:value="formState.fieldB" :maxlength="1" />
       </a-form-item>
-      <a-form-item :wrapper-col="buttonItemLayout.wrapperCol">
-        <a-button type="primary">Submit</a-button>
+
+      <a-form-item> <input v-model="color" type="color" class="color-picker" /> </a-form-item>
+
+      <a-form-item>
+        <a-divider type="vertical" style="height: 20px; padding-top: 10px; background-color: #000" />
+      </a-form-item>
+
+      <a-form-item label="h">
+        <a-input v-model:value="formState.fieldB" />
+      </a-form-item>
+
+      <a-form-item label="w">
+        <a-input v-model:value="formState.fieldB" />
       </a-form-item>
     </a-form>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, UnwrapRef } from 'vue'
-import { Form } from 'ant-design-vue'
+import { defineComponent, ref } from 'vue'
+import {
+  BoldOutlined,
+  ItalicOutlined,
+  AlignLeftOutlined,
+  AlignCenterOutlined,
+  AlignRightOutlined
+} from '@ant-design/icons-vue'
+import SwitchButton from '@/component/panelItem/switchButton.vue'
 
 interface FormState {
   layout: 'horizontal' | 'vertical' | 'inline'
+  ailgn: 'left' | 'right' | 'center'
+  fontFamily: string
+  fontSize: string
   fieldA: string
   fieldB: string
+  xieti: boolean
+  jiacu: boolean
 }
 export default defineComponent({
   components: {
-    AForm: Form,
-    AFormItem: Form.Item
+    SwitchButton,
+    BoldOutlined,
+    ItalicOutlined,
+    AlignLeftOutlined,
+    AlignCenterOutlined,
+    AlignRightOutlined
   },
   setup() {
-    const formState: UnwrapRef<FormState> = reactive({
+    const formState = ref<FormState>({
+      fontFamily: 'song',
+      fontSize: '22',
       layout: 'inline',
+      ailgn: 'center',
       fieldA: '',
-      fieldB: ''
+      fieldB: '3',
+      xieti: false,
+      jiacu: false
     })
-    const formItemLayout = computed(() => {
-      const { layout } = formState
-      return layout === 'horizontal'
-        ? {
-            labelCol: { span: 4 },
-            wrapperCol: { span: 14 }
-          }
-        : {}
-    })
-    const buttonItemLayout = computed(() => {
-      const { layout } = formState
-      return layout === 'horizontal'
-        ? {
-            wrapperCol: { span: 14, offset: 4 }
-          }
-        : {}
-    })
+    const color = ref('')
     return {
       formState,
-      formItemLayout,
-      buttonItemLayout
+      color
     }
   }
 })
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.detail-bar {
+  display: flex;
+  flex-direction: row;
+  ::v-deep(.ant-input) {
+    width: 30px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-bottom: 1px solid #000;
+  }
+
+  ::v-deep(.ant-select-selector, .ant-select-selection) {
+    border: none;
+    box-shadow: none;
+  }
+
+  ::v-deep(.ant-radio-button-wrapper, .ant-radio-button-wrapper-checked) {
+    background-color: transparent;
+  }
+
+  .color-picker {
+    width: 20px;
+  }
+}
+</style>

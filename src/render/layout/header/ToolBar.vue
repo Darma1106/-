@@ -7,7 +7,7 @@
         <a-divider
           v-if="item.type === 'divider'"
           type="vertical"
-          style="height: 40px; padding-top: 10px; background-color: #7cb305"
+          style="height: 40px; padding-top: 10px; background-color: #000"
         />
         <!-- <ADivider type="vertical" /> -->
       </div>
@@ -253,12 +253,13 @@ export default defineComponent({
 <style lang="less" scoped>
 .tool-bar {
   height: 95px;
-  background: #fbe7e6;
+  background: @base-background-color;
   .top-bar {
     display: flex;
     height: 60px;
     flex-direction: row;
     border-bottom: 1px solid #000;
+    padding-top: 2px;
     .item {
       // border: 2px solid red;
       margin-left: 5px;

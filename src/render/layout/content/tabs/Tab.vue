@@ -56,6 +56,12 @@ export default defineComponent({
   }
   ::v-deep(.ant-tabs-bar) {
     margin: 0;
+    // border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+
+    .ant-tabs-tab {
+      background-color: #ddd;
+    }
   }
 
   ::v-deep(.ant-tabs-top-content, .ant-tabs-bottom-content) {
@@ -65,6 +71,10 @@ export default defineComponent({
 
   ::v-deep(.ant-tabs-nav .ant-tabs-tab-active) {
     font-weight: normal;
+    background-color: #fff;
+    border: none;
+    // border-left: 1px solid black;
+    border-right: 1px solid black;
   }
 }
 </style>

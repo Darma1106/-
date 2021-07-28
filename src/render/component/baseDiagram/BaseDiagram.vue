@@ -224,7 +224,16 @@ export default defineComponent({
         diagram.model = go.Model.fromJson(json)
       }
     }
-    return { mainRef, editRef, getDiagram, addNode, getJson, renderJson, getNodeArray, getLinkArray }
+
+    // 修改选中属性
+    const updateProperty = (propName: string, val: any) => {
+      const selection = getDiagram()?.selection.first()
+      if (selection) {
+        getDiagram()?.model.setDataProperty(selection.data, propName, val)
+      }
+    }
+
+    return { mainRef, editRef, getDiagram, addNode, getJson, renderJson, getNodeArray, getLinkArray, updateProperty }
   }
 })
 </script>
@@ -240,10 +249,11 @@ export default defineComponent({
   }
   .editor {
     width: 150px;
-    height: 100%;
+    height: 80%;
+    margin-top: 50px;
     margin-right: 2px;
-    background-color: whitesmoke;
-    border: solid 1px black;
+    background-color: @base-background-color;
+    border: solid 1px @layout-border-color;
   }
 }
 </style>

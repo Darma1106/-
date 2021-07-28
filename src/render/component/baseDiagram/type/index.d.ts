@@ -15,14 +15,16 @@ export interface Template<T> {
 }
 
 export interface BaseDiagramInstance {
+  NodeMap: Template<Node>[]
+  LinkMap: Template<Link>[]
   getDiagram: () => Diagram
   getNodeArray: () => go.ObjectData[] | undefined
   getLinkArray: () => go.ObjectData[] | undefined
   addNode: (node: ObjectData) => void
   getJson: () => string
   renderJson: (json: string) => void
-  NodeMap: Template<Node>[]
-  LinkMap: Template<Link>[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateProperty: (propName: string, val: any) => void
 }
 
 export interface DiagramData {
