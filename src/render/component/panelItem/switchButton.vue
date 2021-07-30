@@ -28,9 +28,10 @@ export default defineComponent({
 <style lang="less" scoped>
 .switch-button {
   cursor: pointer;
+  padding: 0 4px;
 }
 .checked {
-  background-color: aqua;
+  background-color: #ddd;
 }
 .uncheck {
   background-color: transparent;

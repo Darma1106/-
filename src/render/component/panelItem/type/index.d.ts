@@ -1,3 +1,4 @@
+import type { iconFont } from '@/component/baseIcon/BaseIcon.vue'
 export interface contextMenu {
   name: string
   title: string
@@ -5,10 +6,36 @@ export interface contextMenu {
   children?: contextMenu[]
 }
 
+export interface BaseConfig {
+  name: string
+  title: string
+  type: string
+  disable: boolean
+}
+
+export interface BaseButtonConfig extends BaseConfig {
+  onclick?: () => void
+  icon: iconFont
+  iconColor?: string
+}
+
+export interface ContextButtonConfig extends BaseConfig {
+  onclick?: () => void
+  icon: iconFont
+  iconColor?: string
+  contextMenu?: contextMenu[]
+}
+
+export interface SwitchButtonConfig extends BaseConfig {
+  onclick?: () => void
+  icon: iconFont
+  iconColor?: string
+}
+
 export interface toolConfig {
   name: string
   title: string
-  icon?: string
+  icon?: iconFont
   iconColor?: string
   disable: boolean
   type: string

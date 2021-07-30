@@ -1,6 +1,14 @@
 <template>
   <div class="base-diagram">
-    <div ref="editRef" class="editor"></div>
+    <ActiveBox class="editor" drag-handle=".editor-head" :resizable="false">
+      <!-- <div class="editor"> -->
+      <div class="editor-head">title</div>
+      <div class="editor-body">
+        <div ref="editRef" class="editor-diagram" />
+      </div>
+      <!-- </div> -->
+    </ActiveBox>
+
     <div ref="mainRef" class="main"></div>
     <!-- <button @click="getJson">show Json</button> -->
   </div>
@@ -13,6 +21,7 @@ import * as go from 'gojs'
 import { commonNodeMap } from '@/component/baseDiagram/util/defaultNode'
 import { commonLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { v4 as uuidv4 } from 'uuid'
+import { ActiveBox } from '@/common/active-box'
 import { supportLineMaker } from './util/diagram'
 import type { Template, EditorData, CommonNodeType, CommonLinkType, AfterInit, AfterLink } from './type'
 
@@ -20,7 +29,7 @@ const make = go.GraphObject.make
 
 export default defineComponent({
   name: '',
-  components: {},
+  components: { ActiveBox },
   props: {
     editor: {
       type: Boolean,
@@ -69,6 +78,12 @@ export default defineComponent({
         // 获取辅助线
         Object.assign({
           'animationManager.isEnabled': false,
+          grid: make(
+            go.Panel,
+            'Grid',
+            make(go.Shape, 'LineH', { stroke: 'lightgray', strokeWidth: 0.5 }),
+            make(go.Shape, 'LineV', { stroke: 'lightgray', strokeWidth: 0.5 })
+          ),
           LinkDrawn,
           externalobjectsdropped
         }),
@@ -233,7 +248,26 @@ export default defineComponent({
       }
     }
 
-    return { mainRef, editRef, getDiagram, addNode, getJson, renderJson, getNodeArray, getLinkArray, updateProperty }
+    const setLinkedState = (state: boolean) => {
+      const diagram = getDiagram()
+      if (diagram) {
+        diagram.allowLink = state
+        diagram.allowRelink = state
+      }
+    }
+
+    return {
+      mainRef,
+      editRef,
+      getDiagram,
+      addNode,
+      getJson,
+      renderJson,
+      getNodeArray,
+      getLinkArray,
+      updateProperty,
+      setLinkedState
+    }
   }
 })
 </script>
@@ -248,12 +282,29 @@ export default defineComponent({
     flex: 1;
   }
   .editor {
-    width: 150px;
-    height: 80%;
-    margin-top: 50px;
-    margin-right: 2px;
-    background-color: @base-background-color;
-    border: solid 1px @layout-border-color;
+    // border: 2px solid red;
+    z-index: 99999999;
+    height: 500px;
+    width: 100px;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+
+    .editor-head {
+      text-align: center;
+      background-color: #ddd;
+    }
+    .editor-body {
+      width: 100%;
+      height: calc(100% - 20px);
+      background-color: @base-background-color;
+      border: solid 1px @layout-border-color;
+      overflow-y: scroll;
+
+      .editor-diagram {
+        height: 550px;
+      }
+    }
   }
 }
 </style>

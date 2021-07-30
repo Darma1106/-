@@ -2,7 +2,7 @@
   <div class="based-button" @click="handleClick">
     <div class="button-container">
       <div class="item-image">
-        <ApartmentOutlined />
+        <BaseIcon :icon-type="itemInfo.icon" />
       </div>
       <div class="item-title">
         {{ itemInfo?.title }}
@@ -13,17 +13,18 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { ApartmentOutlined } from '@ant-design/icons-vue'
+import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 import type { toolConfig } from './type'
 
 export default defineComponent({
   name: 'BasedButton',
   components: {
-    ApartmentOutlined
+    BaseIcon
   },
   props: {
     itemInfo: {
-      type: Object as PropType<toolConfig>
+      type: Object as PropType<toolConfig>,
+      required: true
     }
   },
   setup(props) {

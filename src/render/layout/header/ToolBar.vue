@@ -25,6 +25,7 @@ import ContextButton from '@/component/panelItem/contextButton.vue'
 import BasedButton from '@/component/panelItem/basedButton.vue'
 import { useEvent, useTabs } from '@/composition'
 import { Divider } from 'ant-design-vue'
+import { iconFont } from '@/component/baseIcon/BaseIcon.vue'
 import DetailBar from './DetailBar.vue'
 
 import type { Ref } from 'vue'
@@ -49,7 +50,8 @@ export default defineComponent({
         type: 'basedButton',
         onclick: () => {
           console.log('123123123')
-        }
+        },
+        icon: iconFont.新模型
       },
       {
         name: 'dakai',
@@ -58,14 +60,16 @@ export default defineComponent({
         type: 'basedButton',
         onclick: () => {
           console.log('123123123')
-        }
+        },
+        icon: iconFont.打开
       },
       {
         name: 'baocun',
         title: '保存',
         disable: false,
         type: 'basedButton',
-        onclick: save
+        onclick: save,
+        icon: iconFont.保存
       },
       {
         name: 'jianqie',
@@ -74,7 +78,8 @@ export default defineComponent({
         type: 'basedButton',
         onclick: () => {
           console.log('123123123')
-        }
+        },
+        icon: iconFont.剪切
       },
       {
         name: 'zhantie',
@@ -83,7 +88,8 @@ export default defineComponent({
         type: 'basedButton',
         onclick: () => {
           console.log('123123123')
-        }
+        },
+        icon: iconFont.粘贴
       },
       {
         name: 'shanchu',
@@ -92,7 +98,8 @@ export default defineComponent({
         type: 'basedButton',
         onclick: () => {
           console.log('123123123')
-        }
+        },
+        icon: iconFont.关闭
       },
       {
         name: 'chexiao',
@@ -101,7 +108,8 @@ export default defineComponent({
         type: 'basedButton',
         onclick: () => {
           console.log('123123123')
-        }
+        },
+        icon: iconFont.撤销
       },
       {
         name: 'divider',
@@ -128,7 +136,8 @@ export default defineComponent({
             ]
           },
           { title: '子菜单2', name: 'zicaidan2', disable: true }
-        ]
+        ],
+        icon: iconFont.层级
       },
 
       {
@@ -150,7 +159,8 @@ export default defineComponent({
             ]
           },
           { title: '子菜单2', name: 'zicaidan2', disable: true }
-        ]
+        ],
+        icon: iconFont.居左对齐
       },
 
       {
@@ -172,7 +182,8 @@ export default defineComponent({
             ]
           },
           { title: '子菜单2', name: 'zicaidan2', disable: true }
-        ]
+        ],
+        icon: iconFont.布局
       },
       {
         name: '123',
@@ -193,7 +204,8 @@ export default defineComponent({
             ]
           },
           { title: '子菜单2', name: 'zicaidan2', disable: true }
-        ]
+        ],
+        icon: iconFont.保存
       },
       {
         name: 'divider',
@@ -208,7 +220,8 @@ export default defineComponent({
         type: 'basedButton',
         onclick: () => {
           console.log('123123123')
-        }
+        },
+        icon: iconFont.填充
       },
       {
         name: 'yinying',
@@ -217,7 +230,8 @@ export default defineComponent({
         type: 'basedButton',
         onclick: () => {
           console.log('123123123')
-        }
+        },
+        icon: iconFont.阴影分析
       },
       {
         name: 'divider',
@@ -232,7 +246,8 @@ export default defineComponent({
         type: 'basedButton',
         onclick: () => {
           console.log('123123123')
-        }
+        },
+        icon: iconFont.校验
       },
       {
         name: 'zhixing',
@@ -241,7 +256,8 @@ export default defineComponent({
         type: 'basedButton',
         onclick: () => {
           console.log('123123123')
-        }
+        },
+        icon: iconFont.运行
       }
     ])
 

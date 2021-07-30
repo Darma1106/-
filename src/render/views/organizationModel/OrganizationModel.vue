@@ -22,12 +22,15 @@ export default defineComponent({
   },
   setup(props) {
     const baseDiagramRef = ref<BaseDiagramInstance | null>(null)
+    let flag = true
 
     const { onSave } = useEvent()
     if (props.tabId) {
       onSave(() => {
         if (props.tabId && baseDiagramRef.value) {
-          localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
+          // localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
+          baseDiagramRef.value.setLinkedState(flag)
+          flag = !flag
         }
       }, props.tabId)
     }

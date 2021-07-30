@@ -25,6 +25,7 @@ export interface BaseDiagramInstance {
   renderJson: (json: string) => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateProperty: (propName: string, val: any) => void
+  setLinkedState: (state: boolean) => void
 }
 
 export interface DiagramData {

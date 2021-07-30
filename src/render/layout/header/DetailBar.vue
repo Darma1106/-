@@ -19,11 +19,14 @@
         <a-divider type="vertical" style="height: 20px; padding-top: 10px; background-color: #000" />
       </a-form-item>
 
+      <a-form-item title="字体">
+        <SwitchButton v-model:checked="formState.xieti"><BaseIcon :type="iconFont.字体" /> </SwitchButton>
+      </a-form-item>
       <a-form-item title="斜体">
-        <SwitchButton v-model:checked="formState.xieti"><ItalicOutlined /> </SwitchButton>
+        <SwitchButton v-model:checked="formState.xieti"><BaseIcon :type="iconFont.倾斜" /> </SwitchButton>
       </a-form-item>
       <a-form-item title="粗体">
-        <SwitchButton v-model:checked="formState.jiacu"><BoldOutlined /> </SwitchButton>
+        <SwitchButton v-model:checked="formState.jiacu"><BaseIcon :type="iconFont.加粗" /> </SwitchButton>
       </a-form-item>
 
       <a-form-item>
@@ -61,13 +64,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import {
-  BoldOutlined,
-  ItalicOutlined,
-  AlignLeftOutlined,
-  AlignCenterOutlined,
-  AlignRightOutlined
-} from '@ant-design/icons-vue'
+import { AlignLeftOutlined, AlignCenterOutlined, AlignRightOutlined } from '@ant-design/icons-vue'
+import BaseIcon, { iconFont } from '@/component/baseIcon/BaseIcon.vue'
 import SwitchButton from '@/component/panelItem/switchButton.vue'
 
 interface FormState {
@@ -83,11 +81,10 @@ interface FormState {
 export default defineComponent({
   components: {
     SwitchButton,
-    BoldOutlined,
-    ItalicOutlined,
     AlignLeftOutlined,
     AlignCenterOutlined,
-    AlignRightOutlined
+    AlignRightOutlined,
+    BaseIcon
   },
   setup() {
     const formState = ref<FormState>({
@@ -103,7 +100,8 @@ export default defineComponent({
     const color = ref('')
     return {
       formState,
-      color
+      color,
+      iconFont
     }
   }
 })

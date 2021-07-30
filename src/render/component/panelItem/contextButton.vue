@@ -3,7 +3,7 @@
     <a-dropdown :trigger="['click']">
       <div class="button-container" @click.prevent>
         <div class="item-image">
-          <ApartmentOutlined />
+          <BaseIcon :icon-type="itemInfo.icon" />
         </div>
         <div class="item-title">
           {{ itemInfo?.title }}
@@ -27,17 +27,16 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { ApartmentOutlined } from '@ant-design/icons-vue'
+import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 import type { toolConfig } from './type'
 
 export default defineComponent({
   name: 'ContextButton',
-  components: {
-    ApartmentOutlined
-  },
+  components: { BaseIcon },
   props: {
     itemInfo: {
-      type: Object as PropType<toolConfig>
+      type: Object as PropType<toolConfig>,
+      required: true
     }
   }
 })

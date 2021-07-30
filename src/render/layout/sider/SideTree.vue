@@ -33,8 +33,11 @@
     <template #switcherIcon>
       <down-outlined />
     </template>
-    <template #smile>
-      <smile-outlined />
+    <template #model>
+      <BaseIcon :type="iconFont.模型" />
+    </template>
+    <template #category>
+      <BaseIcon :type="iconFont.文件夹" />
     </template>
     <template #meh>
       <smile-outlined />
@@ -49,6 +52,7 @@
 <script lang="ts">
 import { Tree } from 'ant-design-vue'
 import { DownOutlined, SmileOutlined, FrownOutlined, FrownFilled } from '@ant-design/icons-vue'
+import BaseIcon, { iconFont } from '@/component/baseIcon/BaseIcon.vue'
 
 import { defineComponent, onMounted, ref } from 'vue'
 import FrameworkService from '@/services/module/fremeworkService'
@@ -64,7 +68,8 @@ export default defineComponent({
     SmileOutlined,
     FrownOutlined,
     FrownFilled,
-    ATree: Tree
+    ATree: Tree,
+    BaseIcon
   },
   setup() {
     const treeData: Ref<TreeData[]> = ref([])
@@ -108,7 +113,8 @@ export default defineComponent({
       onContextMenuClick,
       nodeDblclick,
       onSelect,
-      treeData
+      treeData,
+      iconFont
     }
   }
 })

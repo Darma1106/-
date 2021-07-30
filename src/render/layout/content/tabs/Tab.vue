@@ -50,14 +50,14 @@ export default defineComponent({
 <style lang="less" scoped>
 .tabs {
   height: 100%;
+  padding-top: 6px;
 
   .tab-panel {
     height: 100%;
   }
   ::v-deep(.ant-tabs-bar) {
     margin: 0;
-    // border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
+    padding-left: 10px;
 
     .ant-tabs-tab {
       background-color: #ddd;
@@ -72,8 +72,8 @@ export default defineComponent({
   ::v-deep(.ant-tabs-nav .ant-tabs-tab-active) {
     font-weight: normal;
     background-color: #fff;
-    border: none;
-    // border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
     border-right: 1px solid black;
   }
 }
