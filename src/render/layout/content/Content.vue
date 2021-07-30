@@ -1,12 +1,12 @@
 <template>
   <splitpanes class="default-theme" style="height: 100%">
-    <pane min-size="10" max-size="20">
+    <pane min-size="8" max-size="20" size="12">
       <SideTree />
     </pane>
     <pane>
       <Tabs />
     </pane>
-    <pane min-size="10" max-size="20">
+    <pane min-size="8" max-size="20" size="15">
       <Information />
     </pane>
   </splitpanes>
