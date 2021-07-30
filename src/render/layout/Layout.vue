@@ -5,8 +5,7 @@
     </a-layout-header>
 
     <a-layout>
-      <a-layout-sider> <layout-sider /></a-layout-sider>
-      <a-layout-content><layout-content /></a-layout-content>
+      <LayoutContent />
     </a-layout>
     <a-layout-footer> <layout-footer /></a-layout-footer>
   </a-layout>
@@ -16,12 +15,13 @@
 import { defineComponent } from 'vue'
 
 import LayoutHeader from './header/Header.vue'
-import LayoutSider from './sider/Side.vue'
 import LayoutContent from './content/Content.vue'
 import LayoutFooter from './footer/Footer.vue'
 
+import 'splitpanes/dist/splitpanes.css'
+
 export default defineComponent({
-  components: { LayoutHeader, LayoutSider, LayoutContent, LayoutFooter }
+  components: { LayoutHeader, LayoutContent, LayoutFooter }
 })
 </script>
 

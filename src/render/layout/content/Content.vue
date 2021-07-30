@@ -1,18 +1,26 @@
 <template>
-  <div class="layout-content">
-    <tabs class="center" />
-    <div class="right">
+  <splitpanes class="default-theme" style="height: 100%">
+    <pane min-size="10" max-size="20">
+      <SideTree />
+    </pane>
+    <pane>
+      <Tabs />
+    </pane>
+    <pane min-size="10" max-size="20">
       <Information />
-    </div>
-  </div>
+    </pane>
+  </splitpanes>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import Splitpanes from 'splitpanes/src/components/splitpanes/splitpanes.vue'
+import Pane from 'splitpanes/src/components/splitpanes/pane.vue'
 import Tabs from './tabs/Tab.vue'
 import Information from './information/Infomation.vue'
+import SideTree from './sideTree/SideTree.vue'
 export default defineComponent({
-  components: { Tabs, Information }
+  components: { Tabs, Information, SideTree, Splitpanes, Pane }
 })
 </script>
 
