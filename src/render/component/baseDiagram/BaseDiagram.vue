@@ -1,14 +1,6 @@
 <template>
   <div class="base-diagram">
-    <ActiveBox class="editor" drag-handle=".editor-head" :resizable="false">
-      <!-- <div class="editor"> -->
-      <div class="editor-head">title</div>
-      <div class="editor-body">
-        <div ref="editRef" class="editor-diagram" />
-      </div>
-      <!-- </div> -->
-    </ActiveBox>
-
+    <Editor :editor-data="editorTemplate" @active-item-change="editorItemChange" />
     <div ref="mainRef" class="main"></div>
     <!-- <button @click="getJson">show Json</button> -->
   </div>
@@ -21,19 +13,22 @@ import * as go from 'gojs'
 import { commonNodeMap } from '@/component/baseDiagram/util/defaultNode'
 import { commonLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { v4 as uuidv4 } from 'uuid'
-import { ActiveBox } from '@/common/active-box'
+import Editor from './editor.vue'
 import { supportLineMaker } from './util/diagram'
-import type { Template, EditorData, CommonNodeType, CommonLinkType, AfterInit, AfterLink } from './type'
+import type { Template, CommonNodeType, CommonLinkType, AfterInit, AfterLink, EditorType, EditorTemplate } from './type'
 
 const make = go.GraphObject.make
 
 export default defineComponent({
   name: '',
-  components: { ActiveBox },
+  components: { Editor },
   props: {
     editor: {
       type: Boolean,
       default: true
+    },
+    editorTemplate: {
+      type: Array as PropType<EditorTemplate[]>
     },
     nodeMap: {
       type: Array as PropType<Template<go.Node>[]>
@@ -43,9 +38,6 @@ export default defineComponent({
     },
     editorMap: {
       type: Array as PropType<Template<go.Node>[]>
-    },
-    editorTemplate: {
-      type: Array as PropType<EditorData[]>
     },
     diagramEvents: {
       type: Object as PropType<go.DiagramEventsInterface>
@@ -68,8 +60,10 @@ export default defineComponent({
   },
   setup(props) {
     const mainRef: Ref<HTMLDivElement | null> = ref(null)
-    const editRef: Ref<HTMLDivElement | null> = ref(null)
+    // const editRef: Ref<HTMLDivElement | null> = ref(null)
     let diagram: go.Diagram | null = null
+
+    let activeEditorType: EditorType | null = null
 
     function init(templeteRef: HTMLDivElement): go.Diagram {
       const myDiagram = make(
@@ -78,14 +72,15 @@ export default defineComponent({
         // 获取辅助线
         Object.assign({
           'animationManager.isEnabled': false,
+          click: diagramClick,
           grid: make(
             go.Panel,
             'Grid',
             make(go.Shape, 'LineH', { stroke: 'lightgray', strokeWidth: 0.5 }),
             make(go.Shape, 'LineV', { stroke: 'lightgray', strokeWidth: 0.5 })
           ),
-          LinkDrawn,
-          externalobjectsdropped
+          LinkDrawn
+          // externalobjectsdropped
         }),
         supportLineMaker()
       )
@@ -116,31 +111,6 @@ export default defineComponent({
         myDiagram.linkTemplateMap.add(name, template)
       })
 
-      // 渲染操作面板
-      if (props.editor) {
-        const editorDiagram = make(go.Palette, unrefElement(editRef), {
-          maxSelectionCount: 1,
-          'animationManager.isEnabled': false,
-          model: new go.GraphLinksModel(getTemplateModel())
-        })
-
-        // 操作面板模板类型
-        if (props.editorMap) {
-          props.editorMap.forEach(({ name, template }) => {
-            editorDiagram.nodeTemplateMap.add(name, template)
-          })
-        } else {
-          editorDiagram.nodeTemplateMap = myDiagram.nodeTemplateMap
-        }
-
-        // 操作面板模板数据
-        if (props.editorTemplate) {
-          editorDiagram.model = new go.GraphLinksModel(props.editorTemplate)
-        } else {
-          editorDiagram.model = new go.GraphLinksModel(getTemplateModel())
-        }
-      }
-
       if (props.treeLayout) {
         myDiagram.layout = make(go.TreeLayout, { angle: 90, arrangement: go.TreeLayout.ArrangementFixedRoots })
       }
@@ -153,12 +123,6 @@ export default defineComponent({
       })
 
       return myDiagram
-    }
-
-    // 从面板拖拽后给予右键菜单
-    function externalobjectsdropped({ diagram }: go.DiagramEvent) {
-      diagram.model.setDataProperty(diagram.selection.first()?.data, 'showContext', true)
-      diagram.model.setDataProperty(diagram.selection.first()?.data, 'key', uuidv4())
     }
 
     // 连线事件
@@ -174,22 +138,6 @@ export default defineComponent({
         }
         linkModel.addLinkData(subject.data)
       }
-    }
-
-    // 获取节点模板,加入nodeMap
-    function getTemplateModel() {
-      const model: EditorData[] = []
-      if (props.editorMap) {
-        props.editorMap.forEach(({ name }) => {
-          model.push({ text: 'text', category: name, showContext: false })
-        })
-      } else {
-        props.nodeMap?.forEach(({ name }) => {
-          model.push({ text: 'text', category: name, showContext: false })
-        })
-      }
-
-      return model
     }
 
     function getDiagram(): go.Diagram | null {
@@ -208,8 +156,20 @@ export default defineComponent({
         if (props.afterInit) {
           props.afterInit(diagram)
         }
+        console.log(123)
+        console.log(props.editorTemplate)
       })
     })
+
+    const diagramClick = (e: go.InputEvent) => {
+      const { documentPoint } = e
+      if (activeEditorType && activeEditorType.type != 'line') {
+        const node = JSON.parse(JSON.stringify(activeEditorType.data))
+        node.key = uuidv4()
+        node.loc = `${documentPoint.x} ${documentPoint.y}`
+        addNode(node)
+      }
+    }
 
     // 获取节点数组
     const getNodeArray = () => {
@@ -241,6 +201,7 @@ export default defineComponent({
     }
 
     // 修改选中属性
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateProperty = (propName: string, val: any) => {
       const selection = getDiagram()?.selection.first()
       if (selection) {
@@ -256,9 +217,16 @@ export default defineComponent({
       }
     }
 
+    // 编辑栏选中变化
+    const editorItemChange = (item: EditorType) => {
+      console.log('editorItemChange', item)
+      setLinkedState(item && item.type == 'line')
+      activeEditorType = item
+    }
+
     return {
       mainRef,
-      editRef,
+      // editRef,
       getDiagram,
       addNode,
       getJson,
@@ -266,7 +234,8 @@ export default defineComponent({
       getNodeArray,
       getLinkArray,
       updateProperty,
-      setLinkedState
+      setLinkedState,
+      editorItemChange
     }
   }
 })
@@ -274,37 +243,16 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .base-diagram {
+  box-sizing: content-box;
   position: relative;
   height: 100%;
+  width: calc(100% - 2px);
   display: flex;
   flex-direction: row;
   .main {
     flex: 1;
-  }
-  .editor {
-    // border: 2px solid red;
-    z-index: 99999999;
-    height: 500px;
-    width: 100px;
-    position: absolute;
-    top: 10%;
-    left: 10%;
-
-    .editor-head {
-      text-align: center;
-      background-color: #ddd;
-    }
-    .editor-body {
-      width: 100%;
-      height: calc(100% - 20px);
-      background-color: @base-background-color;
-      border: solid 1px @layout-border-color;
-      overflow-y: scroll;
-
-      .editor-diagram {
-        height: 550px;
-      }
-    }
+    border: 1px solid @layout-border-color;
+    border-bottom: none;
   }
 }
 </style>

@@ -36,12 +36,27 @@ export interface DiagramData {
 export type Icons = keyof typeof icons
 
 export interface EditorData extends go.ObjectData {
+  key?: string | number
   text?: string
   category: string
   fontColor?: string
   geo?: Icons
   source?: string
   showContext: boolean
+}
+
+export interface EditorType {
+  id: string
+  type: string
+  name: string
+  data: EditorData | go.ObjectData
+}
+
+export interface EditorTemplate {
+  id: string
+  type: string
+  name: string
+  items: EditorType[]
 }
 
 export interface NodeOption {
