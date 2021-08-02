@@ -65,8 +65,10 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { AlignLeftOutlined, AlignCenterOutlined, AlignRightOutlined } from '@ant-design/icons-vue'
-import BaseIcon, { iconFont } from '@/component/baseIcon/BaseIcon.vue'
+import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 import SwitchButton from '@/component/panelItem/switchButton.vue'
+
+import { iconFont } from '@/component/baseIcon/type/enum'
 
 interface FormState {
   layout: 'horizontal' | 'vertical' | 'inline'

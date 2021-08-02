@@ -1,4 +1,4 @@
-import type { iconFont } from '@/component/baseIcon/BaseIcon.vue'
+import { iconFont } from '@/component/baseIcon/type/enum'
 export interface contextMenu {
   name: string
   title: string
@@ -23,7 +23,7 @@ export interface ContextButtonConfig extends BaseConfig {
   onclick?: () => void
   icon: iconFont
   iconColor?: string
-  contextMenu?: contextMenu[]
+  contextMenu: contextMenu[]
 }
 
 export interface SwitchButtonConfig extends BaseConfig {

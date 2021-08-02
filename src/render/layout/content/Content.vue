@@ -29,12 +29,5 @@ export default defineComponent({
   height: 100%;
   display: flex;
   flex-direction: row;
-  .center {
-    flex: 1;
-  }
-  .right {
-    width: 260px;
-    border-left: 1px solid #000;
-  }
 }
 </style>

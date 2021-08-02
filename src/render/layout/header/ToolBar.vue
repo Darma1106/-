@@ -25,7 +25,7 @@ import ContextButton from '@/component/panelItem/contextButton.vue'
 import BasedButton from '@/component/panelItem/basedButton.vue'
 import { useEvent, useTabs } from '@/composition'
 import { Divider } from 'ant-design-vue'
-import { iconFont } from '@/component/baseIcon/BaseIcon.vue'
+import { iconFont } from '@/component/baseIcon/type/enum'
 import DetailBar from './DetailBar.vue'
 
 import type { Ref } from 'vue'

@@ -1,6 +1,6 @@
 <template>
   <div class="organization-model">
-    <BaseDiagram ref="baseDiagramRef" :editor-template="editorData" :after-link="afterLink" :tree-layout="true" />
+    <BaseDiagram ref="baseDiagramRef" :editor-template="templateData" :after-link="afterLink" :tree-layout="true" />
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 
 import { useEvent } from '@/composition'
 
-import type { BaseDiagramInstance, EditorData } from '@/component/baseDiagram/type'
+import type { BaseDiagramInstance, EditorTemplate } from '@/component/baseDiagram/type'
 
 export default defineComponent({
   name: '',
@@ -48,20 +48,46 @@ export default defineComponent({
       console.log('pid', fromNode.data.key)
     }
 
-    const editorData: EditorData[] = [
+    const templateData: EditorTemplate[] = [
       {
-        key: 2,
-        figure: 'RoundedRectangle',
-        fill: 'red',
-        text: 'text',
-        category: 'defaultNode',
-        showContext: false
+        id: '1',
+        name: '图形',
+        type: 'tuxing',
+        items: [
+          {
+            id: '456',
+            type: 'tuxing',
+            name: '活动图',
+            data: {
+              key: 5,
+              figure: 'RoundedRectangle',
+              fill: '#FFFEDF',
+              fontColor: 'black',
+              text: 'text',
+              category: 'defaultNode',
+              showContext: false
+            }
+          }
+        ]
+      },
+      {
+        id: '3',
+        name: '连线',
+        type: 'lianxian',
+        items: [
+          {
+            id: '345',
+            type: 'line',
+            name: '默认线',
+            data: {}
+          }
+        ]
       }
     ]
 
     return {
       baseDiagramRef,
-      editorData,
+      templateData,
       afterLink
     }
   }

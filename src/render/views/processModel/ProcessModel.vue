@@ -1,6 +1,6 @@
 <template>
   <div class="process-model">
-    <BaseDiagram ref="baseDiagramRef" :editor-template="editorData" :after-link="afterLink" />
+    <BaseDiagram ref="baseDiagramRef" :editor-template="templateData" :after-link="afterLink" />
   </div>
 </template>
 
@@ -9,7 +9,7 @@ import { defineComponent, nextTick, onMounted, ref } from 'vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 import { useEvent } from '@/composition'
 
-import type { BaseDiagramInstance, EditorData } from '@/component/baseDiagram/type'
+import type { BaseDiagramInstance, EditorData, EditorTemplate } from '@/component/baseDiagram/type'
 
 export default defineComponent({
   name: '',
@@ -38,7 +38,90 @@ export default defineComponent({
         }
       })
     })
-
+    const templateData: EditorTemplate[] = [
+      {
+        id: '1',
+        name: '图形',
+        type: 'tuxing',
+        items: [
+          {
+            id: '456',
+            type: 'tuxing',
+            name: '排他',
+            data: {
+              key: 1,
+              geo: 'close',
+              color: 'white',
+              category: 'geoNode',
+              showContext: false,
+              type: 'ExclusiveGateway'
+            }
+          },
+          {
+            id: '567',
+            type: 'tuxing',
+            name: '活动',
+            data: {
+              key: 2,
+              figure: 'RoundedRectangle',
+              fill: '#FFFEDF',
+              text: '活动',
+              category: 'defaultNode',
+              type: 'ServiceTask',
+              showContext: false
+            }
+          },
+          {
+            id: '678',
+            type: 'tuxing',
+            name: '结束',
+            data: {
+              key: 3,
+              thickness: 3,
+              figure: 'Circle',
+              text: '',
+              category: 'defaultNode',
+              type: 'EndEvent',
+              showContext: false
+            }
+          },
+          {
+            id: '789',
+            type: 'tuxing',
+            name: '开始',
+            data: {
+              key: 5,
+              figure: 'Circle',
+              text: '',
+              category: 'defaultNode',
+              type: 'StartEvent',
+              showContext: false
+            }
+          }
+        ]
+      },
+      {
+        id: '3',
+        name: '连线',
+        type: 'lianxian',
+        items: [
+          {
+            id: '345',
+            type: 'line',
+            name: '默认线',
+            data: {
+              key: 4,
+              figure: 'RoundedRectangle',
+              fill: 'green',
+              fontColor: 'white',
+              text: 'text',
+              category: 'defaultNode',
+              showContext: false
+            }
+          }
+        ]
+      }
+    ]
     const editorData: EditorData[] = [
       { key: 1, geo: 'close', color: 'white', category: 'geoNode', showContext: false, type: 'ExclusiveGateway' },
       {
@@ -81,6 +164,7 @@ export default defineComponent({
 
     return {
       editorData,
+      templateData,
       baseDiagramRef,
       afterLink
     }

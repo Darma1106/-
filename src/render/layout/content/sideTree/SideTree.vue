@@ -1,62 +1,65 @@
 <template>
-  <a-tree
-    v-if="treeData.length"
-    :tree-data="treeData"
-    show-icon
-    default-expand-all
-    :selected-keys="selectedKeys"
-    @select="(keys) => onSelect(keys)"
-  >
-    <template #title="{ dataRef, title }"
-      ><span @dblclick="nodeDblclick(dataRef)">{{ title }}</span>
-    </template>
+  <div class="side-tree">
+    <a-tree
+      v-if="treeData.length"
+      :tree-data="treeData"
+      show-icon
+      default-expand-all
+      :selected-keys="selectedKeys"
+      @select="(keys) => onSelect(keys)"
+    >
+      <template #title="{ dataRef, title }"
+        ><span @dblclick="nodeDblclick(dataRef)">{{ title }}</span>
+      </template>
 
-    <template #meca="{ key: treeKey, title }">
-      <a-dropdown :trigger="['contextmenu']">
-        <span>{{ title }}</span>
-        <template #overlay>
-          <a-menu
-            @click="
-              ({ key: menukey }) => {
-                onContextMenuClick(treeKey, menukey)
-              }
-            "
-          >
-            <a-menu-item key="1">1st menu item</a-menu-item>
-            <a-menu-item key="2">2nd menu item</a-menu-item>
-            <a-menu-item key="3">3rd menu item</a-menu-item>
-          </a-menu>
-        </template>
-      </a-dropdown>
-    </template>
+      <template #meca="{ key: treeKey, title }">
+        <a-dropdown :trigger="['contextmenu']">
+          <span>{{ title }}</span>
+          <template #overlay>
+            <a-menu
+              @click="
+                ({ key: menukey }) => {
+                  onContextMenuClick(treeKey, menukey)
+                }
+              "
+            >
+              <a-menu-item key="1">1st menu item</a-menu-item>
+              <a-menu-item key="2">2nd menu item</a-menu-item>
+              <a-menu-item key="3">3rd menu item</a-menu-item>
+            </a-menu>
+          </template>
+        </a-dropdown>
+      </template>
 
-    <template #switcherIcon>
-      <down-outlined />
-    </template>
-    <template #model>
-      <BaseIcon :type="iconFont.模型" />
-    </template>
-    <template #category>
-      <BaseIcon :type="iconFont.文件夹" />
-    </template>
-    <template #meh>
-      <smile-outlined />
-    </template>
-    <template #custom="{ selected }">
-      <frown-filled v-if="selected" />
-      <frown-outlined v-else />
-    </template>
-  </a-tree>
+      <template #switcherIcon>
+        <down-outlined />
+      </template>
+      <template #model>
+        <BaseIcon :type="iconFont.模型" />
+      </template>
+      <template #category>
+        <BaseIcon :type="iconFont.文件夹" />
+      </template>
+      <template #meh>
+        <smile-outlined />
+      </template>
+      <template #custom="{ selected }">
+        <frown-filled v-if="selected" />
+        <frown-outlined v-else />
+      </template>
+    </a-tree>
+  </div>
 </template>
 
 <script lang="ts">
 import { Tree } from 'ant-design-vue'
 import { DownOutlined, SmileOutlined, FrownOutlined, FrownFilled } from '@ant-design/icons-vue'
-import BaseIcon, { iconFont } from '@/component/baseIcon/BaseIcon.vue'
+import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 
 import { defineComponent, onMounted, ref } from 'vue'
 import FrameworkService from '@/services/module/fremeworkService'
 import { useTabs } from '@/composition'
+import { iconFont } from '@/component/baseIcon/type/enum'
 
 import type { Ref } from 'vue'
 import type { TreeData } from '@/services/module/fremeworkService'
@@ -119,3 +122,10 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="less" scoped>
+.side-tree {
+  border-right: 2px solid @layout-border-color;
+  height: 100%;
+}
+</style>
