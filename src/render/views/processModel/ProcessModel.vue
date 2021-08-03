@@ -81,6 +81,8 @@ export default defineComponent({
               figure: 'Circle',
               text: '',
               category: 'defaultNode',
+              size: '15 15',
+              resizable: false,
               type: 'EndEvent',
               showContext: false
             }
@@ -94,21 +96,16 @@ export default defineComponent({
               figure: 'Circle',
               text: '',
               category: 'defaultNode',
+              size: '15 15',
+              resizable: false,
               type: 'StartEvent',
               showContext: false
             }
-          }
-        ]
-      },
-      {
-        id: '3',
-        name: '连线',
-        type: 'lianxian',
-        items: [
+          },
           {
             id: '345',
             type: 'line',
-            name: '默认线',
+            name: '连线',
             data: {
               key: 4,
               figure: 'RoundedRectangle',

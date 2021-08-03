@@ -8,7 +8,7 @@ export function defaultLineMaker(): go.Link {
     go.Link,
     {
       layerName: 'Foreground',
-      routing: go.Link.AvoidsNodes,
+      routing: go.Link.Normal,
       corner: 10,
       toShortLength: 4, // assume arrowhead at "to" end, need to avoid bad appearance when path is thick
       relinkableFrom: true,
@@ -57,7 +57,7 @@ export function defaultLineMaker(): go.Link {
       return dir >= 1 ? 4 : 0
     }),
     // 线走向
-    // new go.Binding('points').makeTwoWay(),
+    new go.Binding('points').makeTwoWay(),
     make(
       go.Shape,
       { strokeWidth: 2 },

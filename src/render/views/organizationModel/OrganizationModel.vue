@@ -22,14 +22,11 @@ export default defineComponent({
   },
   setup(props) {
     const baseDiagramRef = ref<BaseDiagramInstance | null>(null)
-    let flag = true
     const { onSave } = useEvent()
     if (props.tabId) {
       onSave(() => {
         if (props.tabId && baseDiagramRef.value) {
-          // localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
-          flag = !flag
-          baseDiagramRef.value.setLinkedState(flag)
+          localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
         }
       }, props.tabId)
     }
@@ -51,13 +48,13 @@ export default defineComponent({
     const templateData: EditorTemplate[] = [
       {
         id: '1',
-        name: '图形',
+        name: '节点',
         type: 'tuxing',
         items: [
           {
             id: '456',
             type: 'tuxing',
-            name: '活动图',
+            name: '组织节点',
             data: {
               key: 5,
               figure: 'RoundedRectangle',
@@ -67,18 +64,11 @@ export default defineComponent({
               category: 'defaultNode',
               showContext: false
             }
-          }
-        ]
-      },
-      {
-        id: '3',
-        name: '连线',
-        type: 'lianxian',
-        items: [
+          },
           {
             id: '345',
             type: 'line',
-            name: '默认线',
+            name: '连线',
             data: {}
           }
         ]

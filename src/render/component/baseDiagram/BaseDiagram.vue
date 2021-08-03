@@ -60,7 +60,6 @@ export default defineComponent({
   },
   setup(props) {
     const mainRef: Ref<HTMLDivElement | null> = ref(null)
-    // const editRef: Ref<HTMLDivElement | null> = ref(null)
     let diagram: go.Diagram | null = null
 
     let activeEditorType: EditorType | null = null
@@ -73,14 +72,13 @@ export default defineComponent({
         Object.assign({
           'animationManager.isEnabled': false,
           click: diagramClick,
-          grid: make(
-            go.Panel,
-            'Grid',
-            make(go.Shape, 'LineH', { stroke: 'lightgray', strokeWidth: 0.5 }),
-            make(go.Shape, 'LineV', { stroke: 'lightgray', strokeWidth: 0.5 })
-          ),
+          // grid: make(
+          //   go.Panel,
+          //   'Grid',
+          //   make(go.Shape, 'LineH', { stroke: 'lightgray', strokeWidth: 0.5 }),
+          //   make(go.Shape, 'LineV', { stroke: 'lightgray', strokeWidth: 0.5 })
+          // ),
           LinkDrawn
-          // externalobjectsdropped
         }),
         supportLineMaker()
       )
@@ -156,8 +154,6 @@ export default defineComponent({
         if (props.afterInit) {
           props.afterInit(diagram)
         }
-        console.log(123)
-        console.log(props.editorTemplate)
       })
     })
 
@@ -252,6 +248,7 @@ export default defineComponent({
   .main {
     flex: 1;
     border: 1px solid @layout-border-color;
+    border-top: none;
     border-bottom: none;
   }
 }

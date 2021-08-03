@@ -42,7 +42,8 @@ export interface EditorData extends go.ObjectData {
   fontColor?: string
   geo?: Icons
   source?: string
-  showContext: boolean
+  showContext?: boolean
+  resizable?: boolean
 }
 
 export interface EditorType {

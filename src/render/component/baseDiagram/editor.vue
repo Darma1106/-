@@ -1,5 +1,5 @@
 <template>
-  <ActiveBox class="editor" drag-handle=".editor-head">
+  <ActiveBox class="editor" drag-handle=".editor-head" :min-width="100" :max-width="300">
     <div class="editor-head">工具栏</div>
     <div class="editor-body">
       <a-collapse v-model:activeKey="activeKey">
@@ -73,7 +73,7 @@ export default defineComponent({
     width: 100%;
     height: calc(100% - 22px);
     background-color: @base-background-color;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .editor-item {
       // border: 2px solid red;

@@ -32,6 +32,7 @@ export function basedNodeMaker(nodeTemplate: go.GraphObject, contextMenu = false
           )
         : undefined
     },
+    new go.Binding('resizable'),
     new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
     new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
     nodeTemplate,

@@ -34,6 +34,7 @@ export default defineComponent({
 .tab-area {
   text-align: center;
   border-bottom: 1px solid @layout-border-color;
+  margin-bottom: 20px;
   ::v-deep(.ant-tabs-bar) {
     margin-bottom: 2px;
   }

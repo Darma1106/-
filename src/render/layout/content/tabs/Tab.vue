@@ -48,33 +48,64 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+// .tabs {
+//   height: 100%;
+//   padding-top: 6px;
+
+//   .tab-panel {
+//     height: 100%;
+//   }
+//   ::v-deep(.ant-tabs-bar) {
+//     margin: 0;
+//     // padding-left: 10px;
+
+//     .ant-tabs-tab {
+//       background-color: #fff;
+//     }
+//   }
+
+//   ::v-deep(.ant-tabs-top-content, .ant-tabs-bottom-content) {
+//     height: calc(100% - 40px);
+//     width: 100%;
+//   }
+
+//   ::v-deep(.ant-tabs-nav .ant-tabs-tab-active) {
+//     font-weight: normal;
+//     background-color: #f2f2f2;
+//     // border-top: 1px solid black;
+//     // border-left: 1px solid black;
+//     // border-right: 1px solid black;
+//   }
+// }
+
 .tabs {
   height: 100%;
-  padding-top: 6px;
 
   .tab-panel {
     height: 100%;
   }
   ::v-deep(.ant-tabs-bar) {
     margin: 0;
-    padding-left: 10px;
-
-    .ant-tabs-tab {
-      background-color: #ddd;
-    }
+    width: calc(100% - 2px);
+    background-color: #ddd;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
   }
 
   ::v-deep(.ant-tabs-top-content, .ant-tabs-bottom-content) {
     height: calc(100% - 40px);
     width: 100%;
   }
+  ::v-deep(.ant-tabs-nav .ant-tabs-tab) {
+    background-color: #ddd;
+    border-bottom: #ddd;
+    border: none;
+  }
 
   ::v-deep(.ant-tabs-nav .ant-tabs-tab-active) {
     font-weight: normal;
-    background-color: #fff;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
   }
 }
 </style>
