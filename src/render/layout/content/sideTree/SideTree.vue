@@ -58,12 +58,12 @@ import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 
 import { defineComponent, onMounted, ref } from 'vue'
 import FrameworkService from '@/services/module/fremeworkService'
-import { useTabs } from '@/composition'
+import { useTabStore } from '@/store'
 import { iconFont } from '@/component/baseIcon/type/enum'
 
 import type { Ref } from 'vue'
 import type { TreeData } from '@/services/module/fremeworkService'
-import type { Pane } from '@/composition/b-hooks/useTabs'
+import type { Pane } from '@/store/modules/useTabStore'
 
 export default defineComponent({
   components: {
@@ -88,7 +88,7 @@ export default defineComponent({
     }
 
     // 双击切换
-    const tabsInstance = useTabs()
+    const tabsInstance = useTabStore()
     const nodeDblclick = (data: TreeData) => {
       const targetTab = tabsInstance.search(`${data.key}`)
       if (targetTab) {

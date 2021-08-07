@@ -1,12 +1,9 @@
 import { readonly } from 'vue'
-import sotre from '@/store'
-import useTabs from './useTabs'
-
-console.log(sotre.state.tabs, 'store')
+import useTabStore from './useTabStore'
 
 type Callback = () => void
 
-const { activeTab } = useTabs()
+const { activeTab } = useTabStore()
 
 // 以便于卸载事件
 
@@ -25,7 +22,8 @@ interface CallbackMap {
 
 enum EventTypeValue {
   save = 'save',
-  refresh = 'refresh'
+  refresh = 'refresh',
+  test = 'test'
 }
 
 export type EventType = keyof typeof EventTypeValue
@@ -48,10 +46,20 @@ class EventController {
     this.eventMap[componentId].save = saveFunc
   }
 
+  onEvent = (eventName: EventType, evnetFunc: Callback, componentId: string) => {
+    if (!this.eventMap[componentId]) {
+      this.eventMap[componentId] = {}
+    }
+    this.eventMap[componentId][eventName] = evnetFunc
+  }
+
   // 事件触发器
   eventSwitch = (event: EventType, componentId = activeTab.value) => {
+    console.log(componentId, 123)
+
     if (componentId) {
       const eventCallback = this.eventMap?.[componentId]
+      console.log(event, componentId, eventCallback)
 
       if (eventCallback) eventCallback[event]?.()
     }

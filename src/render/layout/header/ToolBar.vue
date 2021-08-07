@@ -23,7 +23,7 @@
 import { defineComponent, ref } from 'vue'
 import ContextButton from '@/component/panelItem/contextButton.vue'
 import BasedButton from '@/component/panelItem/basedButton.vue'
-import { useEvent, useTabs } from '@/composition'
+import { useEventStore, useTabStore } from '@/store'
 import { Divider } from 'ant-design-vue'
 import { iconFont } from '@/component/baseIcon/type/enum'
 import DetailBar from './DetailBar.vue'
@@ -35,9 +35,9 @@ export default defineComponent({
   name: 'ToolBar',
   components: { ContextButton, BasedButton, DetailBar, ADivider: Divider },
   setup() {
-    const { activeTab } = useTabs()
+    const { activeTab } = useTabStore()
 
-    const { eventSwitch } = useEvent()
+    const { eventSwitch } = useEventStore()
     const save = () => {
       eventSwitch('save', activeTab.value)
     }

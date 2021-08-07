@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent, onMounted } from 'vue'
-import { useTabs } from '@/composition'
+import { useTabStore } from '@/store'
 export default defineComponent({
   components: {
     UmlClass: defineAsyncComponent(() => import('@/views/umlClass/UmlClass.vue')),
@@ -24,7 +24,7 @@ export default defineComponent({
     ProcessModel: defineAsyncComponent(() => import('@/views/processModel/ProcessModel.vue'))
   },
   setup() {
-    const { tabs, activeTab, add, change, remove } = useTabs()
+    const { tabs, activeTab, add, change, remove } = useTabStore()
 
     const onEdit = (targetKey: string) => {
       remove(targetKey)
