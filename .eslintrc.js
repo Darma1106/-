@@ -10,11 +10,12 @@ module.exports = {
   },
   extends: [
     // "eslint:recommended",
-    'plugin:vue/vue3-recommended',
     'plugin:vue/base',
+    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-strongly-recommended',
+    'plugin:vue/vue3-recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:vue/recommended',
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier'
@@ -42,6 +43,7 @@ module.exports = {
     'vue/prop-name-casing': 0,
     'vue/no-multiple-template-root': 0,
     'vue/no-v-model-argument': 0,
+    'vue/script-setup-uses-vars': 1,
     // 'vue/script-setup-uses-vars': 0,
     // 禁止ts-ignore
     '@typescript-eslint/ban-ts-ignore': 'off',
@@ -80,12 +82,5 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': ['error']
       }
     }
-    // {
-    //   files: ['*.vue'],
-    //   rules: {
-    //     'no-unused-vars': 'off',
-    //     '@typescript-eslint/no-unused-vars': ['off']
-    //   }
-    // }
   ]
 }

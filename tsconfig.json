@@ -9,7 +9,7 @@
     "sourceMap": true,
     "baseUrl": "./",
     "strict": true,
-    "allowJs": true,
+    // "allowJs": true,
     "types": ["vite/client", "node"],
     "paths": {
       "@/*": ["src/render/*", "src/main/*"],

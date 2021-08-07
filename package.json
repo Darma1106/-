@@ -1,9 +1,8 @@
 {
-  "name": "vite-electron",
+  "name": "architecture-tool",
   "version": "0.0.1",
   "main": "dist/main/build.js",
-  "author": "MangoTsing",
-  "license": "MIT",
+  "author": "Darma",
   "scripts": {
     "dev": "npm run dev:vue",
     "dev:all": "concurrently -n=vue,ele -c=green,blue \"npm run dev:vue\" \"npm run dev:ele\"",
@@ -11,7 +10,9 @@
     "dev:ele": "node script/build --env=development --watch",
     "build:vue": "vite build",
     "build:ele": "node script/build --env=production",
-    "build": "npm run build:vue && npm run build:ele && electron-builder"
+    "build": "npm run build:vue && npm run build:ele && electron-builder",
+    "commit": "git cz",
+    "prepare": "husky install"
   },
   "build": {
     "appId": "xxx@gmail.com",
@@ -54,7 +55,7 @@
     "active-box": "^1.0.1",
     "ant-design-vue": "^2.2.2",
     "axios": "^0.21.1",
-    "dayjs": "^1.10.4",
+    "commitizen": "^4.2.4",
     "electron-is-dev": "^1.2.0",
     "electron-store": "^6.0.0",
     "gojs": "2.1.32",
@@ -69,6 +70,8 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "@rollup/plugin-alias": "^3.1.1",
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -88,6 +91,7 @@
     "eslint-plugin-import": "^2.23.2",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.13.0",
+    "husky": "^7.0.1",
     "minimist": "^1.2.5",
     "ora": "^5.0.0",
     "prettier": "^2.3.0",
