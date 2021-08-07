@@ -5,10 +5,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, nextTick } from 'vue'
+import { defineComponent, ref } from 'vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
-import { useEvent } from '@/composition'
+import { useEventStore } from '@/store'
+import { renderDiagramFromLocal } from '@/component/baseDiagram/util/diagram'
 
+import type { Ref } from 'vue'
 import type { EditorTemplate, BaseDiagramInstance } from '@/component/baseDiagram/type'
 
 export default defineComponent({
@@ -20,24 +22,30 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { onSave } = useEvent()
+    const { onEvent } = useEventStore()
     if (props.tabId) {
-      onSave(() => {
-        if (props.tabId && baseDiagramRef.value) {
-          localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
-        }
-      }, props.tabId)
+      onEvent(
+        'save',
+        () => {
+          if (props.tabId && baseDiagramRef.value) {
+            localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
+          }
+        },
+        props.tabId
+      )
+      onEvent(
+        'test',
+        () => {
+          console.log('testtttttt')
+        },
+        props.tabId
+      )
     }
 
-    onMounted(() => {
-      nextTick(() => {
-        if (props.tabId && baseDiagramRef.value) {
-          baseDiagramRef.value.renderJson(localStorage.getItem(props.tabId) ?? '')
-        }
-      })
-    })
+    const baseDiagramRef: Ref<BaseDiagramInstance | null> = ref(null)
 
-    let baseDiagramRef = ref<BaseDiagramInstance | null>(null)
+    // 本地读取json
+    renderDiagramFromLocal(props.tabId, baseDiagramRef)
 
     const templateData: EditorTemplate[] = [
       {

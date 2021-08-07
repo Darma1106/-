@@ -1,4 +1,8 @@
+import { onMounted, nextTick } from 'vue'
 import { GuidedDraggingTool } from '@/common/GuidedDraggingTool'
+
+import type { Ref } from 'vue'
+import type { BaseDiagramInstance } from '../type'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function supportLineMaker() {
@@ -10,4 +14,22 @@ export function supportLineMaker() {
     'draggingTool.guidelineWidth': 1,
     'undoManager.isEnabled': true
   }
+}
+
+export function renderDiagramFromLocal(
+  tabId: string | undefined,
+  baseDiagramRef: Ref<BaseDiagramInstance | null>
+): void {
+  onMounted(() => {
+    nextTick(() => {
+      if (tabId && baseDiagramRef.value) {
+        console.log(localStorage.getItem(tabId))
+
+        const localJson = localStorage.getItem(tabId)
+        if (localJson) {
+          baseDiagramRef.value.renderJson(localJson)
+        }
+      }
+    })
+  })
 }

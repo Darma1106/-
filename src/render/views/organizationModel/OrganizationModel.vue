@@ -8,7 +8,7 @@
 import { defineComponent, ref, onMounted, nextTick } from 'vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 
-import { useEvent } from '@/composition'
+import { useEventStore } from '@/store'
 
 import type { BaseDiagramInstance, EditorTemplate } from '@/component/baseDiagram/type'
 
@@ -22,7 +22,7 @@ export default defineComponent({
   },
   setup(props) {
     const baseDiagramRef = ref<BaseDiagramInstance | null>(null)
-    const { onSave } = useEvent()
+    const { onSave } = useEventStore()
     if (props.tabId) {
       onSave(() => {
         if (props.tabId && baseDiagramRef.value) {

@@ -5,10 +5,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, onMounted, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
-import { useEvent } from '@/composition'
+import { useEventStore } from '@/store'
+import { renderDiagramFromLocal } from '@/component/baseDiagram/util/diagram'
 
+import type { Ref } from 'vue'
 import type { BaseDiagramInstance, EditorData, EditorTemplate } from '@/component/baseDiagram/type'
 
 export default defineComponent({
@@ -20,9 +22,9 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const baseDiagramRef = ref<BaseDiagramInstance | null>(null)
+    const baseDiagramRef: Ref<BaseDiagramInstance | null> = ref(null)
 
-    const { onSave } = useEvent()
+    const { onSave } = useEventStore()
     if (props.tabId) {
       onSave(() => {
         if (props.tabId && baseDiagramRef.value) {
@@ -31,13 +33,7 @@ export default defineComponent({
       }, props.tabId)
     }
 
-    onMounted(() => {
-      nextTick(() => {
-        if (props.tabId && baseDiagramRef.value) {
-          baseDiagramRef.value.renderJson(localStorage.getItem(props.tabId) ?? '')
-        }
-      })
-    })
+    renderDiagramFromLocal(props.tabId, baseDiagramRef)
     const templateData: EditorTemplate[] = [
       {
         id: '1',
