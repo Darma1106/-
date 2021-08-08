@@ -139,6 +139,8 @@ export default defineComponent({
     }
 
     function getDiagram(): go.Diagram | null {
+      console.log('getDiagram')
+
       return diagram
     }
 

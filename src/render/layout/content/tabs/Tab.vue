@@ -18,6 +18,8 @@ export default defineComponent({
   components: {
     UmlClass: defineAsyncComponent(() => import('@/views/umlClass/UmlClass.vue')),
     ActiveModel: defineAsyncComponent(() => import('@/views/activeModel/ActiveModel.vue')),
+    // ActiveModel: defineAsyncComponent(() => import('@/common/testModel.vue')),
+
     MatrixModel: defineAsyncComponent(() => import('@/views/matrixModel/MatrixModel.vue')),
     OrganizationModel: defineAsyncComponent(() => import('@/views/organizationModel/OrganizationModel.vue')),
     SequenceModel: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue')),
