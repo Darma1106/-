@@ -1,9 +1,6 @@
 import { AxiosRequestConfig } from 'axios'
 export const axiosConfig: AxiosRequestConfig = {
-  // 联调
-  // baseURL: process.env. === 'production' ? `/` : '/api',
-  baseURL: 'http://192.168.2.234:60020/ZyPgrj-Service',
-  // baseURL: 'http://8.141.51.130:60020/ZyPgrj-Service',
+  baseURL: 'http://192.168.2.234:61010/architecture-service/',
   // headers: { 'content-type': 'application/json' },
   headers: {
     get: {

@@ -9,6 +9,7 @@ import { defineComponent, ref } from 'vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 import { useEventStore } from '@/store'
 import { renderDiagramFromLocal } from '@/component/baseDiagram/util/diagram'
+import { message } from 'ant-design-vue'
 
 import type { Ref } from 'vue'
 import type { EditorTemplate, BaseDiagramInstance } from '@/component/baseDiagram/type'
@@ -29,14 +30,8 @@ export default defineComponent({
         () => {
           if (props.tabId && baseDiagramRef.value) {
             localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
+            message.success('保存成功')
           }
-        },
-        props.tabId
-      )
-      onEvent(
-        'test',
-        () => {
-          console.log('testtttttt')
         },
         props.tabId
       )
@@ -51,7 +46,7 @@ export default defineComponent({
       {
         id: '1',
         name: '节点',
-        type: 'tuxing',
+        category: 'tuxing',
         items: [
           {
             id: '456',

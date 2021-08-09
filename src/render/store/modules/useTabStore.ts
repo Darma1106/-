@@ -8,7 +8,7 @@ export interface Pane {
 
 class UseTabs {
   public tabs = ref<Pane[]>([
-    { title: 'Organization', key: '1', closable: true, component: 'OrganizationModel' }
+    // { title: 'Organization', key: '1', closable: true, component: 'OrganizationModel' }
     // { title: 'UmlClass', key: '2', closable: true, component: 'UmlClass' },
     // { title: 'Matrix', key: '3', closable: true, component: 'MatrixModel' },
     // { title: 'Active', key: '4', closable: true, component: 'ActiveModel' },

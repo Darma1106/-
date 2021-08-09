@@ -10,6 +10,7 @@
 import { defineComponent, onMounted, PropType, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
+import { makeAddButton } from './util/node'
 
 import type { Template } from './type'
 
@@ -174,16 +175,7 @@ export default defineComponent({
         StrokeOptionsButtons()
       )
 
-      myDiagram.nodeTemplate.selectionAdornmentTemplate = make(
-        go.Adornment,
-        'Spot',
-        make(go.Placeholder, { padding: 10 }),
-        makeArrowButton(go.Spot.Top, 'TriangleUp'),
-        makeArrowButton(go.Spot.Left, 'TriangleLeft'),
-        makeArrowButton(go.Spot.Right, 'TriangleRight'),
-        makeArrowButton(go.Spot.Bottom, 'TriangleDown'),
-        CMButton({ alignment: new go.Spot(0.75, 0) })
-      )
+      myDiagram.nodeTemplate.selectionAdornmentTemplate = makeAddButton()
 
       // Group模板
 
@@ -773,6 +765,7 @@ export default defineComponent({
 
     onMounted(() => {
       diagram = init(unrefElement(activeModelRef))
+      // setupSelectionAdornments(diagram)
     })
     return { activeModelRef, editRef, getDiagram, show }
   }

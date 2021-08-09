@@ -24,8 +24,9 @@ const codeMessage: {
 
 // 异常拦截处理器
 export const errorHandler = (error: AxiosError): Promise<never> => {
-  console.log('异常拦截器')
   const { response } = error
+  console.log('异常拦截器', error)
+
   if (response && response.status) {
     // 优先提示接口返回的错误
     const { status, data } = response

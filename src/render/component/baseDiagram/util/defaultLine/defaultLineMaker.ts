@@ -10,7 +10,7 @@ export function defaultLineMaker(): go.Link {
       layerName: 'Foreground',
       routing: go.Link.Normal,
       corner: 10,
-      toShortLength: 4, // assume arrowhead at "to" end, need to avoid bad appearance when path is thick
+      toShortLength: 4,
       relinkableFrom: true,
       relinkableTo: true,
       reshapable: true,

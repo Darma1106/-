@@ -16,13 +16,8 @@
         <a-dropdown :trigger="['contextmenu']">
           <span>{{ title }}</span>
           <template #overlay>
-            <a-menu
-              @click="
-                ({ key: menukey }) => {
-                  onContextMenuClick(treeKey, menukey)
-                }
-              "
-            >
+            <!-- 暂未找到解决template类型推断不正确的方法 -->
+            <a-menu @click="({ key: menukey }) => onContextMenuClick(treeKey, menukey)">
               <a-menu-item key="1">1st menu item</a-menu-item>
               <a-menu-item key="2">2nd menu item</a-menu-item>
               <a-menu-item key="3">3rd menu item</a-menu-item>

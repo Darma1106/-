@@ -21,6 +21,7 @@ export interface BaseDiagramInstance {
   getNodeArray: () => go.ObjectData[] | undefined
   getLinkArray: () => go.ObjectData[] | undefined
   addNode: (node: ObjectData) => void
+  addChildNode: () => void
   getJson: () => string
   renderJson: (json: string) => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,12 +51,13 @@ export interface EditorType {
   id: string
   type: string
   name: string
-  data: EditorData | go.ObjectData
+  data: EditorData | LinkOption
 }
 
+// 手风琴设置
 export interface EditorTemplate {
   id: string
-  type: string
+  category: string
   name: string
   items: EditorType[]
 }
@@ -67,6 +69,14 @@ export interface NodeOption {
   fill?: string
   color?: string
   contextMenu?: boolean
+}
+
+export interface LinkOption {
+  key?: string | number
+  color?: string
+  weight?: number
+  dash?: number[] | null
+  dir?: 0 | 1 | 2
 }
 
 export type CommonNodeType = keyof typeof CommonNodeTypeValue

@@ -1,5 +1,5 @@
 import { onMounted, nextTick } from 'vue'
-import { GuidedDraggingTool } from '@/common/GuidedDraggingTool'
+import { GuidedDraggingTool } from './diagramTool/GuidedDraggingTool'
 
 import type { Ref } from 'vue'
 import type { BaseDiagramInstance } from '../type'
@@ -23,8 +23,6 @@ export function renderDiagramFromLocal(
   onMounted(() => {
     nextTick(() => {
       if (tabId && baseDiagramRef.value) {
-        console.log(localStorage.getItem(tabId))
-
         const localJson = localStorage.getItem(tabId)
         if (localJson) {
           baseDiagramRef.value.renderJson(localJson)

@@ -30,11 +30,22 @@ export default class FrameworkService {
             },
             type: 'nonModel',
             children: [
-              { title: '组织结构模型', key: '0-0-0', slots: { icon: 'model' }, type: 'OrganizationModel' },
-              { title: '矩阵模型', key: '0-0-1', slots: { icon: 'model' }, type: 'MatrixModel' },
-              { title: '流程模型', key: '0-0-2', slots: { icon: 'model' }, type: 'ProcessModel' },
-              { title: '活动模型', key: '0-0-3', slots: { icon: 'model' }, type: 'ActiveModel' },
-              { title: '时序模型', key: '0-0-4', slots: { title: 'meca', icon: 'model' }, type: 'SequenceModel' }
+              {
+                title: '视图一',
+                key: '0-1',
+                slots: {
+                  icon: 'category',
+                  title: 'meca'
+                },
+                type: 'nonModel',
+                children: [
+                  { title: '组织结构模型', key: '0-0-0', slots: { icon: 'model' }, type: 'OrganizationModel' },
+                  { title: '矩阵模型', key: '0-0-1', slots: { icon: 'model' }, type: 'MatrixModel' },
+                  { title: '流程模型', key: '0-0-2', slots: { icon: 'model' }, type: 'ProcessModel' },
+                  { title: '活动模型', key: '0-0-3', slots: { icon: 'model' }, type: 'ActiveModel' }
+                  // { title: '时序模型', key: '0-0-4', slots: { title: 'meca', icon: 'model' }, type: 'SequenceModel' }
+                ]
+              }
             ]
           }
         ]

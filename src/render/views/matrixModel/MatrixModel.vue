@@ -22,8 +22,8 @@
         </a-dropdown>
       </template>
     </a-table>
-    <a-button type="primary" @click="addRow">增加指标</a-button>
-    <a-button type="primary" @click="addColumn">增加能力</a-button>
+    <!-- <a-button type="primary" @click="addRow">增加指标</a-button>
+    <a-button type="primary" @click="addColumn">增加能力</a-button> -->
   </div>
 </template>
 
@@ -153,4 +153,12 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.matrix-model {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  width: calc(100% - 2px);
+
+  height: 100%;
+}
+</style>

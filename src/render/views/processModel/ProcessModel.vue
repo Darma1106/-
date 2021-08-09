@@ -9,9 +9,10 @@ import { defineComponent, ref } from 'vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 import { useEventStore } from '@/store'
 import { renderDiagramFromLocal } from '@/component/baseDiagram/util/diagram'
+import { message } from 'ant-design-vue'
 
 import type { Ref } from 'vue'
-import type { BaseDiagramInstance, EditorData, EditorTemplate } from '@/component/baseDiagram/type'
+import type { BaseDiagramInstance, EditorTemplate } from '@/component/baseDiagram/type'
 
 export default defineComponent({
   name: '',
@@ -29,20 +30,22 @@ export default defineComponent({
       onSave(() => {
         if (props.tabId && baseDiagramRef.value) {
           localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
+          message.success('保存成功')
         }
       }, props.tabId)
     }
 
     renderDiagramFromLocal(props.tabId, baseDiagramRef)
+
     const templateData: EditorTemplate[] = [
       {
         id: '1',
         name: '图形',
-        type: 'tuxing',
+        category: 'graph',
         items: [
           {
             id: '456',
-            type: 'tuxing',
+            type: 'node',
             name: '排他',
             data: {
               key: 1,
@@ -55,7 +58,7 @@ export default defineComponent({
           },
           {
             id: '567',
-            type: 'tuxing',
+            type: 'node',
             name: '活动',
             data: {
               key: 2,
@@ -69,7 +72,7 @@ export default defineComponent({
           },
           {
             id: '678',
-            type: 'tuxing',
+            type: 'node',
             name: '结束',
             data: {
               key: 3,
@@ -85,7 +88,7 @@ export default defineComponent({
           },
           {
             id: '789',
-            type: 'tuxing',
+            type: 'node',
             name: '开始',
             data: {
               key: 5,
@@ -115,48 +118,12 @@ export default defineComponent({
         ]
       }
     ]
-    const editorData: EditorData[] = [
-      { key: 1, geo: 'close', color: 'white', category: 'geoNode', showContext: false, type: 'ExclusiveGateway' },
-      {
-        key: 2,
-        figure: 'RoundedRectangle',
-        fill: '#FFFEDF',
-        text: '活动',
-        category: 'defaultNode',
-        type: 'ServiceTask',
-        showContext: false
-      },
-      {
-        key: 2,
-        thickness: 3,
-        figure: 'Circle',
-        text: '',
-        category: 'defaultNode',
-        type: 'EndEvent',
-        showContext: false
-      },
-      {
-        key: 5,
-        figure: 'Circle',
-        text: '',
-        category: 'defaultNode',
-        type: 'StartEvent',
-        showContext: false
-      }
-      // {
-      //   key: 7,
-      //   source: 'https://pica.zhimg.com/v2-6d510e2f1c06efa66322e3ecf1a1cc9b_1440w.jpg?source=172ae18b',
-      //   showContext: false,
-      //   category: 'pictureNode'
-      // }
-    ]
 
     const afterLink = ({ data }: go.ObjectData) => {
       data.text = '流程条件'
     }
 
     return {
-      editorData,
       templateData,
       baseDiagramRef,
       afterLink

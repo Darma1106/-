@@ -34,7 +34,7 @@ export default defineComponent({
 
     // 默认选中第一个
     onMounted(() => {
-      change(tabs.value[0].key)
+      // change(tabs.value[0].key)
     })
 
     return {

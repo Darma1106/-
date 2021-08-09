@@ -13,8 +13,10 @@ import * as go from 'gojs'
 import { commonNodeMap } from '@/component/baseDiagram/util/defaultNode'
 import { commonLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { v4 as uuidv4 } from 'uuid'
+import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
+import { guidedDraggingToolOption } from '@/component/baseDiagram/util/diagramTool/GuidedDraggingTool'
+import { addChild, makeAddButton } from './util/node'
 import Editor from './editor.vue'
-import { supportLineMaker } from './util/diagram'
 import type { Template, CommonNodeType, CommonLinkType, AfterInit, AfterLink, EditorType, EditorTemplate } from './type'
 
 const make = go.GraphObject.make
@@ -80,7 +82,7 @@ export default defineComponent({
           // ),
           LinkDrawn
         }),
-        supportLineMaker()
+        guidedDraggingToolOption
       )
 
       // 注入默认Node类型
@@ -95,6 +97,8 @@ export default defineComponent({
       props.nodeMap?.forEach(({ name, template }) => {
         myDiagram.nodeTemplateMap.add(name, template)
       })
+
+      // myDiagram.nodeTemplate.selectionAdornmentTemplate = makeAddButton()
 
       // 注入默认Link类型
       for (const key in commonLinkMap) {
@@ -131,9 +135,12 @@ export default defineComponent({
         linkModel.removeLinkData(subject.data)
         subject.data.category = props.defaultLinkType
         subject.data.id = uuidv4()
+        // afterLink回调
         if (props.afterLink) {
           props?.afterLink(subject, model)
         }
+        // 合并选中连线的data
+        Object.assign(subject.data, activeEditorType?.data)
         linkModel.addLinkData(subject.data)
       }
     }
@@ -156,6 +163,8 @@ export default defineComponent({
         if (props.afterInit) {
           props.afterInit(diagram)
         }
+        diagram.toolManager.mouseDownTools.add(make(LinkShiftingTool))
+        diagram.nodeSelectionAdornmentTemplate = makeAddButton(addChildNode)
       })
     })
 
@@ -207,6 +216,16 @@ export default defineComponent({
       }
     }
 
+    const addChildNode = () => {
+      const diagram = getDiagram()
+      if (diagram) {
+        const selection = diagram.selection.first()
+        if (selection) {
+          addChild(diagram, selection, props.defaultLinkType)
+        }
+      }
+    }
+
     const setLinkedState = (state: boolean) => {
       const diagram = getDiagram()
       if (diagram) {
@@ -227,6 +246,7 @@ export default defineComponent({
       // editRef,
       getDiagram,
       addNode,
+      addChildNode,
       getJson,
       renderJson,
       getNodeArray,

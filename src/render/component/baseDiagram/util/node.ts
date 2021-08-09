@@ -1,4 +1,6 @@
 import * as go from 'gojs'
+import { cloneDeep } from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 const make = go.GraphObject.make
 // 给节点添加接口
 export function makePort(
@@ -171,4 +173,70 @@ export function makeBaseNode(): go.Node {
       new go.Binding('stroke', 'color')
     )
   )
+}
+
+export function makeAddButton(onClick: () => void): go.Adornment {
+  return make(
+    go.Adornment,
+    'Spot',
+    make(
+      go.Panel,
+      'Auto',
+      make(go.Shape, { fill: null, stroke: 'blue', strokeWidth: 2 }),
+      make(go.Placeholder) // this represents the selected Node
+    ),
+    // the button to create a "next" node, at the top-right corner
+    make(
+      'Button',
+      {
+        alignment: go.Spot.TopRight,
+        click: onClick // this function is defined below
+      },
+      make(go.Shape, 'PlusLine', { desiredSize: new go.Size(12, 12) })
+    ) // end button
+  ) // end Adornment
+}
+
+export function addChild(diagram: go.Diagram, fromNode: go.ObjectData, linkType: string): void {
+  const model = diagram.model as go.GraphLinksModel
+  console.log(fromNode.data)
+  const toNode = cloneDeep(fromNode.data)
+  toNode.key = uuidv4()
+  delete toNode.__gohashid
+
+  model.addNodeData(toNode)
+  model.addLinkData({
+    from: fromNode.data.key,
+    to: toNode.key,
+    category: linkType
+  })
+}
+
+export function setupSelectionAdornments(diagram: go.Diagram): void {
+  // create the default Adornment for selection
+  let selad = new go.Adornment()
+  selad.type = go.Panel.Auto
+  let seladhandle = new go.Shape()
+  seladhandle.fill = null
+  seladhandle.stroke = 'dodgerblue'
+  seladhandle.strokeWidth = 3
+  selad.add(seladhandle)
+  const selplace = new go.Placeholder()
+  selplace.margin = new go.Margin(1.5, 1.5, 1.5, 1.5)
+  selad.add(selplace)
+  diagram.nodeSelectionAdornmentTemplate = selad
+
+  // reuse the default Node Adornment for selection
+  diagram.groupSelectionAdornmentTemplate = selad
+
+  // create the default Link Adornment for selection
+  selad = new go.Adornment()
+  selad.type = go.Panel.Link
+  seladhandle = new go.Shape()
+  seladhandle.isPanelMain = true
+  seladhandle.fill = null
+  seladhandle.stroke = 'dodgerblue'
+  seladhandle.strokeWidth = 3 // ?? zero to use selection object's strokeWidth is often not wide enough
+  selad.add(seladhandle)
+  diagram.linkSelectionAdornmentTemplate = selad
 }
