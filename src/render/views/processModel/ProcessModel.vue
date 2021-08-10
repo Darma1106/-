@@ -1,6 +1,11 @@
 <template>
   <div class="process-model">
-    <BaseDiagram ref="baseDiagramRef" :editor-template="templateData" :after-link="afterLink" />
+    <BaseDiagram
+      ref="baseDiagramRef"
+      :editor-template="templateData"
+      :after-link="afterLink"
+      default-link-type="avoidLink"
+    />
   </div>
 </template>
 
@@ -10,6 +15,7 @@ import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 import { useEventStore } from '@/store'
 import { renderDiagramFromLocal } from '@/component/baseDiagram/util/diagram'
 import { message } from 'ant-design-vue'
+import { dataMap } from '@/views/tableModel/database'
 
 import type { Ref } from 'vue'
 import type { BaseDiagramInstance, EditorTemplate } from '@/component/baseDiagram/type'
@@ -34,8 +40,8 @@ export default defineComponent({
         }
       }, props.tabId)
     }
-
-    renderDiagramFromLocal(props.tabId, baseDiagramRef)
+    const defaultJson = dataMap.get('lct') as string
+    renderDiagramFromLocal(props.tabId, baseDiagramRef, defaultJson)
 
     const templateData: EditorTemplate[] = [
       {
@@ -53,7 +59,8 @@ export default defineComponent({
               color: 'white',
               category: 'geoNode',
               showContext: false,
-              type: 'ExclusiveGateway'
+              type: 'ExclusiveGateway',
+              size: '30 30'
             }
           },
           {
@@ -76,7 +83,7 @@ export default defineComponent({
             name: '结束',
             data: {
               key: 3,
-              thickness: 3,
+              thickness: 6,
               figure: 'Circle',
               text: '',
               category: 'defaultNode',
@@ -105,15 +112,7 @@ export default defineComponent({
             id: '345',
             type: 'line',
             name: '连线',
-            data: {
-              key: 4,
-              figure: 'RoundedRectangle',
-              fill: 'green',
-              fontColor: 'white',
-              text: 'text',
-              category: 'defaultNode',
-              showContext: false
-            }
+            data: {}
           }
         ]
       }

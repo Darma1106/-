@@ -259,6 +259,7 @@ export class LinkShiftingTool extends go.Tool {
    */
   public doReshape(pt: go.Point): void {
     if (this._handle === null) return
+    const diagram = this.diagram
     const ad = this._handle.part as go.Adornment
     if (ad.adornedObject === null) return
     const link = ad.adornedObject.part as go.Link
@@ -285,8 +286,12 @@ export class LinkShiftingTool extends go.Tool {
     )
     if (fromend) {
       link.fromSpot = spot
+      console.log(link.fromSpot)
     } else {
       link.toSpot = spot
+      link.data.toSport = spot
+      // console.log(link.toSpot)
+      console.log(link)
     }
   }
 }

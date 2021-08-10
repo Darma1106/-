@@ -10,6 +10,7 @@ import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 import { useEventStore } from '@/store'
 import { renderDiagramFromLocal } from '@/component/baseDiagram/util/diagram'
 import { message } from 'ant-design-vue'
+import { dataMap } from '@/views/tableModel/database'
 
 import type { Ref } from 'vue'
 import type { EditorTemplate, BaseDiagramInstance } from '@/component/baseDiagram/type'
@@ -39,8 +40,9 @@ export default defineComponent({
 
     const baseDiagramRef: Ref<BaseDiagramInstance | null> = ref(null)
 
+    const defaultJson = dataMap.get('lct') as string
     // 本地读取json
-    renderDiagramFromLocal(props.tabId, baseDiagramRef)
+    renderDiagramFromLocal(props.tabId, baseDiagramRef, defaultJson)
 
     const templateData: EditorTemplate[] = [
       {

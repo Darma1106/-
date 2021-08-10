@@ -1,6 +1,7 @@
 <template>
   <div class="sequence-model">
-    <div ref="editRef" class="editor"></div>
+    <!-- <div ref="editRef" class="editor"></div> -->
+    <Editor :editor-data="editorTemplate" @active-item-change="editorItemChange" />
     <div ref="activeModelRef" class="active-model">123</div>
   </div>
 </template>
@@ -9,14 +10,19 @@
 import { defineComponent, nextTick, onMounted, Ref, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
+
+import Editor from '@/component/baseDiagram/editor.vue'
+
+import type { EditorTemplate, EditorType } from '@/component/baseDiagram/type'
 const make = go.GraphObject.make
 
 export default defineComponent({
   name: '',
-  components: {},
+  components: { Editor },
   setup() {
     const activeModelRef: Ref<HTMLDivElement | null> = ref(null)
     const editRef: Ref<HTMLDivElement | null> = ref(null)
+    let diagram: go.Diagram | null = null
     function init(templeteRef: HTMLDivElement): go.Diagram {
       // some parameters
       const LinePrefix = 20 // vertical starting point in document for all Messages and Activations
@@ -239,6 +245,7 @@ export default defineComponent({
           // // automatically extend Lifelines as Activities are moved or resized
           SelectionMoved: ensureLifelineHeights,
           PartResized: ensureLifelineHeights,
+          click: diagramClick,
           'undoManager.isEnabled': true
         }
       )
@@ -374,51 +381,13 @@ export default defineComponent({
         }
       }
       console.log(myDiagram.nodeTemplateMap, 'map')
-      // 渲染操作面板
-      make(go.Palette, unrefElement(editRef), {
-        'animationManager.isEnabled': false,
-        maxSelectionCount: 1,
-        groupTemplate: make(
-          go.Group,
-          'Vertical',
-          {
-            locationSpot: go.Spot.Bottom,
-            locationObjectName: 'HEADER',
-            minLocation: new go.Point(0, 0),
-            maxLocation: new go.Point(9999, 0),
-            selectionObjectName: 'HEADER'
-          },
-          new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-          make(
-            go.Panel,
-            'Auto',
-            { name: 'HEADER' },
-            make(go.Shape, 'Rectangle', {
-              fill: make(go.Brush, 'Linear', { 0: '#bbdefb', 1: go.Brush.darkenBy('#bbdefb', 0.1) }),
-              stroke: null
-            }),
-            make(
-              go.TextBlock,
-              {
-                margin: 15,
-                font: '400 12pt Source Sans Pro, sans-serif',
-                editable: true
-              },
-              new go.Binding('text', 'text')
-            )
-          )
-        ),
-        // nodeTemplateMap: new go.Map([make(go.Node)]),
-        model: new go.GraphLinksModel([{ key: '1', text: 'text', isGroup: true, duration: 9 }])
-        // model: new go.GraphLinksModel(getTemplateModel())
-      })
 
       return myDiagram
     }
 
     onMounted(() => {
       nextTick(() => {
-        const diagram = init(unrefElement(activeModelRef))
+        diagram = init(unrefElement(activeModelRef))
         const data = {
           class: 'go.GraphLinksModel',
           nodeDataArray: [
@@ -455,9 +424,69 @@ export default defineComponent({
         diagram.model = go.Model.fromJson(data)
       })
     })
+
+    let activeEditorType: EditorType | null = null
+    const editorTemplate: EditorTemplate[] = [
+      {
+        id: '1',
+        name: '节点',
+        category: 'tuxing',
+        items: [
+          {
+            id: '456',
+            type: 'tuxing',
+            name: '活动节点',
+            data: { key: '3', text: '作战时序图节点3', isGroup: true, loc: '800 0', duration: 9 }
+          },
+          {
+            id: '345',
+            type: 'line',
+            name: '连线',
+            data: {}
+          }
+        ]
+      }
+    ]
+
+    function getDiagram(): go.Diagram | null {
+      return diagram
+    }
+
+    const diagramClick = (e: go.InputEvent) => {
+      const { documentPoint } = e
+      if (activeEditorType && activeEditorType.type != 'line') {
+        const node = JSON.parse(JSON.stringify(activeEditorType.data))
+        // node.key = uuidv4()
+        node.loc = `${documentPoint.x} 0`
+        addNode(node)
+      }
+    }
+
+    const addNode = (node: go.ObjectData) => {
+      if (diagram) {
+        diagram.model.addNodeData(node)
+      }
+    }
+
+    const setLinkedState = (state: boolean) => {
+      const diagram = getDiagram()
+      if (diagram) {
+        diagram.allowLink = state
+        diagram.allowRelink = state
+      }
+    }
+
+    // 编辑栏选中变化
+    const editorItemChange = (item: EditorType) => {
+      setLinkedState(item && item.type == 'line')
+      activeEditorType = item
+    }
+
     return {
       activeModelRef,
-      editRef
+      editRef,
+      editorTemplate,
+      editorItemChange
     }
   }
 })

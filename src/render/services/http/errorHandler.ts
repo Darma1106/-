@@ -1,4 +1,5 @@
-import notification from 'ant-design-vue/es/notification'
+// import notification from 'ant-design-vue/es/notification'
+import { message } from 'ant-design-vue'
 
 import type { AxiosError } from 'axios'
 
@@ -31,19 +32,21 @@ export const errorHandler = (error: AxiosError): Promise<never> => {
     // 优先提示接口返回的错误
     const { status, data } = response
     const errorText = data.message || codeMessage[status] || response.statusText
-    notification.error({
-      message: `请求错误 status: ${status}`,
-      description: errorText,
-      duration: 2,
-      top: '100px'
-    })
+    message.error(errorText)
+    // notification.error({
+    //   message: `请求错误 status: ${status}`,
+    //   description: errorText,
+    //   duration: 2,
+    //   top: '100px'
+    // })
   } else if (!response) {
-    notification.error({
-      description: '您的网络发生异常，无法连接服务器',
-      message: '网络异常',
-      duration: 2,
-      top: '100px'
-    })
+    message.error('网络异常')
+    // notification.error({
+    //   description: '您的网络发生异常，无法连接服务器',
+    //   message: '网络异常',
+    //   duration: 2,
+    //   top: '100px'
+    // })
   }
   return Promise.reject(error)
 }

@@ -11,6 +11,7 @@ export interface TreeData extends TreeDataItem {
     | 'ActiveModel'
     | 'ProcessModel'
     | 'SequenceModel'
+    | 'TableModel'
   children?: TreeData[]
 }
 
@@ -23,7 +24,7 @@ export default class FrameworkService {
         msg: '成功',
         data: [
           {
-            title: '方案名称',
+            title: '体系建模',
             key: '0-0',
             slots: {
               icon: 'category'
@@ -31,7 +32,7 @@ export default class FrameworkService {
             type: 'nonModel',
             children: [
               {
-                title: '视图一',
+                title: '任务建模',
                 key: '0-1',
                 slots: {
                   icon: 'category',
@@ -39,11 +40,54 @@ export default class FrameworkService {
                 },
                 type: 'nonModel',
                 children: [
-                  { title: '组织结构模型', key: '0-0-0', slots: { icon: 'model' }, type: 'OrganizationModel' },
-                  { title: '矩阵模型', key: '0-0-1', slots: { icon: 'model' }, type: 'MatrixModel' },
-                  { title: '流程模型', key: '0-0-2', slots: { icon: 'model' }, type: 'ProcessModel' },
-                  { title: '活动模型', key: '0-0-3', slots: { icon: 'model' }, type: 'ActiveModel' }
-                  // { title: '时序模型', key: '0-0-4', slots: { title: 'meca', icon: 'model' }, type: 'SequenceModel' }
+                  { title: '任务分解描述', key: '0-0-0', slots: { icon: 'model' }, type: 'OrganizationModel' },
+                  { title: '任务流程描述', key: '0-0-1', slots: { icon: 'model' }, type: 'ProcessModel' },
+                  { title: '任务效能描述', key: '0-0-2', slots: { icon: 'model' }, type: 'TableModel' }
+                  // { title: '节点模型', key: '0-0-3', slots: { icon: 'model' }, type: 'ActiveModel' },
+                  // { title: '时序模型', key: '0-0-4', slots: { icon: 'model' }, type: 'SequenceModel' }
+                ]
+              },
+              {
+                title: '活动建模',
+                key: '0-2',
+                slots: {
+                  icon: 'category',
+                  title: 'meca'
+                },
+                type: 'nonModel',
+                children: [
+                  { title: '活动流程描述', key: '0-2-0', slots: { icon: 'model' }, type: 'ProcessModel' },
+                  { title: '活动与资源关联', key: '0-2-1', slots: { icon: 'model' }, type: 'MatrixModel' },
+                  { title: '活动属性描述', key: '0-2-2', slots: { icon: 'model' }, type: 'TableModel' }
+                ]
+              },
+              {
+                title: '服务建模',
+                key: '0-3',
+                slots: {
+                  icon: 'category',
+                  title: 'meca'
+                },
+                type: 'nonModel',
+                children: [
+                  { title: '服务列表', key: '0-3-0', slots: { icon: 'model' }, type: 'TableModel' },
+                  { title: '服务质量属性描述', key: '0-3-1', slots: { icon: 'model' }, type: 'TableModel' },
+                  { title: '服务接口描述', key: '0-3-2', slots: { icon: 'model' }, type: 'ActiveModel' },
+                  { title: '服务与作战资源关联', key: '0-3-3', slots: { icon: 'model' }, type: 'MatrixModel' }
+                ]
+              },
+              {
+                title: '资源建模',
+                key: '0-4',
+                slots: {
+                  icon: 'category',
+                  title: 'meca'
+                },
+                type: 'nonModel',
+                children: [
+                  { title: '资源列表', key: '0-4-0', slots: { icon: 'model' }, type: 'TableModel' },
+                  { title: '资源属性描述', key: '0-4-1', slots: { icon: 'model' }, type: 'TableModel' },
+                  { title: '资源接口描述', key: '0-4-2', slots: { icon: 'model' }, type: 'ActiveModel' }
                 ]
               }
             ]

@@ -18,7 +18,8 @@ export function supportLineMaker() {
 
 export function renderDiagramFromLocal(
   tabId: string | undefined,
-  baseDiagramRef: Ref<BaseDiagramInstance | null>
+  baseDiagramRef: Ref<BaseDiagramInstance | null>,
+  defaultJson = ''
 ): void {
   onMounted(() => {
     nextTick(() => {
@@ -26,6 +27,11 @@ export function renderDiagramFromLocal(
         const localJson = localStorage.getItem(tabId)
         if (localJson) {
           baseDiagramRef.value.renderJson(localJson)
+          console.log('local')
+        } else {
+          console.log('def')
+
+          baseDiagramRef.value.renderJson(defaultJson)
         }
       }
     })

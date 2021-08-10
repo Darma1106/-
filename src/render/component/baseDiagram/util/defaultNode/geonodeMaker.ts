@@ -30,7 +30,11 @@ export function geoNodeMaker(nodeOption?: NodeOption): go.Node {
         new go.Binding('fill', 'color'),
         new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)
       ),
-      make(go.Shape, { margin: 3, fill: '#000', strokeWidth: 0 }, new go.Binding('geometry', 'geo', geoFunc))
+      make(
+        go.Shape,
+        { margin: 3, fill: '#000', strokeWidth: 0, width: 30, height: 30, scale: 0.65 },
+        new go.Binding('geometry', 'geo', geoFunc)
+      )
       // {
       //   toolTip: make(
       //     'ToolTip',

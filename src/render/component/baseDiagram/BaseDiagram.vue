@@ -140,7 +140,9 @@ export default defineComponent({
           props?.afterLink(subject, model)
         }
         // 合并选中连线的data
-        Object.assign(subject.data, activeEditorType?.data)
+        if (activeEditorType && Object.keys(activeEditorType.data).length !== 0) {
+          Object.assign(subject.data, activeEditorType.data)
+        }
         linkModel.addLinkData(subject.data)
       }
     }
@@ -163,7 +165,7 @@ export default defineComponent({
         if (props.afterInit) {
           props.afterInit(diagram)
         }
-        diagram.toolManager.mouseDownTools.add(make(LinkShiftingTool))
+        // diagram.toolManager.mouseDownTools.add(make(LinkShiftingTool))
         diagram.nodeSelectionAdornmentTemplate = makeAddButton(addChildNode)
       })
     })
@@ -264,14 +266,11 @@ export default defineComponent({
   box-sizing: content-box;
   position: relative;
   height: 100%;
-  width: calc(100% - 2px);
+  // width: calc(100% - 2px);
   display: flex;
   flex-direction: row;
   .main {
     flex: 1;
-    border: 1px solid @layout-border-color;
-    border-top: none;
-    border-bottom: none;
   }
 }
 </style>

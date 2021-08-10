@@ -15,5 +15,6 @@ export enum CommonNodeTypeValue {
 }
 
 export enum CommonLinkTypeValue {
-  defaultLink = 'defaultLink'
+  defaultLink = 'defaultLink',
+  avoidLink = 'avoidLink'
 }

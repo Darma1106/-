@@ -155,8 +155,8 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .matrix-model {
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+  // border-left: 1px solid black;
+  // border-right: 1px solid black;
   width: calc(100% - 2px);
 
   height: 100%;

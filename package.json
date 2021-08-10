@@ -14,6 +14,11 @@
     "commit": "git cz",
     "prepare": "husky install"
   },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
   "build": {
     "appId": "xxx@gmail.com",
     "electronDownload": {
@@ -56,6 +61,7 @@
     "ant-design-vue": "^2.2.2",
     "axios": "^0.21.1",
     "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
     "electron-is-dev": "^1.2.0",
     "electron-store": "^6.0.0",
     "gojs": "2.1.32",
