@@ -23,7 +23,8 @@ export default defineComponent({
     MatrixModel: defineAsyncComponent(() => import('@/views/matrixModel/MatrixModel.vue')),
     OrganizationModel: defineAsyncComponent(() => import('@/views/organizationModel/OrganizationModel.vue')),
     SequenceModel: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue')),
-    ProcessModel: defineAsyncComponent(() => import('@/views/processModel/ProcessModel.vue'))
+    ProcessModel: defineAsyncComponent(() => import('@/views/processModel/ProcessModel.vue')),
+    TableModel: defineAsyncComponent(() => import('@/views/tableModel/TableModel.vue'))
   },
   setup() {
     const { tabs, activeTab, add, change, remove } = useTabStore()
@@ -82,16 +83,21 @@ export default defineComponent({
 
 .tabs {
   height: 100%;
+  width: calc(100% - 2px);
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
 
   .tab-panel {
     height: 100%;
+    box-sizing: border-box !important;
+
+    // border-left: 1px solid #000;
+    // border-right: 1px solid #000;
   }
   ::v-deep(.ant-tabs-bar) {
     margin: 0;
     width: calc(100% - 2px);
     background-color: #ddd;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
   }
 
   ::v-deep(.ant-tabs-top-content, .ant-tabs-bottom-content) {
