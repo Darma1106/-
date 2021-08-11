@@ -58,7 +58,7 @@ export default defineComponent({
 .editor {
   // border: 2px solid red;
   z-index: 99999999;
-  height: 500px;
+  height: 400px;
   width: 120px;
   position: absolute;
   top: 5%;

@@ -501,12 +501,5 @@ export default defineComponent({
   .active-model {
     flex: 1;
   }
-  .editor {
-    width: 150px;
-    height: 100%;
-    margin-right: 2px;
-    background-color: whitesmoke;
-    border: solid 1px black;
-  }
 }
 </style>
