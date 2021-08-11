@@ -41,7 +41,7 @@ export default class FrameworkService {
                 type: 'nonModel',
                 children: [
                   { title: '任务分解描述', key: '0-0-0', slots: { icon: 'model' }, type: 'OrganizationModel' },
-                  { title: '任务流程描述', key: '0-0-1', slots: { icon: 'model' }, type: 'ProcessModel' },
+                  { title: '任务流程描述', key: '0-0-9', slots: { icon: 'model' }, type: 'SequenceModel' },
                   { title: '任务效能描述', key: '0-0-2', slots: { icon: 'model' }, type: 'TableModel' }
                   // { title: '节点模型', key: '0-0-3', slots: { icon: 'model' }, type: 'ActiveModel' },
                   // { title: '时序模型', key: '0-0-4', slots: { icon: 'model' }, type: 'SequenceModel' }

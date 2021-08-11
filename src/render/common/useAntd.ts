@@ -12,7 +12,8 @@ import {
   Checkbox,
   Divider,
   Switch,
-  Collapse
+  Collapse,
+  Popconfirm
 } from 'ant-design-vue'
 
 import type { App } from 'vue'
@@ -32,7 +33,8 @@ export function useAntd(app: App<Element>): void {
     Checkbox,
     Switch,
     Divider,
-    Collapse
+    Collapse,
+    Popconfirm
   ]
   Antd.forEach((component) => {
     app.use(component)
