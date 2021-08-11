@@ -8,12 +8,14 @@
       <LayoutContent />
     </a-layout>
     <a-layout-footer> <layout-footer /></a-layout-footer>
+    <ProjectManage />
   </a-layout>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
+import ProjectManage from '../views/projectManege/ProjectManage.vue'
 import LayoutHeader from './header/Header.vue'
 import LayoutContent from './content/Content.vue'
 import LayoutFooter from './footer/Footer.vue'
@@ -21,7 +23,7 @@ import LayoutFooter from './footer/Footer.vue'
 import 'splitpanes/dist/splitpanes.css'
 
 export default defineComponent({
-  components: { LayoutHeader, LayoutContent, LayoutFooter }
+  components: { LayoutHeader, LayoutContent, LayoutFooter, ProjectManage }
 })
 </script>
 

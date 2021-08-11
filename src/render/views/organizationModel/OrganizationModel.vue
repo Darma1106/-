@@ -23,7 +23,7 @@ export default defineComponent({
   },
   setup(props) {
     const baseDiagramRef = ref<BaseDiagramInstance | null>(null)
-    const { onSave } = useEventStore()
+    const { onSave, onEvent } = useEventStore()
     if (props.tabId) {
       onSave(() => {
         if (props.tabId && baseDiagramRef.value) {
@@ -31,6 +31,13 @@ export default defineComponent({
           message.success('保存成功')
         }
       }, props.tabId)
+      onEvent(
+        'projectManage',
+        () => {
+          console.log('测试并发')
+        },
+        props.tabId
+      )
     }
 
     onMounted(() => {

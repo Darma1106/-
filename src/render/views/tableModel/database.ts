@@ -29,16 +29,21 @@ const data002: MTable = {
     {
       title: '任务名称',
       dataIndex: 'name',
-      width: '30%',
+      width: 100,
       slots: { customRender: 'name' }
     },
     {
       title: '效能',
-      dataIndex: 'age'
+      dataIndex: 'age',
+      width: 100,
+
+      slots: { customRender: 'age' }
     },
     {
       title: '操作',
       dataIndex: 'operation',
+      width: 30,
+
       slots: { customRender: 'operation' }
     }
   ],
@@ -55,15 +60,17 @@ const data102: MTable = {
     {
       title: '任务名称',
       dataIndex: 'name',
-      width: '30%',
+      width: 100,
       slots: { customRender: 'name' }
     },
     {
       title: '效能',
+      width: 100,
       dataIndex: 'age'
     },
     {
       title: '操作',
+      width: 30,
       dataIndex: 'operation',
       slots: { customRender: 'operation' }
     }
@@ -81,15 +88,17 @@ const data200: MTable = {
     {
       title: '属性名称',
       dataIndex: 'name',
-      width: '30%',
+      width: 100,
       slots: { customRender: 'name' }
     },
     {
       title: '属性值',
+      width: 100,
       dataIndex: 'age'
     },
     {
       title: '操作',
+      width: 30,
       dataIndex: 'operation',
       slots: { customRender: 'operation' }
     }
@@ -107,16 +116,18 @@ const data201: MTable = {
     {
       title: '服务名称',
       dataIndex: 'name',
-      width: '30%',
+      width: 100,
       slots: { customRender: 'name' }
     },
     {
       title: '效能',
-      dataIndex: 'age'
+      dataIndex: 'age',
+      width: 100
     },
     {
       title: '操作',
       dataIndex: 'operation',
+      width: 30,
       slots: { customRender: 'operation' }
     }
   ],
@@ -133,16 +144,18 @@ const data300: MTable = {
     {
       title: '资源名称',
       dataIndex: 'name',
-      width: '30%',
+      width: 100,
       slots: { customRender: 'name' }
     },
     {
       title: '效能',
+      width: 100,
       dataIndex: 'age'
     },
     {
       title: '操作',
       dataIndex: 'operation',
+      width: 30,
       slots: { customRender: 'operation' }
     }
   ],
@@ -159,16 +172,18 @@ const data301: MTable = {
     {
       title: '属性名称',
       dataIndex: 'name',
-      width: '30%',
+      width: 100,
       slots: { customRender: 'name' }
     },
     {
       title: '效能',
+      width: 100,
       dataIndex: 'age'
     },
     {
       title: '操作',
       dataIndex: 'operation',
+      width: 30,
       slots: { customRender: 'operation' }
     }
   ],

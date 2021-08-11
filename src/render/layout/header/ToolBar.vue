@@ -59,7 +59,8 @@ export default defineComponent({
         disable: false,
         type: 'basedButton',
         onclick: () => {
-          console.log('123123123')
+          eventSwitch('projectManage', 'system')
+          eventSwitch('projectManage')
         },
         icon: iconFont.打开
       },

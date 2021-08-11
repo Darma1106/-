@@ -23,7 +23,10 @@ interface CallbackMap {
 enum EventTypeValue {
   save = 'save',
   refresh = 'refresh',
-  test = 'test'
+  test = 'test',
+
+  //头部菜单
+  projectManage = 'projectManage'
 }
 
 export type EventType = keyof typeof EventTypeValue

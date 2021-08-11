@@ -1,28 +1,46 @@
 <template>
   <a-button class="editable-add-btn" style="margin-bottom: 8px; margin-left: 80%" @click="handleAdd">添加</a-button>
-  <a-table bordered :data-source="dataSource" :columns="columns">
-    <template #name="{ text, record }">
-      <div class="editable-cell">
-        <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-          <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
-          <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
-        </div>
-        <div v-else class="editable-cell-text-wrapper">
-          {{ text || ' ' }}
-          <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
-        </div>
+  <a-table bordered :data-source="dataSource" :columns="columns" class="table-model" :pagination="false">
+    <template v-for="col in ['name', 'age', 'address']" #[col]="{ text, record }" :key="col">
+      <div>
+        <a-input v-if="editableData[record.key]" v-model:value="editableData[record.key][col]" style="margin: -5px 0" />
+        <template v-else>
+          {{ text }}
+        </template>
       </div>
     </template>
+
     <template #operation="{ record }">
-      <a-popconfirm v-if="dataSource.length" title="Sure to delete?" @confirm="onDelete(record.key)">
-        <a>Delete</a>
-      </a-popconfirm>
+      <div class="editable-row-operations">
+        <span v-if="editableData[record.key]">
+          <a @click="save(record.key)">保存</a>
+          <a-popconfirm title="确定要取消吗?" cancel-text="取消" ok-text="确定" @confirm="cancel(record.key)">
+            <a>取消</a>
+          </a-popconfirm>
+        </span>
+        <span v-else>
+          <a @click="edit(record.key)">编辑</a>
+          <a-popconfirm
+            v-if="dataSource.length"
+            title="确定要删除吗?"
+            cancel-text="取消"
+            ok-text="确定"
+            @confirm="onDelete(record.key)"
+          >
+            <a>删除</a>
+          </a-popconfirm>
+        </span>
+      </div>
     </template>
+    <!-- <template #operation="{ record }">
+      <a-popconfirm v-if="dataSource.length" title="确定要删除吗?" @confirm="onDelete(record.key)">
+        <a>删除</a>
+      </a-popconfirm>
+    </template> -->
   </a-table>
 </template>
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, UnwrapRef } from 'vue'
-import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { cloneDeep } from 'lodash'
 
 import { dataMap } from './database'
@@ -38,10 +56,6 @@ interface DataItem {
 }
 
 export default defineComponent({
-  components: {
-    CheckOutlined,
-    EditOutlined
-  },
   props: {
     tableColumns: {
       type: Array as PropType<number[]>
@@ -78,6 +92,7 @@ export default defineComponent({
 
     const count = computed(() => dataSource.value.length + 1)
     const editableData: UnwrapRef<Record<string, DataItem>> = reactive({})
+    const editColumn = ref<string>()
 
     const edit = (key: string) => {
       editableData[key] = cloneDeep(dataSource.value.filter((item) => key === item.key)[0])
@@ -86,72 +101,37 @@ export default defineComponent({
       Object.assign(dataSource.value.filter((item) => key === item.key)[0], editableData[key])
       delete editableData[key]
     }
+    const cancel = (key: string) => {
+      delete editableData[key]
+    }
 
     const onDelete = (key: string) => {
       dataSource.value = dataSource.value.filter((item) => item.key !== key)
     }
     const handleAdd = () => {
       const newData = {
-        key: `${count.value}`,
-        name: ``,
-        age: '',
-        address: ``
+        key: `${count.value}`
       }
       dataSource.value.push(newData)
     }
 
     return {
       columns,
-      onDelete,
+      cancel,
       handleAdd,
       dataSource,
       editableData,
+      editColumn,
       count,
       edit,
+      onDelete,
       save
     }
   }
 })
 </script>
-<style lang="less">
-.editable-cell {
-  position: relative;
-  .editable-cell-input-wrapper,
-  .editable-cell-text-wrapper {
-    padding-right: 24px;
-  }
-
-  .editable-cell-text-wrapper {
-    padding: 5px 24px 5px 5px;
-  }
-
-  .editable-cell-icon,
-  .editable-cell-icon-check {
-    position: absolute;
-    right: 0;
-    width: 20px;
-    cursor: pointer;
-  }
-
-  .editable-cell-icon {
-    margin-top: 4px;
-    display: none;
-  }
-
-  .editable-cell-icon-check {
-    line-height: 28px;
-  }
-
-  .editable-cell-icon:hover,
-  .editable-cell-icon-check:hover {
-    color: #108ee9;
-  }
-
-  .editable-add-btn {
-    margin-bottom: 8px;
-  }
-}
-.editable-cell:hover .editable-cell-icon {
-  display: inline-block;
+<style lang="less" scoped>
+.editable-row-operations a {
+  margin-right: 20px;
 }
 </style>

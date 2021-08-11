@@ -25,12 +25,12 @@ export default defineComponent({
     let diagram: go.Diagram | null = null
     function init(templeteRef: HTMLDivElement): go.Diagram {
       // some parameters
-      const LinePrefix = 20 // vertical starting point in document for all Messages and Activations
-      const LineSuffix = 30 // vertical length beyond the last message time
-      const MessageSpacing = 20 // vertical distance between Messages at different steps
-      const ActivityWidth = 10 // width of each vertical activity bar
-      const ActivityStart = 5 // height before start message time
-      const ActivityEnd = 5 // height beyond end message time
+      const LinePrefix = 20 // 文档中所有消息和激活的垂直起点
+      const LineSuffix = 30 // 超过上次消息时间的垂直长度
+      const MessageSpacing = 20 // 不同台阶处消息之间的垂直距离
+      const ActivityWidth = 10 // 每个垂直活动条的宽度
+      const ActivityStart = 5 // 开始消息时间前的高度
+      const ActivityEnd = 5 // 超出结束消息时间的高度
       function computeLifelineHeight(duration: number) {
         return LinePrefix + duration * MessageSpacing + LineSuffix
       }
@@ -77,16 +77,17 @@ export default defineComponent({
         let r = port.getDocumentBounds()
         let op = otherport.getDocumentPoint(go.Spot.Center)
         let data = this.data
-        let time = data !== null ? data.time : this.time // if not bound, assume this has its own "time" property
+        let time = data !== null ? data.time : this.time // 如果未绑定，则假定它有自己的“时间”属性
         let aw = this.findActivityWidth(node, time)
         let x = op.x > p.x ? p.x + aw / 2 : p.x - aw / 2
         let y = convertTimeToY(time)
+
         return new go.Point(x, y)
       }
       MessageLink.prototype.findActivityWidth = function (node: go.Node, time: number): number {
         let aw = ActivityWidth
         if (node instanceof go.Group) {
-          // see if there is an Activity Node at this point -- if not, connect the link directly with the Group's lifeline
+          // 查看此时是否有活动节点——如果没有，请将链接直接连接到组的生命线
           if (
             !node.memberParts.any(function (mem) {
               let act = mem.data
@@ -114,9 +115,9 @@ export default defineComponent({
       }
       MessageLink.prototype.computePoints = function (): boolean {
         if (this.fromNode === this.toNode) {
-          // also handle a reflexive link as a simple orthogonal loop
+          // 也可以将自反链接处理为简单的正交循环
           let data = this.data
-          let time = data !== null ? data.time : this.time // if not bound, assume this has its own "time" property
+          let time = data !== null ? data.time : this.time // 如果未绑定，则假定它有自己的“时间”属性
           let p = this.fromNode.port.getDocumentPoint(go.Spot.Center)
           let aw = this.findActivityWidth(this.fromNode, time)
           let x = p.x + aw / 2
@@ -344,7 +345,7 @@ export default defineComponent({
         MessageLink as any, // defined below
         { selectionAdorned: true, curviness: 0 },
         make(go.Shape, 'Rectangle', { stroke: 'black' }),
-        make(go.Shape, { toArrow: 'OpenTriangle', stroke: 'black' }),
+        make(go.Shape, { toArrow: 'OpenTriangle', stroke: 'red' }),
         make(
           go.TextBlock,
           {

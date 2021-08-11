@@ -57,7 +57,7 @@ export default defineComponent({
 <style lang="less" scoped>
 .editor {
   // border: 2px solid red;
-  z-index: 99999999;
+  z-index: 20;
   height: 400px;
   width: 120px;
   position: absolute;
