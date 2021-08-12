@@ -345,7 +345,7 @@ export default defineComponent({
         MessageLink as any, // defined below
         { selectionAdorned: true, curviness: 0 },
         make(go.Shape, 'Rectangle', { stroke: 'black' }),
-        make(go.Shape, { toArrow: 'OpenTriangle', stroke: 'red' }),
+        make(go.Shape, { toArrow: 'OpenTriangle', stroke: 'black' }),
         make(
           go.TextBlock,
           {

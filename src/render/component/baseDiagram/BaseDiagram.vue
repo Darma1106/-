@@ -13,7 +13,7 @@ import * as go from 'gojs'
 import { commonNodeMap } from '@/component/baseDiagram/util/defaultNode'
 import { commonLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { v4 as uuidv4 } from 'uuid'
-import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
+// import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
 import { guidedDraggingToolOption } from '@/component/baseDiagram/util/diagramTool/GuidedDraggingTool'
 import { addChild, makeAddButton } from './util/node'
 import Editor from './editor.vue'
@@ -74,6 +74,9 @@ export default defineComponent({
         Object.assign({
           'animationManager.isEnabled': false,
           click: diagramClick,
+          allowLink: false,
+          allowRelink: false,
+
           // grid: make(
           //   go.Panel,
           //   'Grid',
