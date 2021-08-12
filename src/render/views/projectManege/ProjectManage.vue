@@ -5,13 +5,14 @@
         <template #operation>
           <div class="action-container">
             <a-button type="primary">打开</a-button>
-            <a-button>编辑</a-button>
+            <a-button @click="edit">编辑</a-button>
             <a-button type="primary" danger>删除</a-button>
           </div>
         </template>
       </a-table>
     </template>
   </BaseModal>
+  <SchemeForm ref="schemeFormRef" />
 </template>
 
 <script lang="ts">
@@ -19,6 +20,7 @@ import BaseModal from '@/component/modal/BaseModal.vue'
 import { defineComponent, reactive, ref } from 'vue'
 
 import { useEventStore } from '@/store'
+import SchemeForm from './SchemeForm.vue'
 import type { Ref } from 'vue'
 import type { BaseModalInstance } from '@/component/modal/type'
 import type { ColumnProps } from 'ant-design-vue/lib/table/interface'
@@ -58,7 +60,7 @@ const data: TableData[] = [
 
 export default defineComponent({
   name: '',
-  components: { BaseModal },
+  components: { BaseModal, SchemeForm },
   setup() {
     const modalRef: Ref<BaseModalInstance | null> = ref(null)
     const show = () => {
@@ -101,11 +103,25 @@ export default defineComponent({
       }
     ])
 
+    const schemeFormRef: Ref<null | { add: () => void; show: () => void }> = ref(null)
+    const edit = () => {
+      if (schemeFormRef.value) {
+        schemeFormRef.value.show()
+      }
+    }
+    const addScheme = () => {
+      if (schemeFormRef.value) {
+        schemeFormRef.value.add()
+      }
+    }
     return {
       modalRef,
+      schemeFormRef,
       data,
       columns,
-      show
+      show,
+      edit,
+      addScheme
     }
   }
 })
