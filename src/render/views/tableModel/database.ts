@@ -10,20 +10,6 @@ export interface MTable {
   colums: ColumnProps[]
 }
 export const dataMap: Map<string, MTable | string> = new Map()
-const dataSource: DataItem[] = [
-  {
-    key: '0',
-    name: 'Edward King 0',
-    age: 32,
-    address: 'London, Park Lane no. 0'
-  },
-  {
-    key: '1',
-    name: 'Edward King 1',
-    age: 32,
-    address: 'London, Park Lane no. 1'
-  }
-]
 const data002: MTable = {
   colums: [
     {

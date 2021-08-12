@@ -23,7 +23,6 @@ if [ -z "$husky_skip_init" ]; then
 
   if [ $exitCode != 0 ]; then
     echo "husky - $hook_name hook exited with code $exitCode (error)"
-    echo "请先查看提交规则"
   fi
 
   exit $exitCode
