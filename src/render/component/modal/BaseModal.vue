@@ -1,5 +1,14 @@
 <template>
-  <a-modal v-model:visible="visible" :title="title" :confirm-loading="loding" @ok="handleOk" @cancel="handleClose">
+  <a-modal
+    v-model:visible="visible"
+    :title="title"
+    :confirm-loading="loding"
+    :width="width"
+    ok-text="确定"
+    cancel-text="取消"
+    @ok="handleOk"
+    @cancel="handleClose"
+  >
     <slot />
   </a-modal>
 </template>
@@ -17,6 +26,10 @@ export default defineComponent({
     title: {
       type: String,
       default: 'defaultTitle'
+    },
+    width: {
+      type: String,
+      default: '50%'
     },
     onOk: {
       type: Function,
