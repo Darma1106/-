@@ -2,15 +2,15 @@
   <a-dropdown class="head-menu-item" :trigger="['click']">
     <a class="ant-dropdown-link" @click.prevent> {{ itemList?.label }} </a>
     <template #overlay>
-      <a-menu>
+      <a-menu @click="onContextMenuClick">
         <!-- <a-menu-item v-for="item in itemList?.children" :key="item.name">{{ item.label }}</a-menu-item> -->
-        <div v-for="context in itemList?.children" :key="context.name">
+        <div v-for="(context, index) in itemList?.children" :key="index">
           <a-sub-menu v-if="context.children" :key="context.name" :title="context.label" :disabled="!!context.disable">
             <a-menu-item v-for="subItem in context.children" :key="subItem.name" :disabled="!!subItem.disable">{{
               subItem.label
             }}</a-menu-item>
           </a-sub-menu>
-          <a-menu-item v-else :disabled="!!context.disable">{{ context.label }}</a-menu-item>
+          <a-menu-item v-else :key="index" :disabled="!!context.disable">{{ context.label }}</a-menu-item>
         </div>
       </a-menu>
     </template>
@@ -26,8 +26,16 @@ export default defineComponent({
     itemList: {
       type: Object as PropType<MenuItem>
     }
+  },
+  setup(props) {
+    const onContextMenuClick = ({ key }: { key: number }) => {
+      const clickFn = props.itemList?.children?.[key].click
+      if (clickFn) {
+        clickFn()
+      }
+    }
+    return { onContextMenuClick }
   }
-  // setup() {}
 })
 </script>
 

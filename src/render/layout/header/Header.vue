@@ -10,6 +10,7 @@ import { defineComponent, reactive } from 'vue'
 
 import HeadMenuItem from '@/component/headMenuItem/HeadMenuItem.vue'
 
+import { useEventStore } from '@/store'
 import ToolBar from './ToolBar.vue'
 
 import type { MenuItem } from '@/component/headMenuItem/type'
@@ -17,12 +18,16 @@ import type { MenuItem } from '@/component/headMenuItem/type'
 export default defineComponent({
   components: { HeadMenuItem, ToolBar },
   setup() {
+    const { eventSwitch } = useEventStore()
+    const handleProjectManage = () => {
+      eventSwitch('projectManage', 'system')
+    }
     const itemList: MenuItem[] = reactive([
       {
         name: 'gongcheng',
         label: '项目管理(P)',
         children: [
-          { name: 'caidan1', label: '菜单1' },
+          { name: 'projectManage', label: '项目管理', click: handleProjectManage },
           { name: 'caidan2', label: '菜单二' }
         ]
       },

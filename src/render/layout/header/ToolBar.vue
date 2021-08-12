@@ -58,10 +58,6 @@ export default defineComponent({
         title: '打开',
         disable: false,
         type: 'basedButton',
-        onclick: () => {
-          eventSwitch('projectManage', 'system')
-          eventSwitch('projectManage')
-        },
         icon: iconFont.打开
       },
       {
