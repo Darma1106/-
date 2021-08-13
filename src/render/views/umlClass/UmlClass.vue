@@ -6,9 +6,8 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 
-import { init } from './ts/umlClassDiagram'
-
 import type { Ref } from 'vue'
+import { init } from './ts/umlClassDiagram'
 
 export default defineComponent({
   setup() {

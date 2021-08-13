@@ -1,4 +1,5 @@
-import { onMounted, reactive, Ref } from 'vue'
+import { onMounted, reactive } from 'vue'
+import type { Ref } from 'vue'
 import ProjectService, { ProjectInfo } from '../../services/module/projectService'
 
 import useFlag from '../hooks/useFlag'

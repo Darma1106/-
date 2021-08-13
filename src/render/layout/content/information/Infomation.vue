@@ -29,11 +29,11 @@ export default defineComponent({
 <style lang="less" scoped>
 .information {
   height: 100%;
-  border-left: 1px solid @layout-border-color;
+  border-left: 1px solid @my-layout-border-color;
 }
 .tab-area {
   text-align: center;
-  border-bottom: 1px solid @layout-border-color;
+  border-bottom: 1px solid @my-layout-border-color;
   margin-bottom: 20px;
   ::v-deep(.ant-tabs-bar) {
     margin-bottom: 2px;

@@ -6,10 +6,10 @@
 
 <script lang="ts">
 import { defineComponent, nextTick, ref } from 'vue'
+import type { Ref, PropType } from 'vue'
 import BaseForm from '../form/index.vue'
 import BaseModal from '../modal/BaseModal.vue'
 import { Common } from '../form/type/common'
-import type { Ref, PropType } from 'vue'
 import type { IFormConfig, IFormRef } from '../form/type'
 import type { BaseModalInstance } from '../modal/type'
 

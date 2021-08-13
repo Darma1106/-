@@ -1,4 +1,5 @@
-import { ref, Ref, computed, onMounted, onUnmounted, ComputedRef } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import type { Ref, ComputedRef } from 'vue'
 
 interface WindowSize {
   width: Ref<number>

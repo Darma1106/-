@@ -1,8 +1,8 @@
-import { InjectionKey } from 'vue'
+import type { InjectionKey } from 'vue'
 import { createStore, useStore as baseUseStore } from 'vuex'
+import type { Store } from 'vuex'
 import { loadModules, context, modules } from './modules'
 
-import type { Store } from 'vuex'
 import type { StoreTabs } from './modules/tabs'
 
 export interface State {

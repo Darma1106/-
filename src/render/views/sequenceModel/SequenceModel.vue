@@ -7,7 +7,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, onMounted, Ref, ref } from 'vue'
+import { defineComponent, nextTick, onMounted, ref } from 'vue'
+import type { Ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 
@@ -74,7 +75,7 @@ export default defineComponent({
         otherport: go.GraphObject
       ) {
         let p = port.getDocumentPoint(go.Spot.Center)
-        let r = port.getDocumentBounds()
+        // let r = port.getDocumentBounds()
         let op = otherport.getDocumentPoint(go.Spot.Center)
         let data = this.data
         let time = data !== null ? data.time : this.time // 如果未绑定，则假定它有自己的“时间”属性

@@ -12,7 +12,8 @@
     "build:ele": "node script/build --env=production",
     "build": "npm run build:vue && npm run build:ele && electron-builder",
     "commit": "git cz",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint-fix": "eslint --fix --ext .js --ext .ts --ext .jsx --ext .vue src/"
   },
   "config": {
     "commitizen": {

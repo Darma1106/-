@@ -1,6 +1,6 @@
-import { icons } from '@/common/icons'
-import { ArrowTypeValue, CommonNodeTypeValue, CommonLinkTypeValue } from './enum'
 import type { Node, Link, Diagram, ObjectData } from 'gojs'
+import { ArrowTypeValue, CommonNodeTypeValue, CommonLinkTypeValue } from './enum'
+import { icons } from '@/common/icons'
 
 export type ArrowType = keyof typeof ArrowTypeValue
 

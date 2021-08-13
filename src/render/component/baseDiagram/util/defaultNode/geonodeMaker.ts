@@ -1,7 +1,7 @@
 import * as go from 'gojs'
-import { icons } from '@/common/icons'
-import { basedNodeMaker, make } from './baseNodeMaker'
 import type { NodeOption, Icons } from '../../type'
+import { basedNodeMaker, make } from './baseNodeMaker'
+import { icons } from '@/common/icons'
 
 export function geoNodeMaker(nodeOption?: NodeOption): go.Node {
   return basedNodeMaker(

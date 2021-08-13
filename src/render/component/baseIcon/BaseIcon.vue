@@ -5,9 +5,8 @@
 <script lang="ts">
 import { createFromIconfontCN } from '@ant-design/icons-vue'
 import { defineComponent } from 'vue'
-import { iconFont } from './type/enum'
-
 import type { PropType } from 'vue'
+import { iconFont } from './type/enum'
 
 const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2431681_jyp8pbbxa9.js'

@@ -40,13 +40,12 @@
   </a-table>
 </template>
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, UnwrapRef } from 'vue'
+import { computed, defineComponent, reactive, ref } from 'vue'
+import type { UnwrapRef, Ref, PropType } from 'vue'
 import { cloneDeep } from 'lodash'
 
 import { dataMap } from './database'
 import type { MTable } from './database'
-
-import type { Ref, PropType } from 'vue'
 
 interface DataItem {
   key: string

@@ -1,8 +1,8 @@
 import { onMounted, nextTick } from 'vue'
-import { GuidedDraggingTool } from './diagramTool/GuidedDraggingTool'
 
 import type { Ref } from 'vue'
 import type { BaseDiagramInstance } from '../type'
+import { GuidedDraggingTool } from './diagramTool/GuidedDraggingTool'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function supportLineMaker() {

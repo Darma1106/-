@@ -18,7 +18,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
 import { MenuItem } from './type'
 
 export default defineComponent({

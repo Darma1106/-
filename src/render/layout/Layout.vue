@@ -37,7 +37,7 @@ export default defineComponent({
     padding: 0;
     height: auto;
     line-height: normal;
-    border-bottom: 2px solid @layout-border-color;
+    border-bottom: 2px solid @my-layout-border-color;
   }
 
   ::v-deep(.ant-layout-content) {
@@ -46,13 +46,13 @@ export default defineComponent({
 
   ::v-deep(.ant-layout-sider) {
     background: #fff;
-    border-right: 2px solid @layout-border-color;
+    border-right: 2px solid @my-layout-border-color;
   }
 
   ::v-deep(.ant-layout-footer) {
     height: 40px;
     background: @base-background-color;
-    border: 2px solid @layout-border-color;
+    border: 2px solid @my-layout-border-color;
     padding: 0;
   }
 }

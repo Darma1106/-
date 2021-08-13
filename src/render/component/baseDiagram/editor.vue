@@ -21,11 +21,11 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
+import type { PropType } from 'vue'
 import { ActiveBox } from '../active-box'
 
-import type { PropType } from 'vue'
 import type { EditorType, EditorTemplate } from './type'
+import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 
 export default defineComponent({
   components: { ActiveBox, BaseIcon },

@@ -1,11 +1,11 @@
 import { createApp } from 'vue'
-import { arrayExtend } from '@/common/arrayExtend'
 import { useAntd } from './common/useAntd'
 
 // import Antd from 'ant-design-vue'
 
 import App from './App.vue'
 import router from './router/index'
+import { arrayExtend } from '@/common/arrayExtend'
 // import store, { key } from './store'
 
 // import 'ant-design-vue/dist/antd.css'

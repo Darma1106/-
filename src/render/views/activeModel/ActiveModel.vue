@@ -6,13 +6,13 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import { message } from 'ant-design-vue'
+import type { Ref } from 'vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 import { useEventStore } from '@/store'
 import { renderDiagramFromLocal } from '@/component/baseDiagram/util/diagram'
-import { message } from 'ant-design-vue'
 import { dataMap } from '@/views/tableModel/database'
 
-import type { Ref } from 'vue'
 import type { EditorTemplate, BaseDiagramInstance } from '@/component/baseDiagram/type'
 
 export default defineComponent({

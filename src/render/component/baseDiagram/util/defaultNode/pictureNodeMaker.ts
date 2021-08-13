@@ -1,6 +1,6 @@
 import * as go from 'gojs'
-import { basedNodeMaker, make } from './baseNodeMaker'
 import type { NodeOption } from '../../type'
+import { basedNodeMaker, make } from './baseNodeMaker'
 
 export function pictureNodeMaker(nodeOption?: NodeOption): go.Node {
   return basedNodeMaker(

@@ -21,14 +21,14 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import { Divider } from 'ant-design-vue'
+import type { Ref } from 'vue'
+import DetailBar from './DetailBar.vue'
 import ContextButton from '@/component/panelItem/contextButton.vue'
 import BasedButton from '@/component/panelItem/basedButton.vue'
 import { useEventStore, useTabStore } from '@/store'
-import { Divider } from 'ant-design-vue'
 import { iconFont } from '@/component/baseIcon/type/enum'
-import DetailBar from './DetailBar.vue'
 
-import type { Ref } from 'vue'
 import type { toolConfig } from '@/component/panelItem/type'
 
 export default defineComponent({
@@ -271,7 +271,7 @@ export default defineComponent({
     display: flex;
     height: 60px;
     flex-direction: row;
-    border-bottom: 1px solid #000;
+    border-bottom: @1px-border;
     padding-top: 2px;
     .item {
       // border: 2px solid red;

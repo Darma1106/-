@@ -49,14 +49,14 @@
 <script lang="ts">
 import { Tree } from 'ant-design-vue'
 import { DownOutlined, SmileOutlined, FrownOutlined, FrownFilled } from '@ant-design/icons-vue'
+import { defineComponent, onMounted, ref } from 'vue'
+import type { Ref } from 'vue'
 import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 
-import { defineComponent, onMounted, ref } from 'vue'
 import FrameworkService from '@/services/module/fremeworkService'
 import { useTabStore } from '@/store'
 import { iconFont } from '@/component/baseIcon/type/enum'
 
-import type { Ref } from 'vue'
 import type { TreeData } from '@/services/module/fremeworkService'
 import type { Pane } from '@/store/modules/useTabStore'
 
@@ -120,7 +120,7 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .side-tree {
-  border-right: 2px solid @layout-border-color;
+  border-right: 2px solid @my-layout-border-color;
   height: 100%;
 }
 </style>

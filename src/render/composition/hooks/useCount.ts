@@ -1,4 +1,5 @@
-import { reactive, readonly, ref, Ref, watch } from 'vue'
+import { reactive, readonly, ref, watch } from 'vue'
+import type { Ref } from 'vue'
 
 export interface CountRange {
   min: number

@@ -8,10 +8,10 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 
+import ToolBar from './ToolBar.vue'
 import HeadMenuItem from '@/component/headMenuItem/HeadMenuItem.vue'
 
 import { useEventStore } from '@/store'
-import ToolBar from './ToolBar.vue'
 
 import type { MenuItem } from '@/component/headMenuItem/type'
 

@@ -7,8 +7,8 @@
 <script lang="ts">
 import Interact from 'interactjs'
 import { defineComponent, onMounted, ref } from 'vue'
-import { updatePosition, updateSize, getBoxStatus } from './init'
 import type { Ref, PropType } from 'vue'
+import { updatePosition, updateSize, getBoxStatus } from './init'
 import type { EdgeOptions } from './types'
 
 export default defineComponent({

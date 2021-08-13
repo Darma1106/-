@@ -26,9 +26,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
 import type { toolConfig } from './type'
+import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 
 export default defineComponent({
   name: 'ContextButton',

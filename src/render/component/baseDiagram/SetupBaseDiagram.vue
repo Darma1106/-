@@ -10,12 +10,12 @@
 import { nextTick, onMounted, ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
-import { geoNodeMaker, defaultNodeMaker } from '@/component/baseDiagram/util/defaultNode'
-import { defaultLineMaker } from '@/component/baseDiagram/util/defaultLine/defaultLineMaker'
 import { v4 as uuidv4 } from 'uuid'
-import { supportLineMaker } from './util/diagram'
 import type { Ref } from 'vue'
+import { supportLineMaker } from './util/diagram'
 import type { Template, EditorData } from './type'
+import { defaultLineMaker } from '@/component/baseDiagram/util/defaultLine/defaultLineMaker'
+import { geoNodeMaker, defaultNodeMaker } from '@/component/baseDiagram/util/defaultNode'
 
 const make = go.GraphObject.make
 

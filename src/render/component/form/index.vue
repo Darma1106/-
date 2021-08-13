@@ -53,7 +53,8 @@
   </a-form>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, ref, watchEffect, nextTick, watch } from 'vue'
+import { defineComponent, ref, watchEffect, nextTick, watch } from 'vue'
+import type { PropType } from 'vue'
 import { merge } from 'lodash'
 import {
   Input,
@@ -193,21 +194,21 @@ export default defineComponent({
       }
     )
 
-    const handleCheckHidden = (hidden?: boolean | ((data?: unknown) => boolean)) => {
-      // if (typeof hidden === 'boolean') {
-      //   return useDynamicValue<boolean>(hidden)
-      // } else {
-      //   return useDynamicValue<boolean>(false, hidden, modelRef)
-      // }
-    }
+    // const handleCheckHidden = (hidden?: boolean | ((data?: unknown) => boolean)) => {
+    // if (typeof hidden === 'boolean') {
+    //   return useDynamicValue<boolean>(hidden)
+    // } else {
+    //   return useDynamicValue<boolean>(false, hidden, modelRef)
+    // }
+    // }
 
-    const handleCheckDisabled = (disabled?: boolean | ((data?: unknown) => boolean)) => {
-      // if (typeof disabled === 'boolean') {
-      //   return useDynamicValue<boolean>(disabled)
-      // } else {
-      //   return useDynamicValue<boolean>(false, disabled, modelRef)
-      // }
-    }
+    // const handleCheckDisabled = (disabled?: boolean | ((data?: unknown) => boolean)) => {
+    // if (typeof disabled === 'boolean') {
+    //   return useDynamicValue<boolean>(disabled)
+    // } else {
+    //   return useDynamicValue<boolean>(false, disabled, modelRef)
+    // }
+    // }
 
     return {
       formRef,
@@ -220,9 +221,9 @@ export default defineComponent({
       validate,
       setFieldsValue,
       setFieldValue,
-      clearValidate,
-      handleCheckHidden,
-      handleCheckDisabled
+      clearValidate
+      // handleCheckHidden,
+      // handleCheckDisabled
     }
   }
 })

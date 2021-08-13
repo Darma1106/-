@@ -1,6 +1,6 @@
 import { ref, onMounted, nextTick } from 'vue'
-
-export default function useMountedState() {
+import type { Ref } from 'vue'
+export default function useMountedState(): Ref<boolean> {
   const isMounted = ref(false)
 
   onMounted(async () => {

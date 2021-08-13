@@ -1,6 +1,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
+import type { Ref } from 'vue'
 
-export default function useMedia(query: string, defaultState = false) {
+export default function useMedia(query: string, defaultState = false): Ref<boolean> {
   let mql: MediaQueryList
   const matches = ref(defaultState)
   const updateMatches = () => {

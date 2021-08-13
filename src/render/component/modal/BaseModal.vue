@@ -15,8 +15,8 @@
 
 <script lang="ts">
 import { Modal as AModal } from 'ant-design-vue'
-import { useFlag } from '@/composition'
 import { defineComponent } from 'vue'
+import { useFlag } from '@/composition'
 
 export default defineComponent({
   components: {

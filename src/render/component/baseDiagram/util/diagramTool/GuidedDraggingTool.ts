@@ -219,7 +219,10 @@ export class GuidedDraggingTool extends go.DraggingTool {
   /**
    * Shows vertical and horizontal guidelines for the dragged part.
    */
-  public doDragOver(pt: go.Point, obj: go.GraphObject): void {
+
+  // params
+  // pt: go.Point, obj: go.GraphObject
+  public doDragOver(): void {
     // clear all existing guidelines in case either show... method decides to show a guideline
     this.clearGuidelines()
 
@@ -239,7 +242,9 @@ export class GuidedDraggingTool extends go.DraggingTool {
    * On a mouse-up, snaps the selected part to the nearest guideline.
    * If not snapping, the part remains at its position.
    */
-  public doDropOnto(pt: go.Point, obj: go.GraphObject): void {
+  // params
+  // pt: go.Point, obj: go.GraphObject
+  public doDropOnto(): void {
     this.clearGuidelines()
 
     // gets the selected (perhaps copied) Part

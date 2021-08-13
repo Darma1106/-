@@ -7,17 +7,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, onMounted, PropType, Ref, ref } from 'vue'
+import { defineComponent, nextTick, onMounted, ref } from 'vue'
+import type { Ref, PropType } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
-import { commonNodeMap } from '@/component/baseDiagram/util/defaultNode'
-import { commonLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { v4 as uuidv4 } from 'uuid'
 // import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
-import { guidedDraggingToolOption } from '@/component/baseDiagram/util/diagramTool/GuidedDraggingTool'
 import { addChild, makeAddButton } from './util/node'
 import Editor from './editor.vue'
 import type { Template, CommonNodeType, CommonLinkType, AfterInit, AfterLink, EditorType, EditorTemplate } from './type'
+import { guidedDraggingToolOption } from '@/component/baseDiagram/util/diagramTool/GuidedDraggingTool'
+import { commonLinkMap } from '@/component/baseDiagram/util/defaultLine'
+import { commonNodeMap } from '@/component/baseDiagram/util/defaultNode'
 
 const make = go.GraphObject.make
 

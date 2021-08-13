@@ -7,7 +7,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, Ref, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
+import type { PropType, Ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 import { makeAddButton } from './util/node'
@@ -24,7 +25,7 @@ export default defineComponent({
       type: Array as PropType<Template<go.Node>[]>
     }
   },
-  setup(props) {
+  setup() {
     const activeModelRef: Ref<HTMLDivElement | null> = ref(null)
     const editRef: Ref<HTMLDivElement | null> = ref(null)
     let diagram: go.Diagram | null = null
@@ -58,7 +59,7 @@ export default defineComponent({
         },
         'commandHandler.archetypeGroupData': { isGroup: true, text: 'NEW GROUP' },
         SelectionGrouped: function (e: go.DiagramEvent) {
-          const group = e.subject
+          // const group = e.subject
           setTimeout(function () {
             // and have the user start editing its text
             e.diagram.commandHandler.editTextBlock()
@@ -666,61 +667,61 @@ export default defineComponent({
       }
     }
 
-    // 四周拓展 fig是拓展按钮形状
-    function makeArrowButton(spot: go.Spot, fig: string) {
-      const maker = function (e: go.InputEvent, shape: go.GraphObject) {
-        e.handled = true
-        e.diagram.model.commit(function (model: go.Model) {
-          // 此m其实为GraphLinksModel类型
-          const graphLinksModel: go.GraphLinksModel = model as go.GraphLinksModel
-          const selectNode: go.Part | null = (shape.part as go.Adornment).adornedPart
-          // 排除selnode为null的情况
-          if (selectNode) {
-            // 在Node的Spot方向上创建一个新节点
-            const point = new go.Point().setRectSpot(selectNode.actualBounds, spot)
-            point.subtract(selectNode.location)
-            point.scale(2, 2)
-            point.x += Math.sign(point.x) * 60
-            point.y += Math.sign(point.y) * 60
-            point.add(selectNode.location)
-            point.snapToGridPoint(e.diagram.grid.gridOrigin, e.diagram.grid.gridCellSize)
-            // 将Node的信息复制到新的Node
-            const nodeData = graphLinksModel.copyNodeData(selectNode.data)
-            // 排除nodeData为null的情况
-            if (nodeData) {
-              // 将新Node加入至原Node的Group里面
-              graphLinksModel.setGroupKeyForNodeData(nodeData, graphLinksModel.getGroupKeyForNodeData(selectNode.data))
-              graphLinksModel.addNodeData(nodeData) // 将Node数据加入到Model
-              // 创建一条连接两个Node的Link
-              const linkdata = { from: selectNode.key, to: graphLinksModel.getKeyForNodeData(nodeData) }
-              graphLinksModel.addLinkData(linkdata) // 将Link数据加入到Model
-              // 将新Node移动到目标位置并进入编辑模式
-              const newNode = e.diagram.findNodeForData(nodeData)
-              // 排除newNode为null的情况
-              if (newNode) {
-                newNode.location = point
-                e.diagram.select(newNode)
-                setTimeout(function () {
-                  e.diagram.commandHandler.editTextBlock()
-                }, 20)
-              }
-            }
-          }
-        })
-      }
-      return make(go.Shape, {
-        figure: fig,
-        alignment: spot,
-        alignmentFocus: spot.opposite(),
-        width: spot.equals(go.Spot.Top) || spot.equals(go.Spot.Bottom) ? 36 : 18,
-        height: spot.equals(go.Spot.Top) || spot.equals(go.Spot.Bottom) ? 18 : 36,
-        fill: 'orange',
-        strokeWidth: 0,
-        isActionable: true, // needed because it's in an Adornment
-        click: maker,
-        contextClick: maker
-      })
-    }
+    // // 四周拓展 fig是拓展按钮形状
+    // function makeArrowButton(spot: go.Spot, fig: string) {
+    //   const maker = function (e: go.InputEvent, shape: go.GraphObject) {
+    //     e.handled = true
+    //     e.diagram.model.commit(function (model: go.Model) {
+    //       // 此m其实为GraphLinksModel类型
+    //       const graphLinksModel: go.GraphLinksModel = model as go.GraphLinksModel
+    //       const selectNode: go.Part | null = (shape.part as go.Adornment).adornedPart
+    //       // 排除selnode为null的情况
+    //       if (selectNode) {
+    //         // 在Node的Spot方向上创建一个新节点
+    //         const point = new go.Point().setRectSpot(selectNode.actualBounds, spot)
+    //         point.subtract(selectNode.location)
+    //         point.scale(2, 2)
+    //         point.x += Math.sign(point.x) * 60
+    //         point.y += Math.sign(point.y) * 60
+    //         point.add(selectNode.location)
+    //         point.snapToGridPoint(e.diagram.grid.gridOrigin, e.diagram.grid.gridCellSize)
+    //         // 将Node的信息复制到新的Node
+    //         const nodeData = graphLinksModel.copyNodeData(selectNode.data)
+    //         // 排除nodeData为null的情况
+    //         if (nodeData) {
+    //           // 将新Node加入至原Node的Group里面
+    //           graphLinksModel.setGroupKeyForNodeData(nodeData, graphLinksModel.getGroupKeyForNodeData(selectNode.data))
+    //           graphLinksModel.addNodeData(nodeData) // 将Node数据加入到Model
+    //           // 创建一条连接两个Node的Link
+    //           const linkdata = { from: selectNode.key, to: graphLinksModel.getKeyForNodeData(nodeData) }
+    //           graphLinksModel.addLinkData(linkdata) // 将Link数据加入到Model
+    //           // 将新Node移动到目标位置并进入编辑模式
+    //           const newNode = e.diagram.findNodeForData(nodeData)
+    //           // 排除newNode为null的情况
+    //           if (newNode) {
+    //             newNode.location = point
+    //             e.diagram.select(newNode)
+    //             setTimeout(function () {
+    //               e.diagram.commandHandler.editTextBlock()
+    //             }, 20)
+    //           }
+    //         }
+    //       }
+    //     })
+    //   }
+    //   return make(go.Shape, {
+    //     figure: fig,
+    //     alignment: spot,
+    //     alignmentFocus: spot.opposite(),
+    //     width: spot.equals(go.Spot.Top) || spot.equals(go.Spot.Bottom) ? 36 : 18,
+    //     height: spot.equals(go.Spot.Top) || spot.equals(go.Spot.Bottom) ? 18 : 36,
+    //     fill: 'orange',
+    //     strokeWidth: 0,
+    //     isActionable: true, // needed because it's in an Adornment
+    //     click: maker,
+    //     contextClick: maker
+    //   })
+    // }
 
     // create a button that brings up the context menu
     function CMButton(options: any) {
@@ -745,13 +746,13 @@ export default defineComponent({
     }
 
     // 获取节点模板,加入nodeMap
-    function getTemplateModel() {
-      const model: { text: string; category: string }[] = []
-      props.nodeMap?.forEach(({ name }) => {
-        model.push({ text: 'text', category: name })
-      })
-      return model
-    }
+    // function getTemplateModel() {
+    //   const model: { text: string; category: string }[] = []
+    //   props.nodeMap?.forEach(({ name }) => {
+    //     model.push({ text: 'text', category: name })
+    //   })
+    //   return model
+    // }
 
     function getDiagram(): go.Diagram {
       return diagram as go.Diagram

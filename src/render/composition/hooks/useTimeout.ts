@@ -1,6 +1,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
+import type { Ref } from 'vue'
 
-export default function useTimeout(delay = 0) {
+export default function useTimeout(delay = 0): Ref<boolean> {
   const ready = ref(false)
   let timerId: number
 

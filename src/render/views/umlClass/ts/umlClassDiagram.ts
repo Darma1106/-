@@ -22,7 +22,9 @@ function convertVisibility(v: PropertyType) {
 }
 
 // 是否树形分布
-function convertIsTreeLink(relationship: RelationshipType) {
+// params
+// relationship: RelationshipType
+function convertIsTreeLink() {
   // return relationship !== 'Generalization'
   return false
 }

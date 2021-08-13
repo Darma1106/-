@@ -1,4 +1,4 @@
-import { app, Menu, MenuItemConstructorOptions, shell } from 'electron'
+import { app, Menu, MenuItemConstructorOptions } from 'electron'
 
 const appName = 'vite-electron'
 const template: MenuItemConstructorOptions[] = [

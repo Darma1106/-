@@ -119,7 +119,7 @@ export default defineComponent({
     border: none;
     outline: none;
     box-shadow: none;
-    border-bottom: 1px solid #000;
+    border-bottom: @1px-border;
   }
 
   ::v-deep(.ant-select-selector, .ant-select-selection) {

@@ -4,12 +4,12 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import type { Ref } from 'vue'
 import PopupCard from '@/component/popupCard/index.vue'
 import { FormInputEnum } from '@/component/form/type/enum'
 
 import type { IFormConfig } from '@/component/form/type'
 import type { PopupCardInstance } from '@/component/popupCard/type'
-import type { Ref } from 'vue'
 
 interface SchemeData {
   key?: string

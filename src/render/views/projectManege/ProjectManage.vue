@@ -16,14 +16,14 @@
 </template>
 
 <script lang="ts">
-import BaseModal from '@/component/modal/BaseModal.vue'
 import { defineComponent, reactive, ref } from 'vue'
+import type { Ref } from 'vue'
+import type { ColumnProps } from 'ant-design-vue/lib/table/interface'
+import SchemeForm from './SchemeForm.vue'
+import BaseModal from '@/component/modal/BaseModal.vue'
 
 import { useEventStore } from '@/store'
-import SchemeForm from './SchemeForm.vue'
-import type { Ref } from 'vue'
 import type { BaseModalInstance } from '@/component/modal/type'
-import type { ColumnProps } from 'ant-design-vue/lib/table/interface'
 
 interface TableData {
   key: string

@@ -1,7 +1,6 @@
+import type { CommonLinkMap } from '../../type'
 import { defaultLineMaker } from './defaultLineMaker'
 import { avoidLineMaker } from './aviodLineMaker'
-
-import type { CommonLinkMap } from '../../type'
 
 export { defaultLineMaker }
 

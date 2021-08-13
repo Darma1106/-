@@ -84,15 +84,12 @@ export default defineComponent({
 .tabs {
   height: 100%;
   width: calc(100% - 2px);
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
+  border-left: @1px-border;
+  border-right: @1px-border;
 
   .tab-panel {
     height: 100%;
     box-sizing: border-box !important;
-
-    // border-left: 1px solid #000;
-    // border-right: 1px solid #000;
   }
   ::v-deep(.ant-tabs-bar) {
     margin: 0;
