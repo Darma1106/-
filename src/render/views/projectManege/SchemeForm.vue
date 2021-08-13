@@ -1,5 +1,5 @@
 <template>
-  <PopupCard ref="cardRef" :form-data="staticForm" />
+  <PopupCard ref="cardRef" :form-data="staticForm" width="30%" />
 </template>
 
 <script lang="ts">

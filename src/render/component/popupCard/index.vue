@@ -1,5 +1,5 @@
 <template>
-  <base-modal ref="modalRef" title="模型管理" :on-ok="onOk">
+  <base-modal ref="modalRef" title="模型管理" :on-ok="onOk" :width="width">
     <base-form ref="formRef" :form-data="formData" />
   </base-modal>
 </template>
@@ -23,6 +23,9 @@ export default defineComponent({
     },
     onOk: {
       type: Function
+    },
+    width: {
+      type: String
     }
   },
   setup() {

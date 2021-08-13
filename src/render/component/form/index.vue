@@ -106,7 +106,7 @@ export default defineComponent({
       type: Object as PropType<Common.IFormLayout>,
       default: () => {
         return {
-          labelCol: { lg: { span: 8 }, sm: { span: 8 } },
+          labelCol: { lg: { span: 6 }, sm: { span: 6 } },
           wrapperCol: { lg: { span: 16 }, sm: { span: 16 } }
         }
       }
