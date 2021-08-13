@@ -2,10 +2,10 @@
   <BaseModal ref="modalRef" title="项目管理" size="small">
     <template #default>
       <a-table :data-source="data" :columns="columns" class="project-table">
-        <template #operation>
+        <template #operation="{ record }">
           <div class="action-container">
             <a-button type="primary">打开</a-button>
-            <a-button @click="edit">编辑</a-button>
+            <a-button @click="edit(record)">编辑</a-button>
             <a-button type="primary" danger>删除</a-button>
           </div>
         </template>
@@ -24,6 +24,7 @@ import BaseModal from '@/component/modal/BaseModal.vue'
 
 import { useEventStore } from '@/store'
 import type { BaseModalInstance } from '@/component/modal/type'
+import type { PopupCardInstance } from '@/component/popupCard/type'
 
 interface TableData {
   key: string
@@ -103,15 +104,10 @@ export default defineComponent({
       }
     ])
 
-    const schemeFormRef: Ref<null | { add: () => void; show: () => void }> = ref(null)
-    const edit = () => {
+    const schemeFormRef: Ref<null | PopupCardInstance<TableData>> = ref(null)
+    const edit = (record: TableData) => {
       if (schemeFormRef.value) {
-        schemeFormRef.value.show()
-      }
-    }
-    const addScheme = () => {
-      if (schemeFormRef.value) {
-        schemeFormRef.value.add()
+        schemeFormRef.value.show(record)
       }
     }
     return {
@@ -120,8 +116,7 @@ export default defineComponent({
       data,
       columns,
       show,
-      edit,
-      addScheme
+      edit
     }
   }
 })

@@ -1,7 +1,7 @@
 <template>
   <div class="tool-bar">
     <div class="top-bar">
-      <div v-for="item in items" :key="item.name">
+      <div v-for="item in items" :key="item.name" class="item-container">
         <ContextButton v-if="item.type === 'contextButton'" class="item" :item-info="item" />
         <BasedButton v-if="item.type === 'basedButton'" class="item" :item-info="item" />
         <a-divider
@@ -273,6 +273,10 @@ export default defineComponent({
     flex-direction: row;
     border-bottom: @1px-border;
     padding-top: 2px;
+    .item-container {
+      display: flex;
+      align-items: center;
+    }
     .item {
       // border: 2px solid red;
       margin-left: 5px;

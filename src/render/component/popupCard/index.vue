@@ -1,5 +1,5 @@
 <template>
-  <base-modal ref="modalRef" title="模型管理" :on-ok="onOk" :width="width">
+  <base-modal ref="modalRef" title="模型管理" :on-ok="handleComfirm" :width="width">
     <base-form ref="formRef" :form-data="formData" />
   </base-modal>
 </template>
@@ -22,13 +22,13 @@ export default defineComponent({
       required: true
     },
     onOk: {
-      type: Function
+      type: Function as PropType<(formRef: Common.RecordObject) => void>
     },
     width: {
       type: String
     }
   },
-  setup() {
+  setup(props) {
     const formRef: Ref<IFormRef | null> = ref(null)
     const modalRef: Ref<BaseModalInstance | null> = ref(null)
     const show = (formData: Common.RecordObject = {}) => {
@@ -41,10 +41,16 @@ export default defineComponent({
         })
       }
     }
+    const handleComfirm = () => {
+      if (formRef.value && props.onOk) {
+        props.onOk(formRef.value.modelRef)
+      }
+    }
     return {
       formRef,
       modalRef,
-      show
+      show,
+      handleComfirm
     }
   }
 })

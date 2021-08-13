@@ -16,7 +16,7 @@
       </a-form-item>
 
       <a-form-item>
-        <a-divider type="vertical" style="height: 20px; padding-top: 10px; background-color: #000" />
+        <a-divider type="vertical" style="height: 20px; background-color: #000" />
       </a-form-item>
 
       <a-form-item title="字体">
@@ -38,7 +38,7 @@
       </a-form-item>
 
       <a-form-item>
-        <a-divider type="vertical" style="height: 20px; padding-top: 10px; background-color: #000" />
+        <a-divider type="vertical" style="height: 20px; background-color: #000" />
       </a-form-item>
 
       <a-form-item label="边框">
@@ -48,7 +48,7 @@
       <a-form-item> <input v-model="color" type="color" class="color-picker" /> </a-form-item>
 
       <a-form-item>
-        <a-divider type="vertical" style="height: 20px; padding-top: 10px; background-color: #000" />
+        <a-divider type="vertical" style="height: 20px; background-color: #000" />
       </a-form-item>
 
       <a-form-item label="h">

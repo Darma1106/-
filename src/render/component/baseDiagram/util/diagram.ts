@@ -30,7 +30,6 @@ export function renderDiagramFromLocal(
           console.log('local')
         } else {
           console.log('def')
-
           baseDiagramRef.value.renderJson(defaultJson)
         }
       }

@@ -43,7 +43,7 @@ module.exports = {
     'vue/prop-name-casing': 0,
     'vue/no-multiple-template-root': 0,
     'vue/no-v-model-argument': 0,
-    'vue/script-setup-uses-vars': 1,
+    'vue/script-setup-uses-vars': 'error',
     // 'vue/script-setup-uses-vars': 0,
     // 禁止ts-ignore
     '@typescript-eslint/ban-ts-ignore': 'off',
