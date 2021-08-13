@@ -144,8 +144,10 @@ export default defineComponent({
           props?.afterLink(subject, model)
         }
         // 合并选中连线的data
-        if (activeEditorType && Object.keys(activeEditorType.data).length !== 0) {
+
+        if (activeEditorType && Object.keys(activeEditorType.data).length != 0) {
           Object.assign(subject.data, activeEditorType.data)
+          console.log(subject.data)
         }
         linkModel.addLinkData(subject.data)
       }

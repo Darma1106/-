@@ -63,7 +63,7 @@ export default defineComponent({
   position: absolute;
   top: 5%;
   left: 5%;
-  border: solid 1px @layout-border-color;
+  border: solid 1px @my-layout-border-color;
 
   .editor-head {
     text-align: center;

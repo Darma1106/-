@@ -40,7 +40,9 @@ export default defineComponent({
 
     const baseDiagramRef: Ref<BaseDiagramInstance | null> = ref(null)
 
-    const defaultJson = dataMap.get('lct') as string
+    const defaultJson = dataMap.get('hdt') as string
+    // console.log(defaultJson)
+
     // 本地读取json
     renderDiagramFromLocal(props.tabId, baseDiagramRef, defaultJson)
 
