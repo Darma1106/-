@@ -30,10 +30,10 @@
         <down-outlined />
       </template>
       <template #model>
-        <BaseIcon :type="iconFont.模型" />
+        <BaseIcon :icon-type="iconFont.模型" />
       </template>
       <template #category>
-        <BaseIcon :type="iconFont.文件夹" />
+        <BaseIcon :icon-type="iconFont.文件夹" />
       </template>
       <template #meh>
         <smile-outlined />
@@ -122,5 +122,9 @@ export default defineComponent({
 .side-tree {
   border-right: 2px solid @my-layout-border-color;
   height: 100%;
+  ::v-deep(.base-icon) {
+    height: 14px;
+    width: 14px;
+  }
 }
 </style>

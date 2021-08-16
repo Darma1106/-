@@ -3,6 +3,9 @@
     <img src="../../assets/image/login-main.png" alt="" />
     <div class="login-box">
       <h1>登陆</h1>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icondiannao"></use>
+      </svg>
       <div class="input-box">
         <!-- <div class="input-text">
           <span class="iconfont icon-mine"></span>
@@ -22,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import '@/assets/iconfont/iconfont'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

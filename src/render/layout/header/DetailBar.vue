@@ -20,13 +20,13 @@
       </a-form-item>
 
       <a-form-item title="字体">
-        <SwitchButton v-model:checked="formState.xieti"><BaseIcon :type="iconFont.字体" /> </SwitchButton>
+        <SwitchButton v-model:checked="formState.xieti"><BaseIcon :icon-type="iconFont.字体" /> </SwitchButton>
       </a-form-item>
       <a-form-item title="斜体">
-        <SwitchButton v-model:checked="formState.xieti"><BaseIcon :type="iconFont.倾斜" /> </SwitchButton>
+        <SwitchButton v-model:checked="formState.xieti"><BaseIcon :icon-type="iconFont.倾斜" /> </SwitchButton>
       </a-form-item>
       <a-form-item title="粗体">
-        <SwitchButton v-model:checked="formState.jiacu"><BaseIcon :type="iconFont.加粗" /> </SwitchButton>
+        <SwitchButton v-model:checked="formState.jiacu"><BaseIcon :icon-type="iconFont.加粗" /> </SwitchButton>
       </a-form-item>
 
       <a-form-item>
@@ -113,6 +113,11 @@ export default defineComponent({
 .detail-bar {
   display: flex;
   flex-direction: row;
+
+  ::v-deep(.base-icon) {
+    height: 14px;
+    width: 14px;
+  }
   ::v-deep(.ant-input) {
     width: 30px;
     background-color: transparent;

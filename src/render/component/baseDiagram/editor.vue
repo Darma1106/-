@@ -10,7 +10,7 @@
             :class="{ 'editor-item': true, 'active-editor-item': item.id == activeItem?.id }"
             @click="handleClick(item)"
           >
-            <div class="icon"><BaseIcon type="iconliuchengtu" /></div>
+            <div class="icon"><BaseIcon :icon-type="iconFont.流程图" /></div>
             <div class="label">{{ item.name }}</div>
           </div>
         </a-collapse-panel>
@@ -23,8 +23,8 @@
 import { defineComponent, ref } from 'vue'
 import type { PropType } from 'vue'
 import { ActiveBox } from '../active-box'
-
 import type { EditorType, EditorTemplate } from './type'
+import { iconFont } from '@/component/baseIcon/type/enum'
 import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 
 export default defineComponent({
@@ -48,6 +48,7 @@ export default defineComponent({
     return {
       activeKey,
       activeItem,
+      iconFont,
       handleClick
     }
   }
