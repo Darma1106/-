@@ -16,12 +16,12 @@ const routes: RouteRecordRaw[] = [
     name: 'home',
     component: () => import('@/layout/Layout.vue')
     // ]
-  },
-  {
-    path: '/contextMenu',
-    name: '右键菜单模板',
-    component: () => import('@/component/baseDiagram/ContextMenu.vue')
   }
+  // {
+  //   path: '/contextMenu',
+  //   name: '右键菜单模板',
+  //   component: () => import('@/component/baseDiagram/ContextMenu.vue')
+  // }
 ]
 
 const router = createRouter({

@@ -1,9 +1,10 @@
 <template>
   <div class="login">
+    <img src="../../assets/image/login-main.png" alt="" />
     <div class="login-box">
       <h1>登陆</h1>
       <div class="input-box">
-        <div class="input-text">
+        <!-- <div class="input-text">
           <span class="iconfont icon-mine"></span>
           <input type="text" placeholder="用户名" />
         </div>
@@ -13,15 +14,21 @@
         </div>
         <div class="input-btn">登陆</div>
         <div class="sign-up">还没账户？<a href="#">立即注册</a></div>
+        -->
+        <div class="input-btn" @click="handleLogin">登陆</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// import { useLoginStore } from '@/store'
+import { useRouter } from 'vue-router'
 
-// const loginStore = useLoginStore()
+const router = useRouter()
+
+const handleLogin = () => {
+  router.push('home')
+}
 </script>
 
 <style lang="less" scoped>
@@ -34,10 +41,6 @@
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  background-image: url('../img/1.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
   overflow: hidden;
   .login-box {
     display: flex;
