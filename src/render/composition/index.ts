@@ -7,3 +7,4 @@ export { default as useMountedState } from './hooks/useMountedState'
 
 export { default as useTask } from './b-hooks/useTask'
 export { default as useProject } from './b-hooks/useProject'
+export { default as useScheme } from './b-hooks/useScheme'
