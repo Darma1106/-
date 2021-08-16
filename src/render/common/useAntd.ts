@@ -13,7 +13,9 @@ import {
   Divider,
   Switch,
   Collapse,
-  Popconfirm
+  Popconfirm,
+  Pagination,
+  ConfigProvider
 } from 'ant-design-vue'
 
 import type { App } from 'vue'
@@ -21,6 +23,7 @@ import type { App } from 'vue'
 export function useAntd(app: App<Element>): void {
   const Antd = [
     Button,
+    ConfigProvider,
     Layout,
     Tabs,
     Dropdown,
@@ -34,7 +37,8 @@ export function useAntd(app: App<Element>): void {
     Switch,
     Divider,
     Collapse,
-    Popconfirm
+    Popconfirm,
+    Pagination
   ]
   Antd.forEach((component) => {
     app.use(component)

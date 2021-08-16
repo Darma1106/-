@@ -2,14 +2,6 @@
   <router-view />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue-demi'
-
-export default defineComponent({
-  setup() {
-    return {}
-  }
-})
-</script>
+<script lang="ts" setup></script>
 
 <style></style>

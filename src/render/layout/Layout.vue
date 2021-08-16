@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import ProjectManage from '../views/projectManege/ProjectManage.vue'
+import ProjectManage from '../views/schemeManage/SchemeManage.vue'
 import LayoutHeader from './header/Header.vue'
 import LayoutContent from './content/Content.vue'
 import LayoutFooter from './footer/Footer.vue'

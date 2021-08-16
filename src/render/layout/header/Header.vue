@@ -27,7 +27,7 @@ export default defineComponent({
         name: 'gongcheng',
         label: '项目管理(P)',
         children: [
-          { name: 'projectManage', label: '项目管理', click: handleProjectManage },
+          { name: 'projectManage', label: '方案管理', click: handleProjectManage },
           { name: 'caidan2', label: '菜单二' }
         ]
       },

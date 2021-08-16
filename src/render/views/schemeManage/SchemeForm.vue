@@ -10,6 +10,7 @@ import { FormInputEnum } from '@/component/form/type/enum'
 
 import type { IFormConfig } from '@/component/form/type'
 import type { PopupCardInstance } from '@/component/popupCard/type'
+import FrameworkService from '@/services/module/fremeworkService'
 
 interface SchemeData {
   key?: string
@@ -20,8 +21,9 @@ interface SchemeData {
 export default defineComponent({
   name: '',
   components: { PopupCard },
-  setup() {
-    const staticForm: IFormConfig = {
+  emits: ['form-comfirm'],
+  setup(props, ctx) {
+    const staticForm: Ref<IFormConfig> = ref({
       name: {
         type: FormInputEnum.Input,
         label: '方案名称',
@@ -32,15 +34,34 @@ export default defineComponent({
           }
         ]
       },
-      describe: {
+      frameWorkId: {
+        type: FormInputEnum.Select,
+        values: [],
+        label: '框架名称'
+      },
+      background: {
+        type: FormInputEnum.Textarea,
+        label: '方案背景'
+      },
+      describes: {
         type: FormInputEnum.Textarea,
         label: '方案描述'
       }
+    })
+    const getFrameworkType = async () => {
+      // 清空框架选项
+      staticForm.value.frameWorkId.values?.clean()
+      const { data } = await FrameworkService.getFrameworkType()
+      data?.forEach(({ id, name }) => {
+        staticForm.value.frameWorkId.values?.push({ key: id, value: name })
+      })
     }
 
     const cardRef: Ref<PopupCardInstance<SchemeData> | null> = ref(null)
 
-    const show = (schemeInfo?: SchemeData) => {
+    const show = async (schemeInfo?: SchemeData) => {
+      await getFrameworkType()
+
       if (cardRef.value) {
         cardRef.value.show(schemeInfo)
       }
@@ -51,7 +72,7 @@ export default defineComponent({
       }
     }
     const handleComfirm = (formData: SchemeData) => {
-      console.log(formData, 'handleComfirm')
+      ctx.emit('form-comfirm', formData)
     }
     return { staticForm, cardRef, add, show, handleComfirm }
   }
