@@ -173,7 +173,6 @@ export default defineComponent({
     watchEffect(() => {
       const data = convertModelFromFormData(props.formData, modelRef.value)
       modelRef.value = data
-      console.log(data)
     })
 
     // 操作form的方法，tips：目前 antdv的useForm 中对于表单的操作方法存在问题，需要等待后续版本的升级

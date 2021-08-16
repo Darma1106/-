@@ -4,6 +4,8 @@
     :title="title"
     :confirm-loading="loding"
     :width="width"
+    :destroy-on-close="true"
+    style="top: 15%"
     ok-text="确定"
     cancel-text="取消"
     @ok="handleOk"
