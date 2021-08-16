@@ -1,6 +1,6 @@
 import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree'
+import service from '../http'
 import { HttpResponse } from '@/types/global'
-// import service from '../http'
 export interface TreeData extends TreeDataItem {
   type:
     | 'model'
@@ -13,6 +13,11 @@ export interface TreeData extends TreeDataItem {
     | 'SequenceModel'
     | 'TableModel'
   children?: TreeData[]
+}
+
+export interface FrameworkType {
+  id: string
+  name: string
 }
 
 //封装Framework类型的接口方法
@@ -96,5 +101,8 @@ export default class FrameworkService {
       }
       reslove(data)
     })
+  }
+  static async getFrameworkType(): Promise<HttpResponse<FrameworkType[]>> {
+    return service.get('/frameWork/findPullDown')
   }
 }
