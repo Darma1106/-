@@ -71,11 +71,7 @@ export default function useScheme(): [SchemeInfo[], SchemeController] {
   const deleteFn = async (schemeId: string) => {
     const { code } = await SchemeService.deleteScheme(schemeId)
     if (code == 1) {
-      schemeList.delete(
-        schemeList.findIndex((scheme) => {
-          return scheme.id == schemeId
-        })
-      )
+      selectFn()
     }
 
     return code == 1
