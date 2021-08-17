@@ -16,11 +16,12 @@ class LoginStore {
     return this.userInfo
   }
 
-  login = async (info: User) => {
-    const { state, data } = await LoginService.handleLogin(info)
-    if (state == '1' && data) {
+  login = async (info: User): Promise<boolean> => {
+    const { code, data } = await LoginService.handleLogin(info)
+    if (code == 1 && data) {
       this.userInfo = data
     }
+    return code == 1
   }
 }
 

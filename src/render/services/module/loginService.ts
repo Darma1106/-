@@ -1,11 +1,12 @@
 // import service from '../http'
+import { message } from 'ant-design-vue'
 import { HttpResponse } from '@/types/global'
 
 interface UserInfo {
   userName?: string
 }
 
-interface User {
+export interface User {
   userName: string
   password: string
 }
@@ -14,7 +15,7 @@ interface User {
 export default class LoginService {
   static async handleLogin(loginInfo: User): Promise<HttpResponse<UserInfo>> {
     const data: HttpResponse<UserInfo> = {
-      state: '1',
+      code: 1,
       msg: '成功',
       data: {
         userName: 'admin'
@@ -24,6 +25,8 @@ export default class LoginService {
       if (loginInfo.userName == 'admin' && loginInfo.password == 'admin') {
         resolve(data)
       } else {
+        message.error('用户名或密码错误')
+
         reject()
       }
     })

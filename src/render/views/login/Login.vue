@@ -3,35 +3,41 @@
     <img src="../../assets/image/login-main.png" alt="" />
     <div class="login-box">
       <h1>登陆</h1>
-      <svg class="icon" aria-hidden="true">
-        <use xlink:href="#icondiannao"></use>
-      </svg>
       <div class="input-box">
-        <!-- <div class="input-text">
-          <span class="iconfont icon-mine"></span>
-          <input type="text" placeholder="用户名" />
-        </div>
-        <div class="input-text">
-          <span class="iconfont icon-lock"></span>
-          <input type="password" placeholder="密码" />
-        </div>
-        <div class="input-btn">登陆</div>
-        <div class="sign-up">还没账户？<a href="#">立即注册</a></div>
-        -->
-        <div class="input-btn" @click="handleLogin">登陆</div>
+        <a-form :model="loginFormData" :label-col="{ span: 6 }">
+          <a-form-item label="用户名">
+            <a-input v-model:value="loginFormData.userName" />
+          </a-form-item>
+          <a-form-item label="密码">
+            <a-input v-model:value="loginFormData.password" type="password" />
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" style="margin-left: 10%; width: 100%" @click="handleLogin">登录</a-button>
+            <!-- <a-button style="margin-left: 10px">Reset</a-button> -->
+          </a-form-item>
+        </a-form>
+
+        <!-- <div class="sign-up">还没账户？<a href="#">立即注册</a></div> -->
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import '@/assets/iconfont/iconfont'
+<script lang="ts" setup>
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+import type { Ref } from 'vue'
+import type { User } from '@/services/module/loginService'
+import useLogin from '@/store/modules/useLoginStore'
 
+const loginFormData: Ref<User> = ref({ userName: '', password: '' })
 const router = useRouter()
 
-const handleLogin = () => {
-  router.push('home')
+const handleLogin = async () => {
+  const flag = await useLogin().login(loginFormData.value)
+  if (flag) {
+    router.push('home')
+  }
 }
 </script>
 

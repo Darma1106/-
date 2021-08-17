@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import useLogin from '@/store/modules/useLoginStore'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -8,7 +9,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/login',
-    name: '登录',
+    name: 'login',
     component: () => import('@/views/login/Login.vue')
   },
   {
@@ -30,4 +31,13 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  const loginStore = useLogin()
+  if (to.name == 'login') {
+    next()
+  } else {
+    if (Object.getOwnPropertyNames(loginStore.getUserInfo()).length != 0) next()
+    else next({ path: '/login' })
+  }
+})
 export default router
