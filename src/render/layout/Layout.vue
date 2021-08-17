@@ -12,19 +12,12 @@
   </a-layout>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
+<script lang="ts" setup>
 import ProjectManage from '../views/schemeManage/SchemeManage.vue'
 import LayoutHeader from './header/Header.vue'
 import LayoutContent from './content/Content.vue'
 import LayoutFooter from './footer/Footer.vue'
-
 import 'splitpanes/dist/splitpanes.css'
-
-export default defineComponent({
-  components: { LayoutHeader, LayoutContent, LayoutFooter, ProjectManage }
-})
 </script>
 
 <style lang="less" scoped>

@@ -111,10 +111,14 @@ export default defineComponent({
           {
             id: '345',
             type: 'line',
-            name: '连线',
-            data: {
-              category: 'avoidLink'
-            }
+            name: '折线',
+            data: { category: 'avoidLink' }
+          },
+          {
+            id: '543',
+            type: 'line',
+            name: '直线',
+            data: { category: 'defaultLink' }
           }
         ]
       }

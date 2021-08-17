@@ -9,7 +9,7 @@ export interface MTable {
   data: DataItem[]
   colums: ColumnProps[]
 }
-export const dataMap: Map<string, MTable | string> = new Map()
+export const dataMap: Map<string, MTable | string | any> = new Map()
 const data002: MTable = {
   colums: [
     {
@@ -72,13 +72,13 @@ const data102: MTable = {
 const data200: MTable = {
   colums: [
     {
-      title: '属性名称',
+      title: '服务名称',
       dataIndex: 'name',
       width: 100,
       slots: { customRender: 'name' }
     },
     {
-      title: '属性值',
+      title: '服务描述',
       width: 100,
       dataIndex: 'age'
     },
@@ -106,7 +106,7 @@ const data201: MTable = {
       slots: { customRender: 'name' }
     },
     {
-      title: '效能',
+      title: '服务描述',
       dataIndex: 'age',
       width: 100
     },
@@ -134,7 +134,7 @@ const data300: MTable = {
       slots: { customRender: 'name' }
     },
     {
-      title: '效能',
+      title: '资源描述',
       width: 100,
       dataIndex: 'age'
     },
@@ -162,7 +162,7 @@ const data301: MTable = {
       slots: { customRender: 'name' }
     },
     {
-      title: '效能',
+      title: '属性描述',
       width: 100,
       dataIndex: 'age'
     },
@@ -238,30 +238,196 @@ const lct = `{ "class": "GraphLinksModel",
 {"from":"9921a908-b54b-4102-9deb-f743778f4713223", "to":"9921a908-b54b-4102-9deb-f743778f47132222", "category":"avoidLink", "id":"0a9f0c4e-2f5f-4205-a1da-e1007d87256e", "text":"流程条件", "points":[1134.1941975,-400.7999999999999,1144.1941975,-400.7999999999999,1267.359375,-399,1264.8078700460937,-318,1264.8078700460937,-308], "fromSpot":"RightSide"}
  ]}`
 
-const hdt = `{ "class": "GraphLinksModel",
-  "copiesArrays": true,
-  "copiesArrayObjects": true,
-  "nodeDataArray": [ 
-{"key":"265e9bd8-946c-41d2-a368-d0eb66638417", "figure":"RoundedRectangle", "fill":"green", "fontColor":"white", "text":"地面运控\\应用系统", "category":"defaultNode", "showContext":false, "loc":"-72.953125 -310", "size":"360 180"},
-{"key":"b2cac7d0-82f3-40ea-ac11-c4b1cf805de5", "figure":"RoundedRectangle", "fill":"green", "fontColor":"white", "text":"航天侦察情报信息共享服务系统 (二代分发系统)", "category":"defaultNode", "showContext":false, "loc":"439.046875 -85", "size":"120 120"},
-{"key":"1673a377-cb80-451f-b631-7465b40ced2f", "figure":"RoundedRectangle", "fill":"green", "fontColor":"white", "text":"航天侦察用户", "category":"defaultNode", "showContext":false, "loc":"130.046875 133", "size":"120 120"},
-{"key":"f9234fdb-7a97-407a-9005-e361ef63cb70", "figure":"RoundedRectangle", "fill":"green", "fontColor":"white", "text":"测控系统", "category":"defaultNode", "showContext":false, "loc":"-45.953125 133", "size":"120 120"},
-{"key":"ca5a513a-5e00-44d0-90ca-2b8b214bec35", "figure":"RoundedRectangle", "fill":"green", "fontColor":"white", "text":"中继系统", "category":"defaultNode", "showContext":false, "loc":"-395.953125 -287", "size":"120 120"},
-{"key":"7377709d-8450-4620-8638-c12bcd956623", "figure":"RoundedRectangle", "fill":"green", "fontColor":"white", "text":"卫星", "category":"defaultNode", "showContext":false, "loc":"-395.953125 133", "size":"120 120"}
- ],
-  "linkDataArray": [ 
-{"from":"265e9bd8-946c-41d2-a368-d0eb66638417", "to":"b2cac7d0-82f3-40ea-ac11-c4b1cf805de5", "category":"defaultLink", "id":"9b40984e-4043-4871-b1a3-94a7fe9a08b9", "text":"数据产品\n情报产品", "points":[287.046875,-220,297.046875,-220,429.046875,-25,439.046875,-25], "toSpot":"LeftSide", "fromSpot":"RightSide"},
-{"from":"b2cac7d0-82f3-40ea-ac11-c4b1cf805de5", "to":"1673a377-cb80-451f-b631-7465b40ced2f", "category":"defaultLink", "id":"2ec4b2fe-58f7-4597-bd8e-d127eec938eb", "text":"数据产品\n情报产品", "points":[499.046875,35,499.046875,45,260.046875,193,250.046875,193], "fromSpot":"BottomSide", "toSpot":"RightSide"},
-{"from":"1673a377-cb80-451f-b631-7465b40ced2f", "to":"265e9bd8-946c-41d2-a368-d0eb66638417", "category":"defaultLink", "id":"6b15be21-65bd-443a-bd2d-ea301d4a4d78", "text":"数据需求\n情报需求", "points":[190.046875,133,190.046875,123,176.05841372967126,-120.10339033898086,176.05841372967126,-130.10339033898086], "fromSpot":"TopSide", "toSpot":"BottomSide"},
-{"from":"265e9bd8-946c-41d2-a368-d0eb66638417", "to":"f9234fdb-7a97-407a-9005-e361ef63cb70", "category":"defaultLink", "id":"0edcb52e-36eb-4391-8402-de47e4415aaa", "text":"轨道根数\n尖兵卫星\n侦察数据", "points":[-39.45992854179076,-130.23878937932537,-39.45992854179076,-120.23878937932537,-36.42536102801312,123.11768606845902,-36.42536102801312,133.11768606845902]},
-{"from":"f9234fdb-7a97-407a-9005-e361ef63cb70", "to":"265e9bd8-946c-41d2-a368-d0eb66638417", "category":"defaultLink", "id":"293c6fd8-9ad1-40ed-b920-756bce4472df", "text":"载荷指令\n载荷测控计划\n跟踪接收计划", "points":[65.88158809644516,133.12196935410645,65.88158809644516,123.12196935410645,67.0660279891955,-120.04309422568988,67.0660279891955,-130.04309422568988], "toSpot":"BottomSide"},
-{"from":"ca5a513a-5e00-44d0-90ca-2b8b214bec35", "to":"265e9bd8-946c-41d2-a368-d0eb66638417", "category":"defaultLink", "id":"6915a66e-b0be-4ffd-9a06-3bd845c50f84", "text":"跟踪接收计划", "points":[-275.953125,-247,-265.953125,-247,-82.953125,-250,-72.953125,-250]},
-{"from":"265e9bd8-946c-41d2-a368-d0eb66638417", "to":"ca5a513a-5e00-44d0-90ca-2b8b214bec35", "category":"defaultLink", "id":"1cd68415-73ac-428d-866f-b88ecec1c643", "text":"侦察数据", "points":[-72.953125,-190,-82.953125,-190,-265.953125,-207,-275.953125,-207]},
-{"from":"ca5a513a-5e00-44d0-90ca-2b8b214bec35", "to":"7377709d-8450-4620-8638-c12bcd956623", "category":"defaultLink", "id":"63920d18-207d-468b-a4e0-10b7b0ad03b3", "text":"\n载荷控制指令(紧急情况下)", "points":[-382.2361214778106,-167.10435749930392,-382.2361214778106,-157.10435749930392,-380.6551522810731,123.09928344336205,-380.6551522810731,133.09928344336205], "toSpot":"TopSide"},
-{"from":"7377709d-8450-4620-8638-c12bcd956623", "to":"ca5a513a-5e00-44d0-90ca-2b8b214bec35", "category":"defaultLink", "id":"748f780e-b06d-48bf-9611-9597de2c9adf", "text":"侦察数据\n遥测数据\n\n\n\n\n\n\n.", "points":[-291.67766859989285,133.09791192926684,-291.67766859989285,123.09791192926684,-288.5062795385152,-157.10808031910935,-288.5062795385152,-167.10808031910935], "toSpot":"BottomSide"},
-{"from":"7377709d-8450-4620-8638-c12bcd956623", "to":"f9234fdb-7a97-407a-9005-e361ef63cb70", "category":"defaultLink", "id":"d34bbbcb-662f-4d92-aea0-e027083b28c8", "text":"测控系统_卫星", "points":[-275.953125,213,-265.953125,213,-55.953125,213,-45.953125,213], "fromSpot":"RightSide", "toSpot":"LeftSide"},
-{"from":"f9234fdb-7a97-407a-9005-e361ef63cb70", "to":"7377709d-8450-4620-8638-c12bcd956623", "category":"defaultLink", "id":"c475cbd0-a940-4595-8392-59fa4d42e79e", "text":"卫星_测控系统", "points":[-45.953125,173,-55.953125,173,-265.953125,173,-275.953125,173], "toSpot":"RightSide"}
- ]}`
+const hdt = {
+  class: 'GraphLinksModel',
+  copiesArrays: true,
+  copiesArrayObjects: true,
+  nodeDataArray: [
+    {
+      key: '265e9bd8-946c-41d2-a368-d0eb66638417',
+      figure: 'RoundedRectangle',
+      fill: 'green',
+      fontColor: 'white',
+      text: '地面运控\\应用系统',
+      category: 'defaultNode',
+      showContext: false,
+      loc: '-72.953125 -310',
+      size: '360 180'
+    },
+    {
+      key: 'b2cac7d0-82f3-40ea-ac11-c4b1cf805de5',
+      figure: 'RoundedRectangle',
+      fill: 'green',
+      fontColor: 'white',
+      text: '航天侦察情报信息共享服务系统 (二代分发系统)',
+      category: 'defaultNode',
+      showContext: false,
+      loc: '439.046875 -85',
+      size: '120 120'
+    },
+    {
+      key: '1673a377-cb80-451f-b631-7465b40ced2f',
+      figure: 'RoundedRectangle',
+      fill: 'green',
+      fontColor: 'white',
+      text: '航天侦察用户',
+      category: 'defaultNode',
+      showContext: false,
+      loc: '130.046875 133',
+      size: '120 120'
+    },
+    {
+      key: 'f9234fdb-7a97-407a-9005-e361ef63cb70',
+      figure: 'RoundedRectangle',
+      fill: 'green',
+      fontColor: 'white',
+      text: '测控系统',
+      category: 'defaultNode',
+      showContext: false,
+      loc: '-45.953125 133',
+      size: '120 120'
+    },
+    {
+      key: 'ca5a513a-5e00-44d0-90ca-2b8b214bec35',
+      figure: 'RoundedRectangle',
+      fill: 'green',
+      fontColor: 'white',
+      text: '中继系统',
+      category: 'defaultNode',
+      showContext: false,
+      loc: '-395.953125 -287',
+      size: '120 120'
+    },
+    {
+      key: '7377709d-8450-4620-8638-c12bcd956623',
+      figure: 'RoundedRectangle',
+      fill: 'green',
+      fontColor: 'white',
+      text: '卫星',
+      category: 'defaultNode',
+      showContext: false,
+      loc: '-395.953125 133',
+      size: '120 120'
+    }
+  ],
+  linkDataArray: [
+    {
+      from: '265e9bd8-946c-41d2-a368-d0eb66638417',
+      to: 'b2cac7d0-82f3-40ea-ac11-c4b1cf805de5',
+      category: 'defaultLink',
+      id: '9b40984e-4043-4871-b1a3-94a7fe9a08b9',
+      text: '数据产品\n情报产品',
+      points: [287.046875, -220, 297.046875, -220, 429.046875, -25, 439.046875, -25],
+      toSpot: 'LeftSide',
+      fromSpot: 'RightSide'
+    },
+    {
+      from: 'b2cac7d0-82f3-40ea-ac11-c4b1cf805de5',
+      to: '1673a377-cb80-451f-b631-7465b40ced2f',
+      category: 'defaultLink',
+      id: '2ec4b2fe-58f7-4597-bd8e-d127eec938eb',
+      text: '数据产品\n情报产品',
+      points: [499.046875, 35, 499.046875, 45, 260.046875, 193, 250.046875, 193],
+      fromSpot: 'BottomSide',
+      toSpot: 'RightSide'
+    },
+    {
+      from: '1673a377-cb80-451f-b631-7465b40ced2f',
+      to: '265e9bd8-946c-41d2-a368-d0eb66638417',
+      category: 'defaultLink',
+      id: '6b15be21-65bd-443a-bd2d-ea301d4a4d78',
+      text: '数据需求\n情报需求',
+      points: [
+        190.046875, 133, 190.046875, 123, 176.05841372967126, -120.10339033898086, 176.05841372967126,
+        -130.10339033898086
+      ],
+      fromSpot: 'TopSide',
+      toSpot: 'BottomSide'
+    },
+    {
+      from: '265e9bd8-946c-41d2-a368-d0eb66638417',
+      to: 'f9234fdb-7a97-407a-9005-e361ef63cb70',
+      category: 'defaultLink',
+      id: '0edcb52e-36eb-4391-8402-de47e4415aaa',
+      text: '轨道根数\n尖兵卫星\n侦察数据',
+      points: [
+        -39.45992854179076, -130.23878937932537, -39.45992854179076, -120.23878937932537, -36.42536102801312,
+        123.11768606845902, -36.42536102801312, 133.11768606845902
+      ]
+    },
+    {
+      from: 'f9234fdb-7a97-407a-9005-e361ef63cb70',
+      to: '265e9bd8-946c-41d2-a368-d0eb66638417',
+      category: 'defaultLink',
+      id: '293c6fd8-9ad1-40ed-b920-756bce4472df',
+      text: '载荷指令\n载荷测控计划\n跟踪接收计划',
+      points: [
+        65.88158809644516, 133.12196935410645, 65.88158809644516, 123.12196935410645, 67.0660279891955,
+        -120.04309422568988, 67.0660279891955, -130.04309422568988
+      ],
+      toSpot: 'BottomSide'
+    },
+    {
+      from: 'ca5a513a-5e00-44d0-90ca-2b8b214bec35',
+      to: '265e9bd8-946c-41d2-a368-d0eb66638417',
+      category: 'defaultLink',
+      id: '6915a66e-b0be-4ffd-9a06-3bd845c50f84',
+      text: '跟踪接收计划',
+      points: [-275.953125, -247, -265.953125, -247, -82.953125, -250, -72.953125, -250]
+    },
+    {
+      from: '265e9bd8-946c-41d2-a368-d0eb66638417',
+      to: 'ca5a513a-5e00-44d0-90ca-2b8b214bec35',
+      category: 'defaultLink',
+      id: '1cd68415-73ac-428d-866f-b88ecec1c643',
+      text: '侦察数据',
+      points: [-72.953125, -190, -82.953125, -190, -265.953125, -207, -275.953125, -207]
+    },
+    {
+      from: 'ca5a513a-5e00-44d0-90ca-2b8b214bec35',
+      to: '7377709d-8450-4620-8638-c12bcd956623',
+      category: 'defaultLink',
+      id: '63920d18-207d-468b-a4e0-10b7b0ad03b3',
+      text: '\n载荷控制指令(紧急情况下)',
+      points: [
+        -382.2361214778106, -167.10435749930392, -382.2361214778106, -157.10435749930392, -380.6551522810731,
+        123.09928344336205, -380.6551522810731, 133.09928344336205
+      ],
+      toSpot: 'TopSide'
+    },
+    {
+      from: '7377709d-8450-4620-8638-c12bcd956623',
+      to: 'ca5a513a-5e00-44d0-90ca-2b8b214bec35',
+      category: 'defaultLink',
+      id: '748f780e-b06d-48bf-9611-9597de2c9adf',
+      text: '侦察数据\n遥测数据\n\n\n\n\n\n\n.',
+      points: [
+        -291.67766859989285, 133.09791192926684, -291.67766859989285, 123.09791192926684, -288.5062795385152,
+        -157.10808031910935, -288.5062795385152, -167.10808031910935
+      ],
+      toSpot: 'BottomSide'
+    },
+    {
+      from: '7377709d-8450-4620-8638-c12bcd956623',
+      to: 'f9234fdb-7a97-407a-9005-e361ef63cb70',
+      category: 'defaultLink',
+      id: 'd34bbbcb-662f-4d92-aea0-e027083b28c8',
+      text: '测控系统_卫星',
+      points: [-275.953125, 213, -265.953125, 213, -55.953125, 213, -45.953125, 213],
+      fromSpot: 'RightSide',
+      toSpot: 'LeftSide'
+    },
+    {
+      from: 'f9234fdb-7a97-407a-9005-e361ef63cb70',
+      to: '7377709d-8450-4620-8638-c12bcd956623',
+      category: 'defaultLink',
+      id: 'c475cbd0-a940-4595-8392-59fa4d42e79e',
+      text: '卫星_测控系统',
+      points: [-45.953125, 173, -55.953125, 173, -265.953125, 173, -275.953125, 173],
+      toSpot: 'RightSide'
+    }
+  ]
+}
 
 dataMap.set('lct', lct)
 dataMap.set('hdt', hdt)

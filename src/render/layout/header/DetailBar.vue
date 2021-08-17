@@ -62,14 +62,27 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import { AlignLeftOutlined, AlignCenterOutlined, AlignRightOutlined } from '@ant-design/icons-vue'
 import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 import SwitchButton from '@/component/panelItem/switchButton.vue'
-
 import { iconFont } from '@/component/baseIcon/type/enum'
 
+const formState = ref<FormState>({
+  fontFamily: 'song',
+  fontSize: '22',
+  layout: 'inline',
+  ailgn: 'center',
+  fieldA: '',
+  fieldB: '3',
+  xieti: false,
+  jiacu: false
+})
+const color = ref('')
+</script>
+
+<script lang="ts">
 interface FormState {
   layout: 'horizontal' | 'vertical' | 'inline'
   ailgn: 'left' | 'right' | 'center'
@@ -80,33 +93,6 @@ interface FormState {
   xieti: boolean
   jiacu: boolean
 }
-export default defineComponent({
-  components: {
-    SwitchButton,
-    AlignLeftOutlined,
-    AlignCenterOutlined,
-    AlignRightOutlined,
-    BaseIcon
-  },
-  setup() {
-    const formState = ref<FormState>({
-      fontFamily: 'song',
-      fontSize: '22',
-      layout: 'inline',
-      ailgn: 'center',
-      fieldA: '',
-      fieldB: '3',
-      xieti: false,
-      jiacu: false
-    })
-    const color = ref('')
-    return {
-      formState,
-      color,
-      iconFont
-    }
-  }
-})
 </script>
 
 <style lang="less" scoped>
