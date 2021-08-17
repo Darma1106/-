@@ -61,6 +61,10 @@ export default function useScheme(): [SchemeInfo[], SchemeController] {
         selectFn()
       }
     } else {
+      scheme.id = ''
+      if (!scheme.createSubFile) {
+        scheme.createSubFile = 2
+      }
       const { code } = await SchemeService.addScheme(scheme)
       if (code == 1) {
         selectFn()

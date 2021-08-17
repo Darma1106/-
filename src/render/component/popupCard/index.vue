@@ -1,5 +1,5 @@
 <template>
-  <base-modal ref="modalRef" title="模型管理" :on-ok="handleComfirm" :width="width" :destroy-on-close="false">
+  <base-modal ref="modalRef" title="方案编辑" :on-ok="handleComfirm" :width="width" :destroy-on-close="false">
     <base-form ref="formRef" :form-data="formData" />
   </base-modal>
 </template>

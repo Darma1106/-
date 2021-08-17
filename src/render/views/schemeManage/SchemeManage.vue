@@ -2,6 +2,7 @@
   <BaseModal ref="modalRef" title="方案管理" size="small">
     <template #default>
       <a-config-provider :locale="zhCN">
+        <a-button type="primary" @click="addScheme">新建方案</a-button>
         <a-table
           :data-source="schemeList"
           :columns="columns"
@@ -113,6 +114,12 @@ const edit = (record: SchemeInfo) => {
 
 const totalCallback = (total: number) => {
   return `共 ${total} 条`
+}
+
+const addScheme = () => {
+  if (schemeFormRef.value) {
+    schemeFormRef.value.show()
+  }
 }
 </script>
 
