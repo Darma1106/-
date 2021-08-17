@@ -44,13 +44,13 @@ const data002: MTable = {
 const data102: MTable = {
   colums: [
     {
-      title: '任务名称',
+      title: '活动名称',
       dataIndex: 'name',
       width: 100,
       slots: { customRender: 'name' }
     },
     {
-      title: '效能',
+      title: '属性名称',
       width: 100,
       dataIndex: 'age'
     },
@@ -92,7 +92,7 @@ const data200: MTable = {
   data: [
     {
       key: '0',
-      name: '属性1'
+      name: '服务1'
     }
   ]
 }
@@ -106,7 +106,7 @@ const data201: MTable = {
       slots: { customRender: 'name' }
     },
     {
-      title: '服务描述',
+      title: '质量描述',
       dataIndex: 'age',
       width: 100
     },
@@ -120,7 +120,7 @@ const data201: MTable = {
   data: [
     {
       key: '0',
-      name: '活动1'
+      name: '服务1'
     }
   ]
 }

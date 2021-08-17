@@ -25,6 +25,7 @@ export interface SchemeInfo {
   frameWorkId?: string
   frameName?: string
   createDate?: string
+  createSubFile?: number
 }
 
 interface ResponseData {

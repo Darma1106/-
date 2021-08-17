@@ -37,14 +37,14 @@ const columns: ColumnProps[] = reactive([
     key: 'name'
   },
   {
-    title: '能力1',
+    title: '服务1',
     dataIndex: '111111',
     key: '111111',
     align: 'center',
     slots: { customRender: 'ability' }
   },
   {
-    title: '能力2',
+    title: '服务2',
     dataIndex: '222222',
     key: '222222',
     align: 'center',
@@ -52,7 +52,7 @@ const columns: ColumnProps[] = reactive([
     slots: { customRender: 'ability' }
   },
   {
-    title: '能力3',
+    title: '服务3',
     key: '333333',
     dataIndex: '333333',
     align: 'center',
@@ -60,7 +60,7 @@ const columns: ColumnProps[] = reactive([
     slots: { customRender: 'ability' }
   },
   {
-    title: '能力4',
+    title: '服务4',
     key: '444444',
     dataIndex: '444444',
     align: 'center',
@@ -68,7 +68,7 @@ const columns: ColumnProps[] = reactive([
     slots: { customRender: 'ability' }
   },
   {
-    title: '能力5',
+    title: '服务5',
     key: '555555',
     dataIndex: '555555',
     align: 'center',
@@ -76,7 +76,7 @@ const columns: ColumnProps[] = reactive([
     slots: { customRender: 'ability' }
   },
   {
-    title: '能力6',
+    title: '服务6',
     key: '666666',
     dataIndex: '666666',
     align: 'center',
@@ -88,7 +88,7 @@ const columns: ColumnProps[] = reactive([
 const data: Ref<TableData[]> = ref([
   {
     key: '1',
-    name: '指标1',
+    name: '资源1',
     '111111': 1,
     '222222': 0,
     '333333': 0,
@@ -96,7 +96,7 @@ const data: Ref<TableData[]> = ref([
   },
   {
     key: '2',
-    name: '指标2',
+    name: '资源2',
     '111111': 1,
     '222222': 0,
     '333333': 0,
@@ -104,7 +104,7 @@ const data: Ref<TableData[]> = ref([
   },
   {
     key: '3',
-    name: '指标3',
+    name: '资源3',
     '111111': 1,
     '222222': 0,
     '333333': 0,
