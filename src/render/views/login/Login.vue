@@ -2,9 +2,9 @@
   <div class="login">
     <img src="../../assets/image/login-main.png" alt="" />
     <div class="login-box">
-      <h1>登陆</h1>
+      <h1>登录</h1>
       <div class="input-box">
-        <a-form :model="loginFormData" :label-col="{ span: 6 }">
+        <a-form :model="loginFormData" :label-col="{ span: 6 }" class="login-form">
           <a-form-item label="用户名">
             <a-input v-model:value="loginFormData.userName" />
           </a-form-item>
@@ -52,6 +52,9 @@ const handleLogin = async () => {
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
+  .login-form {
+    padding-right: 40px;
+  }
   .login-box {
     display: flex;
     justify-content: center;
@@ -121,6 +124,9 @@ const handleLogin = async () => {
         }
       }
     }
+  }
+  ::v-deep(.ant-form-item-label > label) {
+    color: white;
   }
 }
 </style>
