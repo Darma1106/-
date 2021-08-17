@@ -28,7 +28,7 @@ export default defineComponent({
 <style lang="less" scoped>
 .switch-button {
   cursor: pointer;
-  padding: 0 4px;
+  padding: 4px 2px 0 2px;
 }
 .checked {
   background-color: #ddd;
