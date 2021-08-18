@@ -58,7 +58,6 @@
     "@types/qs": "^6.9.6",
     "@types/uuid": "^8.3.1",
     "@vueuse/core": "^4.11.0",
-    "active-box": "^1.0.1",
     "ant-design-vue": "^2.2.2",
     "axios": "^0.21.1",
     "commitizen": "^4.2.4",
@@ -66,15 +65,16 @@
     "electron-is-dev": "^1.2.0",
     "electron-store": "^6.0.0",
     "gojs": "2.1.32",
+    "interactjs": "^1.10.11",
     "less": "^4.1.1",
     "less-loader": "^8.1.1",
+    "pinia": "^2.0.0-rc.4",
     "qs": "^6.10.1",
     "splitpanes": "^3.0.6",
     "uuid": "^8.3.2",
     "vite-plugin-style-import": "^0.10.0",
     "vue": "^3.2.2",
-    "vue-router": "^4.0.0-beta.13",
-    "vuex": "^4.0.2"
+    "vue-router": "^4.0.0-beta.13"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",

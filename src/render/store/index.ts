@@ -1,3 +1,3 @@
-export { default as useEventStore } from './modules/useEventStore'
-export { default as useTabStore } from './modules/useTabStore'
-export { default as useLoginStore } from './modules/useLoginStore'
+export { useTabStore } from './modules/tab'
+export { useEventStore } from './modules/event'
+export { useUserStore } from './modules/user'

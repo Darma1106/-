@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, onMounted } from 'vue'
+import { defineComponent, defineAsyncComponent, onMounted, toRefs } from 'vue'
 import { useTabStore } from '@/store'
 export default defineComponent({
   components: {
@@ -27,10 +27,10 @@ export default defineComponent({
     TableModel: defineAsyncComponent(() => import('@/views/tableModel/TableModel.vue'))
   },
   setup() {
-    const { tabs, activeTab, add, change, remove } = useTabStore()
+    const { tabs, activeTab, add, change, remove } = toRefs(useTabStore())
 
     const onEdit = (targetKey: string) => {
-      remove(targetKey)
+      remove.value(targetKey)
     }
 
     // 默认选中第一个

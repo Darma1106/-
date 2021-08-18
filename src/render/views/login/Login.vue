@@ -28,15 +28,16 @@ import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import type { User } from '@/services/module/loginService'
-import useLogin from '@/store/modules/useLoginStore'
+import { useUserStore } from '@/store'
 
 const loginFormData: Ref<User> = ref({ userName: '', password: '' })
 const router = useRouter()
 
 const handleLogin = async () => {
-  const flag = await useLogin().login(loginFormData.value)
+  const flag = await useUserStore().login(loginFormData.value)
+
   if (flag) {
-    router.push('home')
+    router.push('/home')
   }
 }
 </script>

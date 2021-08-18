@@ -39,7 +39,7 @@ export default defineComponent({
 
     const { eventSwitch } = useEventStore()
     const save = () => {
-      eventSwitch('save', activeTab.value)
+      eventSwitch('save', activeTab)
     }
 
     const items: Ref<toolConfig[]> = ref([
