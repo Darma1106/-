@@ -48,8 +48,12 @@ export function defaultLineMaker(): go.Link {
         )
       )
     },
-    new go.Binding('fromSpot', 'fromSpot', go.Spot.parse),
-    new go.Binding('toSpot', 'toSpot', go.Spot.parse),
+    // new go.Binding('fromSpot', 'fromSpot', (val) => {
+    //   console.log(123123, '123', val)
+    // }),
+    new go.Binding('fromSpot').makeTwoWay(),
+    // new go.Binding('toSpot', 'toSpot', go.Spot.parse),
+    new go.Binding('toSpot').makeTwoWay(),
     new go.Binding('fromShortLength', 'dir', function (dir) {
       return dir === 2 ? 4 : 0
     }),
@@ -57,7 +61,7 @@ export function defaultLineMaker(): go.Link {
       return dir >= 1 ? 4 : 0
     }),
     // 线走向
-    new go.Binding('points').makeTwoWay(),
+    // new go.Binding('points').makeTwoWay(),
     make(
       go.Shape,
       { strokeWidth: 2 },

@@ -2,7 +2,7 @@
   <div class="base-diagram">
     <Editor :editor-data="editorTemplate" @active-item-change="editorItemChange" />
     <div ref="mainRef" class="main"></div>
-    <!-- <button @click="getJson">show Json</button> -->
+    <button @click="getJson">show Json</button>
   </div>
 </template>
 
@@ -12,11 +12,11 @@ import type { Ref, PropType } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 import { v4 as uuidv4 } from 'uuid'
-// import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
 import { addChild, makeAddButton } from './util/node'
 import Editor from './editor.vue'
 import type { Template, CommonNodeType, CommonLinkType, AfterInit, AfterLink, EditorType, EditorTemplate } from './type'
 import { guidedDraggingToolOption } from '@/component/baseDiagram/util/diagramTool/GuidedDraggingTool'
+import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
 import { commonLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { commonNodeMap } from '@/component/baseDiagram/util/defaultNode'
 
@@ -171,7 +171,9 @@ export default defineComponent({
         if (props.afterInit) {
           props.afterInit(diagram)
         }
-        // diagram.toolManager.mouseDownTools.add(make(LinkShiftingTool))
+        // LinkShiftingTool 实例
+        const linkShift = make(LinkShiftingTool)
+        diagram.toolManager.mouseDownTools.add(linkShift)
         diagram.nodeSelectionAdornmentTemplate = makeAddButton(addChildNode)
       })
     })

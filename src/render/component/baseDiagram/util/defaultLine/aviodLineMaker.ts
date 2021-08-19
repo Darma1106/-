@@ -48,8 +48,8 @@ export function avoidLineMaker(): go.Link {
         )
       )
     },
-    new go.Binding('fromSpot', 'fromSpot', go.Spot.parse),
-    new go.Binding('toSpot', 'toSpot', go.Spot.parse),
+    new go.Binding('fromSpot').makeTwoWay(),
+    new go.Binding('toSpot').makeTwoWay(),
     new go.Binding('fromShortLength', 'dir', function (dir) {
       return dir === 2 ? 4 : 0
     }),

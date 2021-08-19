@@ -26,7 +26,7 @@ export function renderDiagramFromLocal(
       if (tabId && baseDiagramRef.value) {
         const localJson = localStorage.getItem(tabId)
         if (localJson) {
-          baseDiagramRef.value.renderJson(localJson)
+          baseDiagramRef.value.renderJson(JSON.parse(localJson))
           console.log('local')
         } else {
           console.log('def')
