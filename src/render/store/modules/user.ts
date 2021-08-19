@@ -18,7 +18,7 @@ export const useUserStore = defineStore({
   id: 'user',
   state(): UserState {
     return {
-      userInfo: {}
+      userInfo: { userName: 'admin' }
     }
   },
   actions: {

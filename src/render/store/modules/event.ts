@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { toRefs } from 'vue'
 import { useTabStore } from './tab'
 
 type Callback = () => void
@@ -36,7 +35,7 @@ interface EventState {
   eventMap: CallbackMap
 }
 
-const { activeTab } = toRefs(useTabStore())
+const TabStore = useTabStore()
 
 export const useEventStore = defineStore({
   id: 'event',
@@ -65,9 +64,7 @@ export const useEventStore = defineStore({
     },
 
     // 事件触发器
-    eventSwitch(event: EventType, componentId = activeTab?.value) {
-      // if (componentId == undefined) componentId = activeTab?.value
-
+    eventSwitch(event: EventType, componentId = TabStore.activeTab) {
       if (componentId) {
         const eventCallback = this.eventMap?.[componentId]
         console.log(event, componentId, eventCallback)
