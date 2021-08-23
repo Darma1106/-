@@ -67,8 +67,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
-    const Mdata = dataMap.get(props.tabId) as MTable
+  setup() {
+    const Mdata = dataMap.get('0-3-1') as MTable
     let columns: any[] = []
     const dataSource: Ref<DataItem[]> = ref([
       {

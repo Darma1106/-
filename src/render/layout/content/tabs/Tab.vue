@@ -17,14 +17,13 @@ import { useTabStore } from '@/store'
 export default defineComponent({
   components: {
     UmlClass: defineAsyncComponent(() => import('@/views/umlClass/UmlClass.vue')),
-    ActiveModel: defineAsyncComponent(() => import('@/views/activeModel/ActiveModel.vue')),
-    // ActiveModel: defineAsyncComponent(() => import('@/common/testModel.vue')),
-
-    MatrixModel: defineAsyncComponent(() => import('@/views/matrixModel/MatrixModel.vue')),
-    OrganizationModel: defineAsyncComponent(() => import('@/views/organizationModel/OrganizationModel.vue')),
-    SequenceModel: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue')),
-    ProcessModel: defineAsyncComponent(() => import('@/views/processModel/ProcessModel.vue')),
-    TableModel: defineAsyncComponent(() => import('@/views/tableModel/TableModel.vue'))
+    ACTIVITY_GRAPHIC: defineAsyncComponent(() => import('@/views/activeModel/ActiveModel.vue')),
+    NETWORK_GRAPHIC: defineAsyncComponent(() => import('@/views/activeModel/ActiveModel.vue')),
+    MATRIX_GRAPHIC: defineAsyncComponent(() => import('@/views/matrixModel/MatrixModel.vue')),
+    TREE_GRAPHIC: defineAsyncComponent(() => import('@/views/organizationModel/OrganizationModel.vue')),
+    TIMELINE_GRAPHIC: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue')),
+    FLOW_GRAPHIC: defineAsyncComponent(() => import('@/views/processModel/ProcessModel.vue')),
+    TABLE_GRAPHIC: defineAsyncComponent(() => import('@/views/tableModel/TableModel.vue'))
   },
   setup() {
     const { tabs, activeTab, add, change, remove } = toRefs(useTabStore())

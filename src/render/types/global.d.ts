@@ -3,5 +3,5 @@ export interface HttpResponse<T> {
   state?: string
   code?: 1 | 0
   msg: string
-  data?: T
+  data: T
 }

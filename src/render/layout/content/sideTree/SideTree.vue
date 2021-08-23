@@ -51,6 +51,7 @@ import { iconFont } from '@/component/baseIcon/type/enum'
 
 import type { SchemeTree } from '@/services/module/schemeService'
 import type { Pane } from '@/store/modules/tab'
+import ModelService from '@/services/module/modelService'
 
 export default defineComponent({
   components: {
@@ -72,15 +73,18 @@ export default defineComponent({
 
     // 双击切换
     const tabsInstance = useTabStore()
-    const nodeDblclick = (data: SchemeTree) => {
-      const targetTab = tabsInstance.search(`${data.nodeId}`)
+    const nodeDblclick = async (nodeData: SchemeTree) => {
+      const targetTab = tabsInstance.search(`${nodeData.instanceId}`)
       if (targetTab) {
-        tabsInstance.change(`${data.nodeId}`)
-      } else if (data.type == 'MODEL_INSTANCE') {
+        tabsInstance.change(`${nodeData.instanceId}`)
+      } else if (nodeData.type == 'MODEL_INSTANCE') {
+        const { data } = await ModelService.getModelType(nodeData.typeId)
+        console.log(data, 123)
+
         const tab: Pane = {
-          key: `${data.nodeId}`,
-          title: data.name ?? '',
-          component: 'OrganizationModel',
+          key: `${nodeData.instanceId}`,
+          title: nodeData.name ?? '',
+          component: data,
           closable: true
         }
         tabsInstance.add(tab)
