@@ -1,15 +1,18 @@
 <template>
   <div class="side-tree">
     <a-tree
-      v-if="treeData.length"
+      v-if="treeData.length != 0"
+      v-model:expanded-keys="defaultExpand"
+      :replace-fields="{ children: 'children', key: 'nodeId', title: 'name' }"
       :tree-data="treeData"
       show-icon
-      default-expand-all
       :selected-keys="selectedKeys"
       @select="(keys) => onSelect(keys)"
     >
-      <template #title="{ dataRef, title }"
-        ><span @dblclick="nodeDblclick(dataRef)">{{ title }}</span>
+      <template #icon> <BaseIcon :icon-type="iconFont.模型" /> </template>
+
+      <template #title="{ dataRef, name }"
+        ><span @dblclick="nodeDblclick(dataRef)"> {{ name }}</span>
       </template>
 
       <template #meca="{ key: treeKey, title }">
@@ -26,21 +29,11 @@
         </a-dropdown>
       </template>
 
-      <template #switcherIcon>
-        <down-outlined />
-      </template>
-      <template #model>
+      <template #MODEL_INSTANCE>
         <BaseIcon :icon-type="iconFont.模型" />
       </template>
-      <template #category>
+      <template #VIEW_FOLDER>
         <BaseIcon :icon-type="iconFont.文件夹" />
-      </template>
-      <template #meh>
-        <smile-outlined />
-      </template>
-      <template #custom="{ selected }">
-        <frown-filled v-if="selected" />
-        <frown-outlined v-else />
       </template>
     </a-tree>
   </div>
@@ -48,35 +41,30 @@
 
 <script lang="ts">
 import { Tree } from 'ant-design-vue'
-import { DownOutlined, SmileOutlined, FrownOutlined, FrownFilled } from '@ant-design/icons-vue'
-import { defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref, toRefs } from 'vue'
 import type { Ref } from 'vue'
+import { addSlots } from './toTreeData'
 import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 
-import FrameworkService from '@/services/module/fremeworkService'
-import { useTabStore } from '@/store'
+import { useSchemeStore, useTabStore } from '@/store'
 import { iconFont } from '@/component/baseIcon/type/enum'
 
-import type { TreeData } from '@/services/module/fremeworkService'
-import type { Pane } from '@/store/modules/useTabStore'
+import type { SchemeTree } from '@/services/module/schemeService'
+import type { Pane } from '@/store/modules/tab'
 
 export default defineComponent({
   components: {
-    DownOutlined,
-    SmileOutlined,
-    FrownOutlined,
-    FrownFilled,
     ATree: Tree,
     BaseIcon
   },
   setup() {
-    const treeData: Ref<TreeData[]> = ref([])
-    onMounted(async () => {
-      const { data } = await FrameworkService.getFrameworkList()
-      if (data) {
-        treeData.value = data
-      }
-    })
+    // const treeData: Ref<TreeData[]> = ref([])
+    // onMounted(async () => {
+    //   const { data } = await FrameworkService.getFrameworkList()
+    //   if (data) {
+    //     treeData.value = data
+    //   }
+    // })
 
     const onContextMenuClick = (treeKey: string, menuKey: string) => {
       console.log(treeKey, menuKey)
@@ -84,15 +72,15 @@ export default defineComponent({
 
     // 双击切换
     const tabsInstance = useTabStore()
-    const nodeDblclick = (data: TreeData) => {
-      const targetTab = tabsInstance.search(`${data.key}`)
+    const nodeDblclick = (data: SchemeTree) => {
+      const targetTab = tabsInstance.search(`${data.nodeId}`)
       if (targetTab) {
-        tabsInstance.change(`${data.key}`)
-      } else if (data.type !== 'nonModel') {
+        tabsInstance.change(`${data.nodeId}`)
+      } else if (data.type == 'MODEL_INSTANCE') {
         const tab: Pane = {
-          key: `${data.key}`,
-          title: data.title ?? '',
-          component: data.type,
+          key: `${data.nodeId}`,
+          title: data.name ?? '',
+          component: 'OrganizationModel',
           closable: true
         }
         tabsInstance.add(tab)
@@ -106,13 +94,25 @@ export default defineComponent({
       }
     }
 
+    // 默认打开方案层级
+    const { schemeMenu, defaultExpand, open } = toRefs(useSchemeStore())
+    onMounted(() => {
+      open.value()
+    })
+
+    const treeData = computed(() => {
+      return addSlots(schemeMenu?.value)
+    })
+
     return {
       selectedKeys,
       onContextMenuClick,
       nodeDblclick,
       onSelect,
+      defaultExpand,
       treeData,
-      iconFont
+      iconFont,
+      schemeMenu
     }
   }
 })
@@ -125,6 +125,9 @@ export default defineComponent({
   ::v-deep(.base-icon) {
     height: 14px;
     width: 14px;
+  }
+  ::v-deep(.ant-tree-switcher) {
+    width: 12px;
   }
 }
 </style>

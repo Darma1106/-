@@ -14,7 +14,7 @@
         >
           <template #operation="{ record }">
             <div class="action-container">
-              <!-- <a-button type="primary">打开</a-button> -->
+              <a-button type="primary" size="small" @click="openFn(record)">打开</a-button>
               <a-button size="small" @click="edit(record)">编辑</a-button>
               <a-button type="primary" danger size="small" @click="deleteFn(record.id)">删除</a-button>
             </div>
@@ -43,7 +43,7 @@ import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import SchemeForm from './SchemeForm.vue'
 import BaseModal from '@/component/modal/BaseModal.vue'
 
-import { useEventStore } from '@/store'
+import { useEventStore, useSchemeStore } from '@/store'
 import type { BaseModalInstance } from '@/component/modal/type'
 import type { PopupCardInstance } from '@/component/popupCard/type'
 import { useScheme } from '@/composition'
@@ -98,7 +98,7 @@ const columns: ColumnProps[] = reactive([
     dataIndex: 'action',
     align: 'center',
     key: 'action',
-    width: '180px',
+    width: '270px',
     slots: {
       customRender: 'operation'
     }
@@ -120,6 +120,11 @@ const addScheme = () => {
   if (schemeFormRef.value) {
     schemeFormRef.value.show()
   }
+}
+
+const openFn = (record: SchemeInfo) => {
+  const schemeStore = useSchemeStore()
+  schemeStore.open(record)
 }
 </script>
 
