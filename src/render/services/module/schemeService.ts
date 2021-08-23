@@ -20,12 +20,12 @@ export interface TreeData extends TreeDataItem {
 }
 
 export interface SchemeInfo {
-  id?: string
-  name?: string
-  frameWorkId?: string
-  frameName?: string
-  createDate?: string
-  createSubFile?: number
+  id: string
+  name: string
+  frameWorkId: string
+  frameName: string
+  createDate: string
+  createSubFile: number
 }
 
 interface ResponseData {
@@ -39,6 +39,17 @@ interface ResponseData {
 export interface SearchParams {
   frameWorkId?: string
   name?: string
+}
+
+export interface SchemeTree {
+  nodeId: string
+  pid: string
+  name: string
+  sort: number
+  children?: SchemeTree[]
+  type: string
+  typeId: string
+  instanceId?: string
 }
 
 //封装Framework类型的接口方法
@@ -61,5 +72,9 @@ export default class SchemeService {
 
   static async deleteScheme(schemeId: string): Promise<HttpResponse<string>> {
     return service.delete('/scheme/delete', { params: { ids: schemeId } })
+  }
+
+  static async openScheme(schemeId: string): Promise<HttpResponse<SchemeTree[]>> {
+    return service.get('/schemaNav/findTreeBySid', { params: { sid: schemeId } })
   }
 }
