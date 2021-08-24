@@ -110,8 +110,13 @@ export default defineComponent({
           wrapperCol: { lg: { span: 16 }, sm: { span: 16 } }
         }
       }
+    },
+    useOrigin: {
+      type: Boolean,
+      default: false
     }
   },
+  emits: ['data-change'],
   setup(props) {
     // 枚举传递
     const FormInputTypes = FormInputEnum
@@ -171,8 +176,10 @@ export default defineComponent({
     const modelRef = ref<Common.RecordObject>({})
 
     watchEffect(() => {
-      const data = convertModelFromFormData(props.formData, modelRef.value)
-      modelRef.value = data
+      if (props.useOrigin === false) {
+        const data = convertModelFromFormData(props.formData, modelRef.value)
+        modelRef.value = data
+      }
     })
 
     // 操作form的方法，tips：目前 antdv的useForm 中对于表单的操作方法存在问题，需要等待后续版本的升级

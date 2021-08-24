@@ -52,7 +52,7 @@ export function basedNodeMaker(nodeTemplate: go.GraphObject, contextMenu = false
       ? make(
           go.TextBlock,
           { margin: 1, textAlign: 'center', overflow: go.TextBlock.OverflowEllipsis, editable: true },
-          new go.Binding('text').makeTwoWay(),
+          new go.Binding('text'),
           new go.Binding('stroke', 'fontColor')
         )
       : ''

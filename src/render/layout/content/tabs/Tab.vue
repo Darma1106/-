@@ -12,8 +12,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, onMounted, toRefs } from 'vue'
-import { useTabStore } from '@/store'
+import { defineComponent, defineAsyncComponent, toRefs } from 'vue'
+import { useTabStore } from '@/store/modules/tab'
 export default defineComponent({
   components: {
     UmlClass: defineAsyncComponent(() => import('@/views/umlClass/UmlClass.vue')),
@@ -26,23 +26,16 @@ export default defineComponent({
     TABLE_GRAPHIC: defineAsyncComponent(() => import('@/views/tableModel/TableModel.vue'))
   },
   setup() {
-    const { tabs, activeTab, add, change, remove } = toRefs(useTabStore())
+    const { tabs, activeTab, change, remove } = toRefs(useTabStore())
 
     const onEdit = (targetKey: string) => {
       remove.value(targetKey)
     }
 
-    // 默认选中第一个
-    onMounted(() => {
-      // change(tabs.value[0].key)
-    })
-
     return {
       tabs,
       activeTab,
-      add,
       change,
-      remove,
       onEdit
     }
   }

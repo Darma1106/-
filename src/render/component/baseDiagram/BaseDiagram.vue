@@ -1,9 +1,20 @@
 <template>
-  <div class="base-diagram">
-    <Editor :editor-data="editorTemplate" @active-item-change="editorItemChange" />
-    <div ref="mainRef" class="main"></div>
-    <button @click="getJson">show Json</button>
-  </div>
+  <splitpanes class="layout-content default-theme" horizontal :push-other-panes="false" style="height: 100%">
+    <pane>
+      <splitpanes class="layout-content default-theme">
+        <pane>
+          <div class="base-diagram">
+            <Editor :editor-data="editorTemplate" @active-item-change="editorItemChange" />
+            <div ref="mainRef" class="main"></div>
+            <!-- <button @click="getJson">show Json</button> -->
+          </div>
+        </pane>
+        <pane min-size="8" max-size="25" size="15">
+          <Information :info="selectionNode" />
+        </pane>
+      </splitpanes>
+    </pane>
+  </splitpanes>
 </template>
 
 <script lang="ts">
@@ -12,6 +23,9 @@ import type { Ref, PropType } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 import { v4 as uuidv4 } from 'uuid'
+import Splitpanes from 'splitpanes/src/components/splitpanes/splitpanes.vue'
+import Pane from 'splitpanes/src/components/splitpanes/pane.vue'
+import Information from '../information/Infomation.vue'
 import { addChild, makeAddButton } from './util/node'
 import Editor from './editor.vue'
 import type { Template, CommonNodeType, CommonLinkType, AfterInit, AfterLink, EditorType, EditorTemplate } from './type'
@@ -24,7 +38,7 @@ const make = go.GraphObject.make
 
 export default defineComponent({
   name: '',
-  components: { Editor },
+  components: { Editor, Information, Pane, Splitpanes },
   props: {
     editor: {
       type: Boolean,
@@ -171,6 +185,8 @@ export default defineComponent({
         if (props.afterInit) {
           props.afterInit(diagram)
         }
+        setChangeSelection()
+        setTextEdited()
         // LinkShiftingTool 实例
         const linkShift = make(LinkShiftingTool)
         diagram.toolManager.mouseDownTools.add(linkShift)
@@ -251,8 +267,35 @@ export default defineComponent({
       activeEditorType = item
     }
 
+    // 属性栏联动
+    const selectionNode: Ref<go.ObjectData> = ref({})
+    const changeSelection = ({ diagram }: go.DiagramEvent) => {
+      selectionNode.value = diagram.selection.first()?.data ?? {}
+    }
+
+    const setChangeSelection = () => {
+      const diagram = getDiagram()
+      if (diagram) {
+        diagram.addDiagramListener('ChangedSelection', changeSelection)
+      }
+    }
+
+    const textEdit = () => {
+      console.log(selectionNode.value.text)
+      const temp = Object.assign({}, selectionNode.value)
+      selectionNode.value = temp
+    }
+
+    const setTextEdited = () => {
+      const diagram = getDiagram()
+      if (diagram) {
+        diagram.addDiagramListener('TextEdited', textEdit)
+      }
+    }
+
     return {
       mainRef,
+      selectionNode,
       // editRef,
       getDiagram,
       addNode,
