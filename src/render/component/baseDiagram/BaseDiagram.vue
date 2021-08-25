@@ -6,7 +6,7 @@
           <div class="base-diagram">
             <Editor :editor-data="editorTemplate" @active-item-change="editorItemChange" />
             <div ref="mainRef" class="main"></div>
-            <!-- <button @click="getJson">show Json</button> -->
+            <button @click="getJson">show Json</button>
           </div>
         </pane>
         <pane min-size="8" max-size="25" size="15">
@@ -269,8 +269,8 @@ export default defineComponent({
 
     // 属性栏联动
     const selectionNode: Ref<go.ObjectData> = ref({})
-    const changeSelection = ({ diagram }: go.DiagramEvent) => {
-      selectionNode.value = diagram.selection.first()?.data ?? {}
+    const changeSelection = (e: go.DiagramEvent) => {
+      selectionNode.value = e.diagram.selection.first()?.data ?? {}
     }
 
     const setChangeSelection = () => {
@@ -280,10 +280,10 @@ export default defineComponent({
       }
     }
 
-    const textEdit = () => {
-      console.log(selectionNode.value.text)
-      const temp = Object.assign({}, selectionNode.value)
-      selectionNode.value = temp
+    // 自己手动刷新图像和表单的关联，gojs的双向绑定有小bug
+    const textEdit = (e: go.DiagramEvent) => {
+      selectionNode.value.text = e.subject.text
+      updateProperty('text', e.subject.text)
     }
 
     const setTextEdited = () => {

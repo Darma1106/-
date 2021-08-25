@@ -42,6 +42,9 @@ watch(
     if (formRef.value) {
       formRef.value.setFieldsValue(props.info)
     }
+  },
+  {
+    deep: true
   }
 )
 </script>
