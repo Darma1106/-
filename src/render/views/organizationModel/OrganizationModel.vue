@@ -7,7 +7,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, nextTick } from 'vue'
 import { message } from 'ant-design-vue'
-import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
+import BaseDiagram from '@/component/baseDiagram/BaseDiagramSetup.vue'
 
 import { useEventStore } from '@/store'
 

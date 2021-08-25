@@ -13,7 +13,7 @@
 import { defineComponent, ref } from 'vue'
 import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
-import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
+import BaseDiagram from '@/component/baseDiagram/BaseDiagramSetup.vue'
 import { useEventStore } from '@/store'
 import { renderDiagramFromLocal } from '@/component/baseDiagram/util/diagram'
 import { dataMap } from '@/views/tableModel/database'
