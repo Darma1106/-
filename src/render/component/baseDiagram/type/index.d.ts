@@ -1,4 +1,4 @@
-import type { Node, Link, Diagram, ObjectData } from 'gojs'
+import type { Diagram, ObjectData } from 'gojs'
 import { ArrowTypeValue, CommonNodeTypeValue, CommonLinkTypeValue } from './enum'
 import { icons } from '@/common/icons'
 
@@ -15,8 +15,8 @@ export interface Template<T> {
 }
 
 export interface BaseDiagramInstance {
-  NodeMap: Template<Node>[]
-  LinkMap: Template<Link>[]
+  // NodeMap: Template<Node>[]
+  // LinkMap: Template<Link>[]
   getDiagram: () => Diagram
   getNodeArray: () => go.ObjectData[] | undefined
   getLinkArray: () => go.ObjectData[] | undefined
