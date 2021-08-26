@@ -48,14 +48,12 @@ export function basedNodeMaker(nodeTemplate: go.GraphObject, contextMenu = false
         return go.Size.parse(realSize)
       }).makeTwoWay(go.Size.stringify)
     ),
-    centerText
-      ? make(
-          go.TextBlock,
-          { margin: 1, textAlign: 'center', overflow: go.TextBlock.OverflowEllipsis, editable: true },
-          new go.Binding('text'),
-          new go.Binding('stroke', 'fontColor')
-        )
-      : ''
+    make(
+      go.TextBlock,
+      { margin: 1, textAlign: 'center', overflow: go.TextBlock.OverflowEllipsis, editable: true },
+      new go.Binding('text', 'name').makeTwoWay(),
+      new go.Binding('stroke', 'fontColor')
+    )
     // 提示
     // {
     //   toolTip: make(

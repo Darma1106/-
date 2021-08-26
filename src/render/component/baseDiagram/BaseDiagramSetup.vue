@@ -20,6 +20,7 @@
 <script lang="ts" setup>
 import { nextTick, onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
+import { cloneDeep } from 'lodash'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 import { v4 as uuidv4 } from 'uuid'
@@ -177,6 +178,7 @@ const getLinkArray = () => {
 const getJson = () => {
   if (diagram) {
     console.log(diagram.model.toJson())
+    //  diagram.model.updateTargetBindings(selectionNode.value)
     return diagram.model.toJson()
   }
 }
@@ -237,9 +239,19 @@ const setChangeSelection = () => {
 
 // 自己手动刷新图像和表单的关联，gojs的双向绑定有小bug
 const textEdit = (e: go.DiagramEvent) => {
-  selectionNode.value.text = e.subject.text
-  updateProperty('text', e.subject.text)
+  selectionNode.value.name = e.subject.text
+  selectionNode.value = cloneDeep(selectionNode.value)
 }
+
+// watch(
+//   () => selectionNode.value,
+//   (val) => {
+//     if (JSON.stringify(val) != '{}') {
+//       // console.log(val.name)
+//     }
+//   },
+//   { deep: true }
+// )
 
 const setTextEdited = () => {
   const diagram = getDiagram()

@@ -12,8 +12,8 @@ export function pictureNodeMaker(nodeOption?: NodeOption): go.Node {
         {
           desiredSize: new go.Size(65, 65),
           source: nodeOption?.source,
-          width: 65,
-          height: 65,
+          // width: 65,
+          // height: 65,
           name: 'PICTURE',
           portId: '',
           cursor: 'pointer',

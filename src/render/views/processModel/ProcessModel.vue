@@ -71,7 +71,7 @@ export default defineComponent({
               key: 2,
               figure: 'RoundedRectangle',
               fill: '#FFFEDF',
-              text: '活动',
+              name: '活动',
               category: 'defaultNode',
               type: 'ServiceTask',
               showContext: false
@@ -104,6 +104,22 @@ export default defineComponent({
               category: 'defaultNode',
               size: '15 15',
               resizable: false,
+              type: 'StartEvent',
+              showContext: false
+            }
+          },
+          // pictureNode
+          {
+            id: '11111',
+            type: 'node',
+            name: '图片',
+            data: {
+              key: 5,
+              figure: 'Circle',
+              name: '1',
+              category: 'pictureNode',
+              source: '',
+              resizable: true,
               type: 'StartEvent',
               showContext: false
             }

@@ -11,7 +11,7 @@ import { FormInputEnum } from '@/component/form/type/enum'
 import type { IFormConfig, IFormRef } from '@/component/form/type'
 
 const staticForm: IFormConfig = {
-  text: {
+  name: {
     type: FormInputEnum.Input,
     label: '名称'
   },
