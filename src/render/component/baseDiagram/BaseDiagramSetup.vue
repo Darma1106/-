@@ -123,8 +123,6 @@ function LinkDrawn({ diagram: { model }, subject }: go.DiagramEvent) {
 }
 
 function getDiagram(): go.Diagram | null {
-  console.log('getDiagram')
-
   return diagram
 }
 
@@ -199,16 +197,19 @@ const updateProperty = (propName: string, val: any) => {
   }
 }
 
+// 添加关联节点
 const addChildNode = () => {
   const diagram = getDiagram()
   if (diagram) {
     const selection = diagram.selection.first()
     if (selection) {
+      // 复制一份，使用默认连接类型连接
       addChild(diagram, selection, props.defaultLinkType)
     }
   }
 }
 
+// 连线开关
 const setLinkedState = (state: boolean) => {
   const diagram = getDiagram()
   if (diagram) {
