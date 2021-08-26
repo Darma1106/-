@@ -94,7 +94,7 @@ export function defaultLineMaker(): go.Link {
     make(
       go.TextBlock,
       { alignmentFocus: new go.Spot(0, 1, -4, 0), editable: true },
-      new go.Binding('text').makeTwoWay(), // TwoWay due to user editing with TextEditingTool
+      new go.Binding('text', 'name').makeTwoWay(), // TwoWay due to user editing with TextEditingTool
       new go.Binding('stroke', 'color')
     )
   )

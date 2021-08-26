@@ -85,7 +85,7 @@ export default defineComponent({
               key: 3,
               thickness: 6,
               figure: 'Circle',
-              text: '',
+              name: '',
               category: 'defaultNode',
               size: '15 15',
               resizable: false,
@@ -100,7 +100,7 @@ export default defineComponent({
             data: {
               key: 5,
               figure: 'Circle',
-              text: '',
+              name: '',
               category: 'defaultNode',
               size: '15 15',
               resizable: false,
@@ -141,7 +141,7 @@ export default defineComponent({
     ]
 
     const afterLink = ({ data }: go.ObjectData) => {
-      data.text = '流程条件'
+      data.name = '流程条件'
     }
 
     return {

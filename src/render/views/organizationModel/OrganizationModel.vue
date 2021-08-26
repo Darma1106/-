@@ -69,7 +69,7 @@ export default defineComponent({
               figure: 'RoundedRectangle',
               fill: '#FFFEDF',
               fontColor: 'black',
-              text: 'text',
+              name: 'text',
               category: 'defaultNode',
               size: '80 30',
               showContext: false

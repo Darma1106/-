@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import { cloneDeep } from 'lodash'
 import { unrefElement } from '@vueuse/core'
@@ -227,7 +227,7 @@ const editorItemChange = (item: EditorType) => {
 // 属性栏联动
 const selectionNode: Ref<go.ObjectData> = ref({})
 const changeSelection = (e: go.DiagramEvent) => {
-  selectionNode.value = e.diagram.selection.first()?.data ?? {}
+  selectionNode.value = cloneDeep(e.diagram.selection.first()?.data ?? {})
 }
 
 const setChangeSelection = () => {
@@ -243,15 +243,16 @@ const textEdit = (e: go.DiagramEvent) => {
   selectionNode.value = cloneDeep(selectionNode.value)
 }
 
-// watch(
-//   () => selectionNode.value,
-//   (val) => {
-//     if (JSON.stringify(val) != '{}') {
-//       // console.log(val.name)
-//     }
-//   },
-//   { deep: true }
-// )
+// 检测到表单更新即更改渲染属性
+watch(
+  () => selectionNode.value,
+  (val) => {
+    if (JSON.stringify(val) != '{}') {
+      updateProperty('name', val.name)
+    }
+  },
+  { deep: true }
+)
 
 const setTextEdited = () => {
   const diagram = getDiagram()
