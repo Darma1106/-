@@ -6,7 +6,7 @@
           <div class="base-diagram">
             <Editor :editor-data="editorTemplate" @active-item-change="editorItemChange" />
             <div ref="mainRef" class="main"></div>
-            <!-- <button @click="getJson">show Json</button> -->
+            <button @click="getJson">show Json</button>
           </div>
         </pane>
         <pane min-size="8" max-size="25" size="15">
@@ -249,7 +249,12 @@ watch(
   () => selectionNode.value,
   (val) => {
     if (JSON.stringify(val) != '{}') {
-      updateProperty('name', val.name)
+      for (const key in val) {
+        if (Object.prototype.hasOwnProperty.call(val, key)) {
+          const element = val[key]
+          updateProperty(key, element)
+        }
+      }
     }
   },
   { deep: true }
