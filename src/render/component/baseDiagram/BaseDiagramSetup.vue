@@ -6,11 +6,11 @@
           <div class="base-diagram">
             <Editor :editor-data="editorTemplate" @active-item-change="editorItemChange" />
             <div ref="mainRef" class="main"></div>
-            <button @click="getJson">show Json</button>
+            <!-- <button @click="getJson">show Json</button> -->
           </div>
         </pane>
         <pane min-size="8" max-size="25" size="15">
-          <Information :info="selectionNode" />
+          <Information ref="infoRef" :diagram-instance="diagram" />
         </pane>
       </splitpanes>
     </pane>
@@ -18,15 +18,15 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
-import { cloneDeep } from 'lodash'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 import { v4 as uuidv4 } from 'uuid'
 import Splitpanes from 'splitpanes/src/components/splitpanes/splitpanes.vue'
 import Pane from 'splitpanes/src/components/splitpanes/pane.vue'
 import Information from '../information/Infomation.vue'
+import type { BaseModalInstance } from '../information/type'
 import { addChild, makeAddButton } from './util/node'
 import Editor from './editor.vue'
 import type { Template, AfterInit, AfterLink, EditorType, EditorTemplate } from './type'
@@ -57,6 +57,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const mainRef: Ref<HTMLDivElement | null> = ref(null)
+const infoRef: Ref<BaseModalInstance | null> = ref(null)
+
 let diagram: go.Diagram | null = null
 
 // 活跃的编辑栏选项
@@ -138,8 +140,7 @@ onMounted(() => {
     if (props.afterInit) {
       props.afterInit(diagram)
     }
-    setChangeSelection()
-    setTextEdited()
+    infoRef.value?.renderProperty(diagram)
     // LinkShiftingTool 实例
     const linkShift = make(LinkShiftingTool)
     diagram.toolManager.mouseDownTools.add(linkShift)
@@ -226,46 +227,7 @@ const editorItemChange = (item: EditorType) => {
 }
 
 // 属性栏联动
-const selectionNode: Ref<go.ObjectData> = ref({})
-const changeSelection = (e: go.DiagramEvent) => {
-  selectionNode.value = cloneDeep(e.diagram.selection.first()?.data ?? {})
-}
-
-const setChangeSelection = () => {
-  const diagram = getDiagram()
-  if (diagram) {
-    diagram.addDiagramListener('ChangedSelection', changeSelection)
-  }
-}
-
-// 自己手动刷新图像和表单的关联，gojs的双向绑定有小bug
-const textEdit = (e: go.DiagramEvent) => {
-  selectionNode.value.name = e.subject.text
-  selectionNode.value = cloneDeep(selectionNode.value)
-}
-
-// 检测到表单更新即更改渲染属性
-watch(
-  () => selectionNode.value,
-  (val) => {
-    if (JSON.stringify(val) != '{}') {
-      for (const key in val) {
-        if (Object.prototype.hasOwnProperty.call(val, key)) {
-          const element = val[key]
-          updateProperty(key, element)
-        }
-      }
-    }
-  },
-  { deep: true }
-)
-
-const setTextEdited = () => {
-  const diagram = getDiagram()
-  if (diagram) {
-    diagram.addDiagramListener('TextEdited', textEdit)
-  }
-}
+// const selectionNode: Ref<go.ObjectData> = ref({})
 
 // 暴露组件接口
 defineExpose({
