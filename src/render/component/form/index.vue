@@ -15,6 +15,7 @@
         :is="`a-${formData[key].type}`"
         v-if="formData[key].type !== FormInputTypes.Custom"
         v-model:value="modelRef[key]"
+        autocomplete="off"
         :placeholder="formData[key].placeholder || ''"
         allow-clear
         v-bind="{
