@@ -1,6 +1,6 @@
 import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree'
 import service from '../http'
-import { HttpResponse } from '@/types/global'
+import { HttpResponse } from '@/services/type'
 export interface TreeData extends TreeDataItem {
   name: string
   pid: string

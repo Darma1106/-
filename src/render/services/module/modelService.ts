@@ -1,5 +1,5 @@
 import service from '../http'
-import { HttpResponse } from '@/types/global'
+import { HttpResponse } from '@/services/type'
 
 enum ModelTypeValue {
   TIMELINE_GRAPHIC = 'TIMELINE_GRAPHIC',

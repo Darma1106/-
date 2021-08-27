@@ -1,5 +1,5 @@
 import service from '../http'
-import { HttpResponse } from '../../types/global'
+import { HttpResponse } from '@/services/type'
 /**
  * @interface ProjectInfo -工程信息
  * @property {string} id -工程编号

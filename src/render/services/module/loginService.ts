@@ -1,6 +1,6 @@
 // import service from '../http'
 import { message } from 'ant-design-vue'
-import { HttpResponse } from '@/types/global'
+import { HttpResponse } from '@/services/type'
 
 interface UserInfo {
   userName?: string
