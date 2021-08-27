@@ -1,14 +1,10 @@
 <template>
   <a-tabs :active-key="activeTab" class="tabs" hide-add type="editable-card" @edit="onEdit" @change="change"
-    ><a-tab-pane
-      v-for="pane in tabs"
-      v-show="pane.key == activeTab"
-      :key="pane.key"
-      class="tab-panel"
-      :tab="pane.title"
-      :closable="pane.closable"
-      ><component :is="pane.component" v-show="pane.key == activeTab" :tab-id="pane.key"></component></a-tab-pane
+    ><a-tab-pane v-for="pane in tabs" :key="pane.key" :tab="pane.title" :closable="pane.closable"></a-tab-pane
   ></a-tabs>
+  <div v-for="pane in tabs" v-show="pane.key == activeTab" :key="pane.key" class="tab-view">
+    <component :is="pane.component" :tab-id="pane.key"></component>
+  </div>
 </template>
 
 <script lang="ts">
@@ -44,25 +40,21 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .tabs {
-  height: 100%;
+  // height: 100%;
   width: calc(100% - 1px);
   border-left: @1px-border;
   border-right: @1px-border;
 
-  .tab-panel {
-    height: 100%;
-    box-sizing: border-box !important;
-  }
   ::v-deep(.ant-tabs-bar) {
     margin: 0;
     width: calc(100% - 1px);
     background-color: #ddd;
   }
 
-  ::v-deep(.ant-tabs-top-content, .ant-tabs-bottom-content) {
-    height: calc(100% - 40px);
-    width: 100%;
-  }
+  // ::v-deep(.ant-tabs-top-content, .ant-tabs-bottom-content) {
+  //   height: calc(100% - 40px);
+  //   width: 100%;
+  // }
   ::v-deep(.ant-tabs-nav .ant-tabs-tab) {
     background-color: #ddd;
     border-bottom: #ddd;
@@ -74,5 +66,11 @@ export default defineComponent({
     background-color: #f2f2f2;
     border-bottom: 1px solid #f2f2f2;
   }
+}
+
+.tab-view {
+  height: calc(100% - 40px);
+  border-left: @1px-border;
+  border-right: @1px-border;
 }
 </style>
