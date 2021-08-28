@@ -55,14 +55,15 @@ export default defineConfig({
           libraryName: 'ant-design-vue',
           esModule: true,
           resolveStyle: (name) => {
-            return `ant-design-vue/es/${name}/style/index`
+            return `ant-design-vue/es/${name}/style/css`
           }
         }
       ]
     })
   ],
   optimizeDeps: {
-    exclude: ['electron-is-dev', 'electron-store']
+    exclude: ['electron-is-dev', 'electron-store'],
+    include: ['@ant-design/icons-vue', 'ant-design-vue/es/locale/zh_CN', 'interactjs']
   }
 })
 
