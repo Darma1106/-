@@ -69,6 +69,17 @@ import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 import SwitchButton from '@/component/panelItem/switchButton.vue'
 import { iconFont } from '@/component/baseIcon/type/enum'
 
+interface FormState {
+  layout: 'horizontal' | 'vertical' | 'inline'
+  ailgn: 'left' | 'right' | 'center'
+  fontFamily: string
+  fontSize: string
+  fieldA: string
+  fieldB: string
+  xieti: boolean
+  jiacu: boolean
+}
+
 const formState = ref<FormState>({
   fontFamily: 'song',
   fontSize: '22',
@@ -80,19 +91,6 @@ const formState = ref<FormState>({
   jiacu: false
 })
 const color = ref('')
-</script>
-
-<script lang="ts">
-interface FormState {
-  layout: 'horizontal' | 'vertical' | 'inline'
-  ailgn: 'left' | 'right' | 'center'
-  fontFamily: string
-  fontSize: string
-  fieldA: string
-  fieldB: string
-  xieti: boolean
-  jiacu: boolean
-}
 </script>
 
 <style lang="less" scoped>
