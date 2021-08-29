@@ -23,7 +23,7 @@ export default defineConfig({
       less: {
         modifyVars: {
           // 更改主题在这里
-          hack: `true; @import (reference) "${resolve('src/render/assets/style/var.less')}";`
+          hack: `true; @import (reference) "${resolve('src/render/assets/style/index.less')}";`
         },
         javascriptEnabled: true
       }
@@ -36,7 +36,7 @@ export default defineConfig({
   server: {
     port: +process.env.PORT,
     cors: true, // 允许跨域
-    open: true, // 设置服务启动时是否自动打开浏览器
+    open: false, // 设置服务启动时是否自动打开浏览器
     // 设置代理，根据我们项目实际情况配置
     proxy: {
       '/api': {
