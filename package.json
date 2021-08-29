@@ -13,7 +13,8 @@
     "build": "npm run build:vue && npm run build:ele && electron-builder",
     "commit": "git cz",
     "prepare": "husky install",
-    "lint-fix": "eslint --fix --ext .js --ext .ts --ext .jsx --ext .vue src/"
+    "lint-fix": "eslint --fix --ext .js --ext .ts --ext .jsx --ext .vue src/",
+    "postinstall": "patch-package"
   },
   "config": {
     "commitizen": {
@@ -101,6 +102,7 @@
     "husky": "^7.0.1",
     "minimist": "^1.2.5",
     "ora": "^5.0.0",
+    "patch-package": "^6.4.7",
     "prettier": "^2.3.0",
     "rollup-plugin-esbuild": "^3.0.2",
     "sass": "^1.26.10",
