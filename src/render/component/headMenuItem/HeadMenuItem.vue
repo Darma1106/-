@@ -11,7 +11,7 @@
             </a-menu-item>
           </a-sub-menu>
           <a-menu-item v-else :key="index" :disabled="!!context.disable"
-            >{{ context.label }} {{ context.flag }}</a-menu-item
+            ><div class="item-label">{{ context.label }} {{ context.flag }}</div></a-menu-item
           >
         </div>
       </a-menu>
