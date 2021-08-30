@@ -5,3 +5,46 @@
 @tool-svg-size: 20px;
 
 @1px-border: 1px solid @my-layout-border-color;
+
+body {
+  user-select: none;
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 1em;
+    background-color: rgba(50, 50, 50, 0.3);
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 1em;
+    background-color: rgba(50, 50, 50, 0.1);
+  }
+}
+
+canvas {
+  border: 0px;
+  outline: none;
+}
+
+// 禁止选中文本
+// body {
+//   user-select: none;
+//   ::-webkit-scrollbar {
+//     width: 5px;
+//     height: 5px;
+//   }
+//   ::-webkit-scrollbar-thumb {
+//     border-radius: 1em;
+//     background-color: rgba(50, 50, 50, 0.3);
+//   }
+//   ::-webkit-scrollbar-track {
+//     border-radius: 1em;
+//     background-color: rgba(50, 50, 50, 0.1);
+//   }
+// }
+
+// canvas {
+//   border: 0px;
+//   outline: none;
+// }
