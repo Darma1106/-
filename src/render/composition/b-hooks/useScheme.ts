@@ -8,7 +8,7 @@ export interface SchemeController {
   total: Ref<number>
   pageSize: Ref<number>
   pageNum: Ref<number>
-  addFn: (scheme: SchemeInfo) => Promise<void>
+  addFn: (scheme: Partial<SchemeInfo>) => Promise<void>
   deleteFn: (schemeId: string) => Promise<boolean>
   selectFn: (filter?: SearchParams) => Promise<void>
   setPageSize: (size: number) => void
@@ -54,7 +54,7 @@ export default function useScheme(): [SchemeInfo[], SchemeController] {
     loadingController.toggle()
   }
 
-  const addFn = async (scheme: SchemeInfo) => {
+  const addFn = async (scheme: Partial<SchemeInfo>) => {
     if (scheme.id) {
       const { code } = await SchemeService.editScheme(scheme)
       if (code == 1) {

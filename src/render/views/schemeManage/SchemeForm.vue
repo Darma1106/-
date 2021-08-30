@@ -11,6 +11,7 @@ import { FormInputEnum } from '@/component/form/type/enum'
 import type { IFormConfig } from '@/component/form/type'
 import type { PopupCardInstance } from '@/component/popupCard/type'
 import FrameworkService from '@/services/module/fremeworkService'
+import { useScheme } from '@/composition'
 
 interface SchemeData {
   key?: string
@@ -22,7 +23,7 @@ export default defineComponent({
   name: '',
   components: { PopupCard },
   emits: ['form-comfirm'],
-  setup(props, ctx) {
+  setup() {
     const staticForm: Ref<IFormConfig> = ref({
       name: {
         type: FormInputEnum.Input,
@@ -71,8 +72,12 @@ export default defineComponent({
         cardRef.value.show()
       }
     }
+
+    const [, { addFn }] = useScheme()
+
     const handleComfirm = (formData: SchemeData) => {
-      ctx.emit('form-comfirm', formData)
+      // ctx.emit('form-comfirm', formData)
+      addFn(formData)
     }
     return { staticForm, cardRef, add, show, handleComfirm }
   }

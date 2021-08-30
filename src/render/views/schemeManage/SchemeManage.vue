@@ -32,7 +32,7 @@
       </a-config-provider>
     </template>
   </BaseModal>
-  <SchemeForm ref="schemeFormRef" @form-comfirm="addFn" />
+  <SchemeForm ref="schemeFormRef" />
 </template>
 
 <script lang="ts" setup>
@@ -50,7 +50,7 @@ import { useScheme } from '@/composition'
 import type { SchemeInfo } from '@/services/module/schemeService'
 
 const modalRef: Ref<BaseModalInstance | null> = ref(null)
-const [schemeList, { loading, selectFn, deleteFn, addFn, total, pageNum, pageSize }] = useScheme()
+const [schemeList, { loading, selectFn, deleteFn, total, pageNum, pageSize }] = useScheme()
 
 const show = () => {
   if (modalRef.value) {

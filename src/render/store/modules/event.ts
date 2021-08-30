@@ -22,7 +22,9 @@ enum EventTypeValue {
   test = 'test',
 
   //头部菜单
-  projectManage = 'projectManage'
+  projectManage = 'projectManage',
+  addProject = 'addProject',
+  editProject = 'editProject'
 }
 
 export type EventType = keyof typeof EventTypeValue

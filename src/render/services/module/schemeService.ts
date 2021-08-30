@@ -62,11 +62,15 @@ export default class SchemeService {
     return service.get('/scheme/findPage', { params: { ...searchParams, pageNumber, pageSize } })
   }
 
-  static async addScheme(schemeInfo: SchemeInfo): Promise<HttpResponse<void>> {
+  static async addScheme(schemeInfo: Partial<SchemeInfo>): Promise<HttpResponse<void>> {
     return service.post('/scheme/add', schemeInfo)
   }
 
-  static async editScheme(schemeInfo: SchemeInfo): Promise<HttpResponse<void>> {
+  static async findSchemeById(schemeId: string): Promise<HttpResponse<SchemeInfo>> {
+    return service.get('/scheme/findById', { params: { id: schemeId } })
+  }
+
+  static async editScheme(schemeInfo: Partial<SchemeInfo>): Promise<HttpResponse<void>> {
     return service.post('/scheme/edit', schemeInfo)
   }
 

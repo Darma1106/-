@@ -36,7 +36,13 @@ export default defineComponent({
         name: 'gongcheng',
         label: '项目(P)',
         children: [
-          { name: 'projectManage', label: '新建', click: handleProjectManage },
+          {
+            name: 'projectManage',
+            label: '新建',
+            click: () => {
+              eventSwitch('addProject', 'system')
+            }
+          },
           { name: 'projectManage', label: '打开', click: handleProjectManage },
           {
             name: 'projectManage',
@@ -44,7 +50,13 @@ export default defineComponent({
             click: handleProjectManage,
             children: recentlyScheme
           },
-          { name: 'projectManage', label: '编辑', click: handleProjectManage },
+          {
+            name: 'projectManage',
+            label: '编辑',
+            click: () => {
+              eventSwitch('editProject', 'system')
+            }
+          },
           { name: 'projectManage', label: '关闭', click: handleProjectManage },
           { name: 'projectManage', label: '项目管理', click: handleProjectManage }
         ]
