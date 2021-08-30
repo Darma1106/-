@@ -6,12 +6,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 
 import ToolBar from './ToolBar.vue'
 import HeadMenuItem from '@/component/headMenuItem/HeadMenuItem.vue'
 
-import { useEventStore } from '@/store'
+import { useEventStore, useLayoutStore } from '@/store'
 
 import type { MenuItem } from '@/component/headMenuItem/type'
 
@@ -22,6 +22,10 @@ export default defineComponent({
     const handleProjectManage = () => {
       eventSwitch('projectManage', 'system')
     }
+
+    const layoutStore = useLayoutStore()
+    const { toolBarState, sideBarState, editorState, porpertyState } = toRefs(useLayoutStore())
+
     const itemList: MenuItem[] = reactive([
       {
         name: 'gongcheng',
@@ -64,11 +68,41 @@ export default defineComponent({
         ]
       },
       {
-        name: 'gongcheng',
+        name: 'shitu',
         label: '视图(V)',
         children: [
-          { name: 'caidan1', label: '菜单1' },
-          { name: 'caidan2', label: '菜单二' }
+          {
+            name: 'caidan1',
+            label: '工具栏',
+            flag: toolBarState,
+            click: () => {
+              layoutStore.stateToggle('toolBarState')
+            }
+          },
+          {
+            name: 'caidan2',
+            flag: sideBarState,
+            label: '导航栏',
+            click: () => {
+              layoutStore.stateToggle('sideBarState')
+            }
+          },
+          {
+            name: 'caidan3',
+            label: '建模工具栏',
+            flag: editorState,
+            click: () => {
+              layoutStore.stateToggle('editorState')
+            }
+          },
+          {
+            name: 'caidan4',
+            label: '属性编辑栏',
+            flag: porpertyState,
+            click: () => {
+              layoutStore.stateToggle('porpertyState')
+            }
+          }
         ]
       },
       {
@@ -81,7 +115,7 @@ export default defineComponent({
       }
     ])
 
-    return { itemList }
+    return { itemList, layoutStore }
   }
 })
 </script>

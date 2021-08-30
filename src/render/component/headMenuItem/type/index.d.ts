@@ -4,5 +4,6 @@ export interface MenuItem {
   children?: MenuItem[]
   disable?: boolean
   type?: string
-  click?: () => void
+  flag?: boolean
+  click?: any
 }
