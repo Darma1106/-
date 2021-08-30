@@ -4,12 +4,12 @@
       <splitpanes class="layout-content default-theme">
         <pane>
           <div class="base-diagram">
-            <Editor :editor-data="editorTemplate" @active-item-change="editorItemChange" />
+            <Editor v-if="editorState" :editor-data="editorTemplate" @active-item-change="editorItemChange" />
             <div ref="mainRef" class="main"></div>
             <!-- <button @click="getJson">show Json</button> -->
           </div>
         </pane>
-        <pane min-size="8" max-size="25" size="15">
+        <pane v-if="porpertyState" min-size="8" max-size="25" size="15">
           <Information ref="infoRef" :diagram-instance="diagram" />
         </pane>
       </splitpanes>
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref, toRefs, watch } from 'vue'
 import type { Ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
@@ -34,6 +34,7 @@ import { guidedDraggingToolOption } from '@/component/baseDiagram/util/diagramTo
 import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
 import { injectLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { injectNodeMap } from '@/component/baseDiagram/util/defaultNode'
+import { useLayoutStore } from '@/store'
 
 interface Props {
   editor?: boolean
@@ -240,6 +241,17 @@ defineExpose({
   renderJson,
   updateProperty,
   setLinkedState
+})
+
+// property显示/隐藏
+const { editorState, porpertyState } = toRefs(useLayoutStore())
+watch(porpertyState, (val) => {
+  if (val == true) {
+    const diagram = getDiagram() as go.Diagram
+    nextTick(() => {
+      infoRef.value?.renderProperty(diagram)
+    })
+  }
 })
 </script>
 

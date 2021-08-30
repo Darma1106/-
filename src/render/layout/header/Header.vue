@@ -2,7 +2,7 @@
   <div class="menu-bar">
     <HeadMenuItem v-for="item in itemList" :key="item.name" class="menu-bar-item" :item-list="item" />
   </div>
-  <ToolBar />
+  <ToolBar v-if="toolBarState" />
 </template>
 
 <script lang="ts">
@@ -115,7 +115,7 @@ export default defineComponent({
       }
     ])
 
-    return { itemList, layoutStore }
+    return { itemList, toolBarState }
   }
 })
 </script>
