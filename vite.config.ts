@@ -63,7 +63,7 @@ export default defineConfig({
   ],
   optimizeDeps: {
     exclude: ['electron-is-dev', 'electron-store'],
-    include: ['@ant-design/icons-vue', 'ant-design-vue/es/locale/zh_CN', 'interactjs']
+    include: ['@ant-design/icons-vue', 'ant-design-vue/es/locale/zh_CN', '@vueuse/core', 'gojs', 'uuid', 'interactjs']
   }
 })
 
