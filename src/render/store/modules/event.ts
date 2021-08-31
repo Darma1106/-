@@ -16,6 +16,9 @@ interface CallbackMap {
  * }
  */
 
+// 为了遍历，拟定了一个system对象，所有全局的事件回调可以写给system
+// 如：onEvent('eventName',eventCallback,'system')
+
 enum EventTypeValue {
   save = 'save',
   refresh = 'refresh',

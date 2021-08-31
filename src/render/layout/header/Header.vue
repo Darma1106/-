@@ -34,7 +34,7 @@ export default defineComponent({
     const itemList: MenuItem[] = reactive([
       {
         name: 'gongcheng',
-        label: '项目(P)',
+        label: '项目',
         children: [
           {
             name: 'projectManage',
@@ -63,7 +63,7 @@ export default defineComponent({
       },
       {
         name: 'gongcheng',
-        label: '编辑(E)',
+        label: '编辑',
         children: [
           { name: 'caidan1', label: '撤销' },
           { name: 'caidan2', label: '重做' },
@@ -76,7 +76,7 @@ export default defineComponent({
       },
       {
         name: 'shitu',
-        label: '视图(V)',
+        label: '视图',
         children: [
           {
             name: 'caidan1',
@@ -114,7 +114,7 @@ export default defineComponent({
       },
       {
         name: 'gongcheng',
-        label: '格式(G)',
+        label: '格式',
         children: [
           { name: 'caidan1', label: '菜单1' },
           { name: 'caidan2', label: '菜单二' }
@@ -122,7 +122,7 @@ export default defineComponent({
       },
       {
         name: 'gongcheng',
-        label: '画图(A)',
+        label: '画图',
         children: [
           { name: 'caidan1', label: '菜单1' },
           { name: 'caidan2', label: '菜单二' }
@@ -130,7 +130,7 @@ export default defineComponent({
       },
       {
         name: 'gongcheng',
-        label: '计算模型配置(A)',
+        label: '计算模型配置',
         children: [
           { name: 'caidan1', label: '计算模型加载' },
           { name: 'caidan2', label: '语义匹配模型构建' },
@@ -141,7 +141,7 @@ export default defineComponent({
       },
       {
         name: 'gongcheng',
-        label: '方案动态生成(A)',
+        label: '方案动态生成',
         children: [
           { name: 'caidan1', label: '计算模型选择' },
           { name: 'caidan2', label: '能力包生成' },
@@ -150,7 +150,7 @@ export default defineComponent({
       },
       {
         name: 'gongcheng',
-        label: '方案分析(A)',
+        label: '方案分析',
         children: [
           { name: 'caidan1', label: '基于韧性的方案分析' },
           { name: 'caidan2', label: '基于能力效果的方案分析' },
@@ -159,7 +159,7 @@ export default defineComponent({
       },
       {
         name: 'gongcheng',
-        label: '窗体(A)',
+        label: '窗体',
         children: [
           { name: 'caidan1', label: '菜单1' },
           { name: 'caidan2', label: '菜单二' }
@@ -167,7 +167,7 @@ export default defineComponent({
       },
       {
         name: 'gongcheng',
-        label: '报告生成(A)',
+        label: '报告生成',
         children: [
           { name: 'caidan1', label: '菜单1' },
           { name: 'caidan2', label: '菜单二' }
@@ -176,7 +176,7 @@ export default defineComponent({
 
       {
         name: 'gongcheng',
-        label: '系统(S)',
+        label: '系统',
         children: [
           { name: 'caidan1', label: '角色管理' },
           { name: 'caidan2', label: '用户管理' },
