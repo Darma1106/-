@@ -289,7 +289,7 @@ export class LinkShiftingTool extends go.Tool {
       console.log(link.fromSpot)
     } else {
       link.toSpot = spot
-      link.data.toSport = spot
+      link.data.toSpot = spot
       // console.log(link.toSpot)
       console.log(link)
     }

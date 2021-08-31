@@ -45,6 +45,7 @@ interface Props {
   diagramEvents?: go.DiagramEventsInterface
   treeLayout?: boolean
   defaultLinkType?: string
+  diagramOption?: AnyObject
   afterLink?: AfterLink
   afterInit?: AfterInit
 }
@@ -55,6 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
   editor: true,
   treeLayout: false,
   defaultLinkType: 'defaultLink'
+  // diagramOption:''
 })
 
 const mainRef: Ref<HTMLDivElement | null> = ref(null)
@@ -70,20 +72,16 @@ function init(templeteRef: HTMLDivElement): go.Diagram {
     go.Diagram,
     templeteRef,
     // 获取辅助线
-    Object.assign({
-      'animationManager.isEnabled': false,
-      click: diagramClick,
-      allowLink: false,
-      allowRelink: false,
-
-      // grid: make(
-      //   go.Panel,
-      //   'Grid',
-      //   make(go.Shape, 'LineH', { stroke: 'lightgray', strokeWidth: 0.5 }),
-      //   make(go.Shape, 'LineV', { stroke: 'lightgray', strokeWidth: 0.5 })
-      // ),
-      LinkDrawn
-    }),
+    Object.assign(
+      {
+        'animationManager.isEnabled': false,
+        click: diagramClick,
+        allowLink: false,
+        allowRelink: false,
+        LinkDrawn
+      },
+      props.diagramOption
+    ),
     guidedDraggingToolOption
   )
   injectNodeMap(myDiagram)
@@ -152,7 +150,15 @@ onMounted(() => {
 // 点击画布
 const diagramClick = (e: go.InputEvent) => {
   const { documentPoint } = e
-  if (activeEditorType && activeEditorType.type != 'line') {
+  if (activeEditorType && activeEditorType.type == 'singleLine') {
+    const link = JSON.parse(JSON.stringify(activeEditorType.data))
+    link.points = new go.List(/*go.Point*/).addAll([
+      new go.Point(documentPoint.x, documentPoint.y - 40),
+      new go.Point(documentPoint.x, documentPoint.y)
+    ])
+    const linkModel = getDiagram()?.model as go.GraphLinksModel
+    linkModel.addLinkData(link)
+  } else if (activeEditorType && activeEditorType.type != 'line') {
     const node = JSON.parse(JSON.stringify(activeEditorType.data))
     node.key = uuidv4()
     node.loc = `${documentPoint.x} ${documentPoint.y}`
