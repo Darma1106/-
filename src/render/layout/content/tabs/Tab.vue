@@ -18,8 +18,8 @@ export default defineComponent({
     MATRIX_GRAPHIC: defineAsyncComponent(() => import('@/views/matrixModel/MatrixModel.vue')),
     TREE_GRAPHIC: defineAsyncComponent(() => import('@/views/organizationModel/OrganizationModel.vue')),
     TIMELINE_GRAPHIC: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue')),
-    FLOW_GRAPHIC: defineAsyncComponent(() => import('@/views/processModel/ProcessModel.vue')),
-    // FLOW_GRAPHIC: defineAsyncComponent(() => import('@/views/Idef0Model/Idef0Model.vue')),
+    // FLOW_GRAPHIC: defineAsyncComponent(() => import('@/views/processModel/ProcessModel.vue')),
+    FLOW_GRAPHIC: defineAsyncComponent(() => import('@/views/Idef0Model/Idef0Model.vue')),
     TABLE_GRAPHIC: defineAsyncComponent(() => import('@/views/tableModel/TableModel.vue'))
   },
   setup() {

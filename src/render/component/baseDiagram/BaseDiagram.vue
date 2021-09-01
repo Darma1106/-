@@ -6,7 +6,7 @@
           <div class="base-diagram">
             <Editor v-if="editorState" :editor-data="editorTemplate" @active-item-change="editorItemChange" />
             <div ref="mainRef" class="main"></div>
-            <!-- <button @click="getJson">show Json</button> -->
+            <button @click="getJson">show Json</button>
           </div>
         </pane>
         <pane v-if="porpertyState" min-size="8" max-size="25" size="15">
@@ -73,16 +73,17 @@ function init(templeteRef: HTMLDivElement): go.Diagram {
     templeteRef,
     // 获取辅助线
     Object.assign(
+      guidedDraggingToolOption,
       {
         'animationManager.isEnabled': false,
         click: diagramClick,
         allowLink: false,
-        allowRelink: false,
+        allowRelink: true,
         LinkDrawn
       },
       props.diagramOption
-    ),
-    guidedDraggingToolOption
+    )
+    //
   )
   injectNodeMap(myDiagram)
   injectLinkMap(myDiagram)
@@ -222,7 +223,7 @@ const setLinkedState = (state: boolean) => {
   const diagram = getDiagram()
   if (diagram) {
     diagram.allowLink = state
-    diagram.allowRelink = state
+    // diagram.allowRelink = state
   }
 }
 

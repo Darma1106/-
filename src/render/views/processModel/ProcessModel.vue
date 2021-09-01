@@ -68,12 +68,12 @@ export default defineComponent({
             type: 'node',
             name: '活动',
             data: {
-              key: 2,
+              // key: 2,
               figure: 'RoundedRectangle',
-              fill: '#FFFEDF',
-              name: '活动',
+              // fill: '#FFFEDF',
+              // name: '活动',
               category: 'defaultNode',
-              type: 'ServiceTask',
+              // type: 'ServiceTask',
               showContext: false
             }
           },
@@ -128,7 +128,7 @@ export default defineComponent({
             id: '345',
             type: 'line',
             name: '折线',
-            data: { category: 'avoidLink' }
+            data: { category: 'avoidLink', dir: 0 }
           },
           {
             id: '543',
