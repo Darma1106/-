@@ -264,12 +264,14 @@ export class LinkShiftingTool extends go.Tool {
     if (ad.adornedObject === null) return
     const link = ad.adornedObject.part as go.Link
     const fromend = ad.category === 'LinkShiftingFrom'
+
     let port = null
     if (fromend) {
       port = link.fromPort
     } else {
-      port = link.toPort
+      port = link.toPort ?? link.fromPort
     }
+
     if (port === null) return
     // support rotated ports
     const portang = port.getDocumentAngle()
@@ -284,14 +286,10 @@ export class LinkShiftingTool extends go.Tool {
       Math.max(0, Math.min(1, (lp.x - portb.x) / (portb.width || 1))),
       Math.max(0, Math.min(1, (lp.y - portb.y) / (portb.height || 1)))
     )
-    if (fromend) {
+    if (fromend || link.toPort === null) {
       link.fromSpot = spot
-      console.log(link.fromSpot)
     } else {
       link.toSpot = spot
-      link.data.toSpot = spot
-      // console.log(link.toSpot)
-      console.log(link)
     }
   }
 }
