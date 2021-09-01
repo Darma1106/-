@@ -3,7 +3,7 @@
     ><a-tab-pane v-for="pane in tabs" :key="pane.key" :tab="pane.title" :closable="pane.closable"></a-tab-pane
   ></a-tabs>
   <div v-for="pane in tabs" v-show="pane.key == activeTab" :key="pane.key" class="tab-view">
-    <component :is="pane.component" :tab-id="pane.key"></component>
+    <component :is="pane.component" :tab-id="pane.key" :type-id="pane.typeId"></component>
   </div>
 </template>
 

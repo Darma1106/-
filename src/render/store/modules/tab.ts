@@ -4,6 +4,7 @@ export interface Pane {
   key: string
   closable: boolean
   component: string
+  typeId: string
 }
 
 interface TabStore {

@@ -84,6 +84,7 @@ export default defineComponent({
         const tab: Pane = {
           key: `${nodeData.instanceId}`,
           title: nodeData.name ?? '',
+          typeId: nodeData.typeId,
           component: data,
           closable: true
         }

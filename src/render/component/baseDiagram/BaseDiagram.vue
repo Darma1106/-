@@ -4,7 +4,12 @@
       <splitpanes class="layout-content default-theme">
         <pane>
           <div class="base-diagram">
-            <Editor v-if="editorState" :editor-data="editorTemplate" @active-item-change="editorItemChange" />
+            <Editor
+              v-if="editorState"
+              :editor-data="editorTemplate"
+              :temp-data="tempData"
+              @active-item-change="editorItemChange"
+            />
             <div ref="mainRef" class="main"></div>
             <button @click="getJson">show Json</button>
           </div>
@@ -29,12 +34,13 @@ import Information from '../information/Infomation.vue'
 import type { BaseModalInstance } from '../information/type'
 import { addChild, makeAddButton } from './util/node'
 import Editor from './editor.vue'
-import type { Template, AfterInit, AfterLink, EditorType, EditorTemplate } from './type'
+import type { Template, AfterInit, AfterLink, EditorTemplate } from './type'
 import { guidedDraggingToolOption } from '@/component/baseDiagram/util/diagramTool/GuidedDraggingTool'
 import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
 import { injectLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { injectNodeMap } from '@/component/baseDiagram/util/defaultNode'
 import { useLayoutStore } from '@/store'
+import type { ModelTool, ToolMeta } from '@/services/module/modelService'
 
 interface Props {
   editor?: boolean
@@ -46,6 +52,7 @@ interface Props {
   treeLayout?: boolean
   defaultLinkType?: string
   diagramOption?: AnyObject
+  tempData?: ModelTool[]
   afterLink?: AfterLink
   afterInit?: AfterInit
 }
@@ -65,7 +72,7 @@ const infoRef: Ref<BaseModalInstance | null> = ref(null)
 let diagram: go.Diagram | null = null
 
 // 活跃的编辑栏选项
-let activeEditorType: EditorType | null = null
+let activeEditorType: ToolMeta | null = null
 
 function init(templeteRef: HTMLDivElement): go.Diagram {
   const myDiagram = make(
@@ -116,8 +123,8 @@ function LinkDrawn({ diagram: { model }, subject }: go.DiagramEvent) {
     }
     // 合并选中连线的data
 
-    if (activeEditorType && Object.keys(activeEditorType.data).length != 0) {
-      Object.assign(subject.data, activeEditorType.data)
+    if (activeEditorType && Object.keys(activeEditorType.style).length != 0) {
+      Object.assign(subject.data, activeEditorType.style)
       console.log(subject.data)
     }
     linkModel.addLinkData(subject.data)
@@ -151,16 +158,16 @@ onMounted(() => {
 // 点击画布
 const diagramClick = (e: go.InputEvent) => {
   const { documentPoint } = e
-  if (activeEditorType && activeEditorType.type == 'singleLine') {
-    const link = JSON.parse(JSON.stringify(activeEditorType.data))
+  if (activeEditorType && activeEditorType.dataInstanceTypeCode == 'singleLine') {
+    const link = JSON.parse(JSON.stringify(activeEditorType.style))
     link.points = new go.List(/*go.Point*/).addAll([
       new go.Point(documentPoint.x, documentPoint.y - 40),
       new go.Point(documentPoint.x, documentPoint.y)
     ])
     const linkModel = getDiagram()?.model as go.GraphLinksModel
     linkModel.addLinkData(link)
-  } else if (activeEditorType && activeEditorType.type != 'line') {
-    const node = JSON.parse(JSON.stringify(activeEditorType.data))
+  } else if (activeEditorType && activeEditorType.dataInstanceTypeCode != 'line') {
+    const node = JSON.parse(activeEditorType.style.replaceAll(`'`, `"`))
     node.key = uuidv4()
     node.loc = `${documentPoint.x} ${documentPoint.y}`
     addNode(node)
@@ -227,10 +234,10 @@ const setLinkedState = (state: boolean) => {
   }
 }
 
-// 编辑栏选中变化
-const editorItemChange = (item: EditorType) => {
+// 编辑栏选中变化 type 暂用 dataInstanceTypeCode代替 推动开发
+const editorItemChange = (item: ToolMeta) => {
   console.log('editorItemChange', item)
-  setLinkedState(item && item.type == 'line')
+  setLinkedState(item && item.dataInstanceTypeCode == 'line')
   activeEditorType = item
 }
 

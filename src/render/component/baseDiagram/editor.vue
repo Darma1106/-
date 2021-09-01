@@ -3,9 +3,9 @@
     <div class="editor-head">工具栏</div>
     <div class="editor-body">
       <a-collapse v-model:activeKey="activeKey">
-        <a-collapse-panel v-for="category in editorData" :key="category.id" :header="category.name">
+        <a-collapse-panel v-for="category in tempData" :key="category.id" :header="category.name">
           <div
-            v-for="item in category.items"
+            v-for="item in category.toolMetasVOs"
             :key="item.id"
             :class="{ 'editor-item': true, 'active-editor-item': item.id == activeItem?.id }"
             @click="handleClick(item)"
@@ -23,25 +23,33 @@
 import { defineComponent, ref } from 'vue'
 import type { PropType } from 'vue'
 import { ActiveBox } from '../active-box'
-import type { EditorType, EditorTemplate } from './type'
+import type { EditorTemplate } from './type'
+import type { ModelTool, ToolMeta } from '@/services/module/modelService'
 import { iconFont } from '@/component/baseIcon/type/enum'
 import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 
 export default defineComponent({
   components: { ActiveBox, BaseIcon },
-  props: { editorData: { type: Array as PropType<EditorTemplate[]> } },
+  props: {
+    editorData: { type: Array as PropType<EditorTemplate[]> },
+    tempData: {
+      type: Array as PropType<ModelTool[]>
+    }
+  },
   emits: ['activeItemChange'],
   setup(props, ctx) {
     const activeKey = ref(['1'])
 
-    const activeItem = ref<EditorType | null>(null)
+    const activeItem = ref<ToolMeta | null>(null)
     // 编辑栏点击
-    const handleClick = (item: EditorType) => {
+    const handleClick = (item: ToolMeta) => {
       if (activeItem.value && activeItem.value.id == item.id) {
         activeItem.value = null
       } else {
         activeItem.value = item
       }
+      // console.log('activeItemChange', activeItem.value)
+
       ctx.emit('activeItemChange', activeItem.value)
     }
 

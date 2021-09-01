@@ -13,10 +13,43 @@ enum ModelTypeValue {
 
 type ModelType = keyof typeof ModelTypeValue
 
-// export interface ModelInfo {}
-//封装Framework类型的接口方法
+export interface ToolProperty {
+  attrTypeCode: string
+  attrTypeInputType: string
+  attrTypeName: string
+  attrTypeUnit: string
+  dataInstanceTypeCode: string
+  defaultValue: string
+  selist: string
+  sortno: number
+}
+
+export interface ToolMeta {
+  dataInstanceTypeCode: string
+  dataInstanceTypeName: string
+  icon: string
+  id: string
+  name: string
+  sortno: number
+  toolDataAttrVOs: ToolProperty[]
+  typeId: string
+  style: string
+}
+export interface ModelTool {
+  id: string
+  name: string
+  sortno: number
+  modelTypeId: string
+  toolMetasVOs: ToolMeta[]
+}
+
 export default class ModelService {
   static async getModelType(typeId: string): Promise<HttpResponse<ModelType>> {
     return service.get('/modelType/findGraphicCode', { params: { modelTypeId: typeId } })
+  }
+
+  static async getModelTool(typeId: string): Promise<void> {
+    const { data } = await service.get('/modelTypeTool/list', { params: { modelTypeId: typeId } })
+    console.log(data, 'data')
   }
 }
