@@ -49,11 +49,16 @@ export default defineComponent({
       ctx.emit('activeItemChange', activeItem.value)
     }
 
+    const getActiveItem = () => {
+      return activeItem.value
+    }
+
     return {
       activeKey,
       activeItem,
       iconFont,
-      handleClick
+      handleClick,
+      getActiveItem
     }
   }
 })

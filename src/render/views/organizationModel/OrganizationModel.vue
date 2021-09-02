@@ -1,15 +1,13 @@
 <template>
   <div class="organization-model">
+    <!-- <button @click="saveDiagram">baocun</button> -->
     <BaseDiagram ref="baseDiagramRef" :after-link="afterLink" :tree-layout="true" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, nextTick, provide } from 'vue'
-import { message } from 'ant-design-vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
-
-import { useEventStore } from '@/store'
 
 import type { BaseDiagramInstance } from '@/component/baseDiagram/type'
 import type { ModelTool } from '@/services/module/modelService'
@@ -27,22 +25,6 @@ export default defineComponent({
   },
   setup(props) {
     const baseDiagramRef = ref<BaseDiagramInstance | null>(null)
-    const { onSave, onEvent } = useEventStore()
-    if (props.tabId) {
-      onSave(() => {
-        if (props.tabId && baseDiagramRef.value) {
-          localStorage.setItem(props.tabId, baseDiagramRef.value.getJson())
-          message.success('保存成功')
-        }
-      }, props.tabId)
-      onEvent(
-        'projectManage',
-        () => {
-          console.log('测试并发')
-        },
-        props.tabId
-      )
-    }
 
     onMounted(() => {
       nextTick(() => {

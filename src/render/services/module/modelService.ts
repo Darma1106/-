@@ -44,6 +44,30 @@ export interface ModelTool {
   toolMetasVOs: ToolMeta[]
 }
 
+export interface DataInstanceAttrDTO {
+  attrCode: string
+  attrValue: string
+  dataInstanceId: string
+  id: string
+  sortno: number
+}
+
+export interface DataInstanceDTO {
+  dataInstanceTypeCode: string
+  fromId: string
+  id: string
+  toId: string
+  name: string
+  toolMetasId: string
+}
+
+export interface ModelInstanceEditDTO {
+  dataInstanceAttrDTOs: DataInstanceAttrDTO[]
+  dataInstanceDTOs: DataInstanceDTO[]
+  id: string
+  jsonContent: string
+}
+
 export default class ModelService {
   static async getModelType(typeId: string): Promise<HttpResponse<ModelType>> {
     return service.get('/modelType/findGraphicCode', { params: { modelTypeId: typeId } })
@@ -51,5 +75,9 @@ export default class ModelService {
 
   static async getModelTool(typeId: string): Promise<HttpResponse<ModelTool[]>> {
     return service.get('/modelTypeTool/list', { params: { modelTypeId: typeId } })
+  }
+
+  static async editModelInstance(editDTO: ModelInstanceEditDTO): Promise<HttpResponse<string>> {
+    return service.post('/modelInstance/edit', editDTO)
   }
 }

@@ -37,7 +37,8 @@ const renderProperty = (diagram: Diagram) => {
       id: { readOnly: true, show: Inspector.showIfPresent },
       from: { readOnly: true, show: Inspector.showIfPresent },
       to: { readOnly: true, show: Inspector.showIfPresent },
-      color: { show: true, type: 'color' }
+      color: { show: true, type: 'color' },
+      toolDataAttrVOs: { show: false }
     }
   })
 }

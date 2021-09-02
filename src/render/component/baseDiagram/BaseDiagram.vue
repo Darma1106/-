@@ -6,7 +6,7 @@
           <div class="base-diagram">
             <Editor v-if="editorState" :editor-data="editorData" @active-item-change="editorItemChange" />
             <div ref="mainRef" class="main"></div>
-            <button @click="getJson">show Json</button>
+            <!-- <button @click="getJson">show Json</button> -->
           </div>
         </pane>
         <pane v-if="porpertyState" min-size="8" max-size="25" size="15">
@@ -34,8 +34,9 @@ import { guidedDraggingToolOption } from '@/component/baseDiagram/util/diagramTo
 import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
 import { injectLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { injectNodeMap } from '@/component/baseDiagram/util/defaultNode'
-import { useLayoutStore } from '@/store'
-import type { ModelTool, ToolMeta } from '@/services/module/modelService'
+import { useEventStore, useLayoutStore } from '@/store'
+import type { ModelTool, ModelInstanceEditDTO, DataInstanceAttrDTO, ToolMeta } from '@/services/module/modelService'
+import { proptyDatatoAttrDTOs, toDataInstanceDTOs, proptyDataExplain } from '@/common/dataTransfer'
 import ModelService from '@/services/module/modelService'
 
 interface Props {
@@ -110,7 +111,7 @@ function LinkDrawn({ diagram: { model }, subject }: go.DiagramEvent) {
   if (props.defaultLinkType) {
     linkModel.removeLinkData(subject.data)
     subject.data.category = props.defaultLinkType
-    subject.data.id = uuidv4()
+    subject.data.id = uuidv4().replaceAll('-', '')
     // afterLink回调
     if (props.afterLink) {
       props?.afterLink(subject, model)
@@ -119,6 +120,8 @@ function LinkDrawn({ diagram: { model }, subject }: go.DiagramEvent) {
 
     if (activeEditorType && activeEditorType.style.length != 0) {
       const style = JSON.parse(activeEditorType.style)
+      subject.data.toolMetasId = activeEditorType.id
+      subject.data.dataInstanceTypeCode = activeEditorType.dataInstanceTypeCode
       Object.assign(subject.data, style)
     }
     linkModel.addLinkData(subject.data)
@@ -158,12 +161,21 @@ const diagramClick = (e: go.InputEvent) => {
       new go.Point(documentPoint.x, documentPoint.y - 40),
       new go.Point(documentPoint.x, documentPoint.y)
     ])
+    link.toolMetasId = activeEditorType.id
+    link.dataInstanceTypeCode = activeEditorType.dataInstanceTypeCode
     const linkModel = getDiagram()?.model as go.GraphLinksModel
     linkModel.addLinkData(link)
   } else if (activeEditorType && activeEditorType.typeForCanvas != 'LINK') {
+    // 给节点带上提交接口时所需要的信息
     const node = JSON.parse(activeEditorType.style)
-    node.key = uuidv4()
+    node.toolDataAttrVOs = activeEditorType.toolDataAttrVOs
+    Object.assign(node, proptyDataExplain(activeEditorType.toolDataAttrVOs))
+    node.key = uuidv4().replaceAll('-', '')
+    node.toolMetasId = activeEditorType.id
+    node.dataInstanceTypeCode = activeEditorType.dataInstanceTypeCode
     node.loc = `${documentPoint.x} ${documentPoint.y}`
+    console.log(activeEditorType)
+
     addNode(node)
   }
 }
@@ -276,6 +288,31 @@ onMounted(() => {
     getToolData()
   }
 })
+
+// 画布存储
+const tabId = inject('tabId') as string
+const saveDiagram = () => {
+  const diagram = getDiagram() as go.Diagram
+  const nodeData = diagram.model.nodeDataArray
+  const linkData = (diagram.model as go.GraphLinksModel).linkDataArray
+
+  const dataInstanceAttrDTOs: DataInstanceAttrDTO[] = []
+  const dataInstanceDTOs = toDataInstanceDTOs(nodeData, linkData)
+  nodeData.forEach((node) => {
+    dataInstanceAttrDTOs.push(...proptyDatatoAttrDTOs(node))
+  })
+  const editInterface: ModelInstanceEditDTO = {
+    dataInstanceAttrDTOs,
+    dataInstanceDTOs,
+    id: tabId ?? '',
+    jsonContent: diagram.model.toJson()
+  }
+  ModelService.editModelInstance(editInterface)
+}
+
+// 保存注册
+const eventStore = useEventStore()
+eventStore.onSave(saveDiagram, tabId)
 </script>
 
 <style lang="less" scoped>
