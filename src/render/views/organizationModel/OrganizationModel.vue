@@ -1,24 +1,17 @@
 <template>
   <div class="organization-model">
-    <BaseDiagram
-      ref="baseDiagramRef"
-      :editor-template="templateData"
-      :temp-data="tempData"
-      :after-link="afterLink"
-      :tree-layout="true"
-    />
+    <BaseDiagram ref="baseDiagramRef" :after-link="afterLink" :tree-layout="true" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, nextTick } from 'vue'
+import { defineComponent, ref, onMounted, nextTick, provide } from 'vue'
 import { message } from 'ant-design-vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 
 import { useEventStore } from '@/store'
 
-import type { BaseDiagramInstance, EditorTemplate } from '@/component/baseDiagram/type'
-import ModelService from '@/services/module/modelService'
+import type { BaseDiagramInstance } from '@/component/baseDiagram/type'
 import type { ModelTool } from '@/services/module/modelService'
 
 export default defineComponent({
@@ -52,9 +45,6 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      if (props.typeId) {
-        ModelService.getModelTool(props.typeId)
-      }
       nextTick(() => {
         const diagramJson = localStorage.getItem(props.tabId ?? '')
         if (diagramJson && baseDiagramRef.value) {
@@ -78,11 +68,12 @@ export default defineComponent({
           {
             id: '3ef1f4cfb549516ddaac0c4d85a3c46b',
             icon: 'icon/modelToolIcon/rectangle.svg',
-            style: "{'figure':'RoundedRectangle','category':'defaultNode','showContext':false}",
-            name: '任务',
+            style: '{"figure":"RoundedRectangle","category":"defaultNode","showContext":false}',
+            name: '任务123',
             sortno: 1,
             dataInstanceTypeCode: 'TASK',
             typeId: '44784904d9ed16ff5c5be1f1c60dfa22',
+            typeForCanvas: 'NODE',
             dataInstanceTypeName: '任务',
             toolDataAttrVOs: [
               {
@@ -130,11 +121,12 @@ export default defineComponent({
           {
             id: 'b659b75baa2321ea7af0be5ad1dc5aee',
             icon: 'icon/modelToolIcon/line.svg',
-            style: "{'category':'defaultLink','dir':0}",
+            style: '{"category":"defaultLink","dir":0}\r\n',
             name: '任务分解线',
             sortno: 2,
             dataInstanceTypeCode: 'TASK_DECOMPOSITION_LINE',
             typeId: '44784904d9ed16ff5c5be1f1c60dfa22',
+            typeForCanvas: 'LINK',
             dataInstanceTypeName: '任务分解线',
             toolDataAttrVOs: []
           }
@@ -154,6 +146,7 @@ export default defineComponent({
             sortno: 1,
             dataInstanceTypeCode: 'NaN',
             typeId: '1064f3c3a4933e08b058398748ea0844',
+            typeForCanvas: 'NODE',
             dataInstanceTypeName: 'NaN',
             toolDataAttrVOs: []
           },
@@ -165,6 +158,7 @@ export default defineComponent({
             sortno: 2,
             dataInstanceTypeCode: 'NaN',
             typeId: '1064f3c3a4933e08b058398748ea0844',
+            typeForCanvas: 'NODE',
             dataInstanceTypeName: 'NaN',
             toolDataAttrVOs: []
           }
@@ -172,46 +166,12 @@ export default defineComponent({
       }
     ]
 
-    const templateData: EditorTemplate[] = [
-      {
-        id: '1',
-        name: '节点',
-        category: 'tuxing',
-        items: [
-          {
-            id: '456',
-            type: 'tuxing',
-            name: '组织节点',
-            data: {
-              key: 5,
-              figure: 'RoundedRectangle',
-              fill: '#FFFEDF',
-              fontColor: 'black',
-              name: 'text',
-              category: 'defaultNode',
-              size: '80 30',
-              showContext: false
-            }
-          },
-          {
-            id: '345',
-            type: 'line',
-            name: '折线',
-            data: { category: 'avoidLink' }
-          },
-          {
-            id: '543',
-            type: 'line',
-            name: '直线',
-            data: { category: 'defaultLink' }
-          }
-        ]
-      }
-    ]
+    // 注入 provide
+    provide<string | undefined>('tabId', props.tabId)
+    provide<string | undefined>('typeId', props.typeId)
 
     return {
       baseDiagramRef,
-      templateData,
       tempData,
       afterLink
     }

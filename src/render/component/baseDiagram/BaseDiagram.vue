@@ -4,12 +4,7 @@
       <splitpanes class="layout-content default-theme">
         <pane>
           <div class="base-diagram">
-            <Editor
-              v-if="editorState"
-              :editor-data="editorTemplate"
-              :temp-data="tempData"
-              @active-item-change="editorItemChange"
-            />
+            <Editor v-if="editorState" :editor-data="editorData" @active-item-change="editorItemChange" />
             <div ref="mainRef" class="main"></div>
             <button @click="getJson">show Json</button>
           </div>
@@ -23,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, toRefs, watch } from 'vue'
+import { inject, nextTick, onMounted, ref, toRefs, watch } from 'vue'
 import type { Ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
@@ -34,25 +29,24 @@ import Information from '../information/Infomation.vue'
 import type { BaseModalInstance } from '../information/type'
 import { addChild, makeAddButton } from './util/node'
 import Editor from './editor.vue'
-import type { Template, AfterInit, AfterLink, EditorTemplate } from './type'
+import type { Template, AfterInit, AfterLink } from './type'
 import { guidedDraggingToolOption } from '@/component/baseDiagram/util/diagramTool/GuidedDraggingTool'
 import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
 import { injectLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { injectNodeMap } from '@/component/baseDiagram/util/defaultNode'
 import { useLayoutStore } from '@/store'
 import type { ModelTool, ToolMeta } from '@/services/module/modelService'
+import ModelService from '@/services/module/modelService'
 
 interface Props {
   editor?: boolean
-  editorTemplate: EditorTemplate[]
+  editorTemplate?: ModelTool[]
   nodeMap?: Template<go.Node>[]
   linkMap?: Template<go.Link>[]
-  editorMap?: Template<go.Node>[]
   diagramEvents?: go.DiagramEventsInterface
   treeLayout?: boolean
   defaultLinkType?: string
   diagramOption?: AnyObject
-  tempData?: ModelTool[]
   afterLink?: AfterLink
   afterInit?: AfterInit
 }
@@ -123,9 +117,9 @@ function LinkDrawn({ diagram: { model }, subject }: go.DiagramEvent) {
     }
     // 合并选中连线的data
 
-    if (activeEditorType && Object.keys(activeEditorType.style).length != 0) {
-      Object.assign(subject.data, activeEditorType.style)
-      console.log(subject.data)
+    if (activeEditorType && activeEditorType.style.length != 0) {
+      const style = JSON.parse(activeEditorType.style)
+      Object.assign(subject.data, style)
     }
     linkModel.addLinkData(subject.data)
   }
@@ -158,16 +152,16 @@ onMounted(() => {
 // 点击画布
 const diagramClick = (e: go.InputEvent) => {
   const { documentPoint } = e
-  if (activeEditorType && activeEditorType.dataInstanceTypeCode == 'singleLine') {
-    const link = JSON.parse(JSON.stringify(activeEditorType.style))
+  if (activeEditorType && activeEditorType.typeForCanvas == 'FLEXIBLE_LINK') {
+    const link = JSON.parse(activeEditorType.style)
     link.points = new go.List(/*go.Point*/).addAll([
       new go.Point(documentPoint.x, documentPoint.y - 40),
       new go.Point(documentPoint.x, documentPoint.y)
     ])
     const linkModel = getDiagram()?.model as go.GraphLinksModel
     linkModel.addLinkData(link)
-  } else if (activeEditorType && activeEditorType.dataInstanceTypeCode != 'line') {
-    const node = JSON.parse(activeEditorType.style.replaceAll(`'`, `"`))
+  } else if (activeEditorType && activeEditorType.typeForCanvas != 'LINK') {
+    const node = JSON.parse(activeEditorType.style)
     node.key = uuidv4()
     node.loc = `${documentPoint.x} ${documentPoint.y}`
     addNode(node)
@@ -234,10 +228,10 @@ const setLinkedState = (state: boolean) => {
   }
 }
 
-// 编辑栏选中变化 type 暂用 dataInstanceTypeCode代替 推动开发
+// 编辑栏选中变化
 const editorItemChange = (item: ToolMeta) => {
   console.log('editorItemChange', item)
-  setLinkedState(item && item.dataInstanceTypeCode == 'line')
+  setLinkedState(item && item.typeForCanvas == 'LINK')
   activeEditorType = item
 }
 
@@ -265,6 +259,21 @@ watch(porpertyState, (val) => {
     nextTick(() => {
       infoRef.value?.renderProperty(diagram)
     })
+  }
+})
+
+const typeId = inject('typeId') as string
+const editorData: Ref<ModelTool[]> = ref([])
+
+const getToolData = async () => {
+  const { data } = await ModelService.getModelTool(typeId)
+  editorData.value = data
+}
+onMounted(() => {
+  if (props.editorTemplate) {
+    editorData.value = props.editorTemplate
+  } else {
+    getToolData()
   }
 })
 </script>

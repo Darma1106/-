@@ -3,7 +3,7 @@
     <div class="editor-head">工具栏</div>
     <div class="editor-body">
       <a-collapse v-model:activeKey="activeKey">
-        <a-collapse-panel v-for="category in tempData" :key="category.id" :header="category.name">
+        <a-collapse-panel v-for="category in editorData" :key="category.id" :header="category.name">
           <div
             v-for="item in category.toolMetasVOs"
             :key="item.id"
@@ -23,7 +23,6 @@
 import { defineComponent, ref } from 'vue'
 import type { PropType } from 'vue'
 import { ActiveBox } from '../active-box'
-import type { EditorTemplate } from './type'
 import type { ModelTool, ToolMeta } from '@/services/module/modelService'
 import { iconFont } from '@/component/baseIcon/type/enum'
 import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
@@ -31,10 +30,7 @@ import BaseIcon from '@/component/baseIcon/BaseIcon.vue'
 export default defineComponent({
   components: { ActiveBox, BaseIcon },
   props: {
-    editorData: { type: Array as PropType<EditorTemplate[]> },
-    tempData: {
-      type: Array as PropType<ModelTool[]>
-    }
+    editorData: { type: Array as PropType<ModelTool[]> }
   },
   emits: ['activeItemChange'],
   setup(props, ctx) {

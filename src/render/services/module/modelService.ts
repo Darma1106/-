@@ -34,6 +34,7 @@ export interface ToolMeta {
   toolDataAttrVOs: ToolProperty[]
   typeId: string
   style: string
+  typeForCanvas: 'NODE' | 'LINK' | 'FLEXIBLE_LINK'
 }
 export interface ModelTool {
   id: string
@@ -48,8 +49,7 @@ export default class ModelService {
     return service.get('/modelType/findGraphicCode', { params: { modelTypeId: typeId } })
   }
 
-  static async getModelTool(typeId: string): Promise<void> {
-    const { data } = await service.get('/modelTypeTool/list', { params: { modelTypeId: typeId } })
-    console.log(data, 'data')
+  static async getModelTool(typeId: string): Promise<HttpResponse<ModelTool[]>> {
+    return service.get('/modelTypeTool/list', { params: { modelTypeId: typeId } })
   }
 }
