@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, nextTick, provide } from 'vue'
+import { defineComponent, ref, provide } from 'vue'
 import BaseDiagram from '@/component/baseDiagram/BaseDiagram.vue'
 
 import type { BaseDiagramInstance } from '@/component/baseDiagram/type'
@@ -25,15 +25,6 @@ export default defineComponent({
   },
   setup(props) {
     const baseDiagramRef = ref<BaseDiagramInstance | null>(null)
-
-    onMounted(() => {
-      nextTick(() => {
-        const diagramJson = localStorage.getItem(props.tabId ?? '')
-        if (diagramJson && baseDiagramRef.value) {
-          baseDiagramRef.value.renderJson(diagramJson)
-        }
-      })
-    })
 
     const afterLink = ({ toNode, fromNode }: go.ObjectData, model: go.Model) => {
       model.setDataProperty(toNode.data, 'pid', fromNode.data.key)

@@ -80,4 +80,8 @@ export default class ModelService {
   static async editModelInstance(editDTO: ModelInstanceEditDTO): Promise<HttpResponse<string>> {
     return service.post('/modelInstance/edit', editDTO)
   }
+
+  static async getModelDiagram(modelId: string): Promise<HttpResponse<ModelInstanceEditDTO>> {
+    return service.post('/modelInstance/queryVOById', {}, { params: { modelInstanceId: modelId } })
+  }
 }

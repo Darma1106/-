@@ -24,6 +24,7 @@ import { unrefElement } from '@vueuse/core'
 import * as go from 'gojs'
 import { v4 as uuidv4 } from 'uuid'
 import Splitpanes from 'splitpanes/src/components/splitpanes/splitpanes.vue'
+import { message } from 'ant-design-vue'
 import Pane from 'splitpanes/src/components/splitpanes/pane.vue'
 import Information from '../information/Infomation.vue'
 import type { BaseModalInstance } from '../information/type'
@@ -247,22 +248,6 @@ const editorItemChange = (item: ToolMeta) => {
   activeEditorType = item
 }
 
-// 属性栏联动
-// const selectionNode: Ref<go.ObjectData> = ref({})
-
-// 暴露组件接口
-defineExpose({
-  getDiagram,
-  getNodeArray,
-  getLinkArray,
-  addNode,
-  addChildNode,
-  getJson,
-  renderJson,
-  updateProperty,
-  setLinkedState
-})
-
 // property显示/隐藏
 const { editorState, porpertyState } = toRefs(useLayoutStore())
 watch(porpertyState, (val) => {
@@ -291,7 +276,7 @@ onMounted(() => {
 
 // 画布存储
 const tabId = inject('tabId') as string
-const saveDiagram = () => {
+const saveDiagram = async () => {
   const diagram = getDiagram() as go.Diagram
   const nodeData = diagram.model.nodeDataArray
   const linkData = (diagram.model as go.GraphLinksModel).linkDataArray
@@ -307,12 +292,43 @@ const saveDiagram = () => {
     id: tabId ?? '',
     jsonContent: diagram.model.toJson()
   }
-  ModelService.editModelInstance(editInterface)
+  const { code } = await ModelService.editModelInstance(editInterface)
+  // 保存提示
+  if (code == 1) {
+    message.success('保存成功')
+  } else {
+    message.error('保存失败')
+  }
 }
 
 // 保存注册
 const eventStore = useEventStore()
 eventStore.onSave(saveDiagram, tabId)
+
+// 读取json
+async function getModelDiagramJson() {
+  const { code, data } = await ModelService.getModelDiagram(tabId)
+  if (code == 1) {
+    renderJson(data.jsonContent)
+  }
+}
+
+onMounted(() => {
+  getModelDiagramJson()
+})
+
+// 暴露组件接口
+defineExpose({
+  getDiagram,
+  getNodeArray,
+  getLinkArray,
+  addNode,
+  addChildNode,
+  getJson,
+  renderJson,
+  updateProperty,
+  setLinkedState
+})
 </script>
 
 <style lang="less" scoped>

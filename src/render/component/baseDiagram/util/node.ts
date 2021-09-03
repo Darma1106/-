@@ -175,7 +175,7 @@ export function makeBaseNode(): go.Node {
   )
 }
 
-export function makeAddButton(onClick: () => void): go.Adornment {
+export function makeAddButton(onClick?: () => void): go.Adornment {
   return make(
     go.Adornment,
     'Spot',
