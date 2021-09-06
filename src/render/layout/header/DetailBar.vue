@@ -19,9 +19,9 @@
         <a-divider type="vertical" style="height: 20px; background-color: #000" />
       </a-form-item>
 
-      <a-form-item title="字体">
+      <!-- <a-form-item title="字体">
         <SwitchButton v-model:checked="formState.xieti"><BaseIcon :icon-type="iconFont.字体" /> </SwitchButton>
-      </a-form-item>
+      </a-form-item> -->
       <a-form-item title="斜体">
         <SwitchButton v-model:checked="formState.xieti"><BaseIcon :icon-type="iconFont.倾斜" /> </SwitchButton>
       </a-form-item>
@@ -97,6 +97,7 @@ const color = ref('')
 .detail-bar {
   display: flex;
   flex-direction: row;
+  padding-top: 1px;
 
   ::v-deep(.base-icon) {
     height: 14px;
@@ -109,6 +110,10 @@ const color = ref('')
     outline: none;
     box-shadow: none;
     border-bottom: @1px-border;
+  }
+
+  ::v-deep(.ant-form-item) {
+    margin-right: 6px;
   }
 
   ::v-deep(.ant-select-selector, .ant-select-selection) {

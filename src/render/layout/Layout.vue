@@ -70,10 +70,12 @@ eventStore.onEvent('addProject', addScheme, 'system')
   }
 
   ::v-deep(.ant-layout-footer) {
-    height: 40px;
+    height: 30px;
     background: @base-background-color;
     border: 2px solid @my-layout-border-color;
-    padding: 0;
+    line-height: 26px;
+    padding: 0px;
+    padding-left: 10px;
   }
 }
 </style>

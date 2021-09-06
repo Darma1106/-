@@ -51,22 +51,23 @@ export default defineComponent({
   // max-width: 80px;
   .button-container {
     text-align: center;
-    padding-top: 3px;
-    height: 100%;
+    padding: 3px 8px 0 8px;
+    height: calc(100% - 2px);
     &:hover {
-      background: #0f4d80;
-      box-shadow: 0 0 15px 5px #3e72b9 inset;
+      // background: #0f4d80;
+      // box-shadow: 0 0 15px 5px #3e72b9 inset;
+      background: #ddd;
       border-radius: 4px;
-      .item-title {
-        color: #fff;
-      }
+      // .item-title {
+      //   color: #fff;
+      // }
     }
     .item-image {
       font-size: @tool-svg-size;
       line-height: @tool-svg-size;
     }
     .item-title {
-      line-height: 30px;
+      // line-height: 30px;
       // margin-left: 4px;
       white-space: nowrap;
     }

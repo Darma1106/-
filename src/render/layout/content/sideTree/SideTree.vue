@@ -126,6 +126,7 @@ export default defineComponent({
 <style lang="less" scoped>
 .side-tree {
   border-right: 2px solid @my-layout-border-color;
+  border-left: 2px solid @my-layout-border-color;
   height: 100%;
   ::v-deep(.base-icon) {
     height: 14px;
