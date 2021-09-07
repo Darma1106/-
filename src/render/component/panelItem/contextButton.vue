@@ -53,15 +53,21 @@ export default defineComponent({
     text-align: center;
     padding: 3px 8px 0 8px;
     height: calc(100% - 2px);
+    border-radius: 4px;
+
     &:hover {
       // background: #0f4d80;
       // box-shadow: 0 0 15px 5px #3e72b9 inset;
-      background: #ddd;
-      border-radius: 4px;
+      background: @base-hover-color;
       // .item-title {
       //   color: #fff;
       // }
     }
+
+    &:active {
+      background: @base-active-color;
+    }
+
     .item-image {
       font-size: @tool-svg-size;
       line-height: @tool-svg-size;

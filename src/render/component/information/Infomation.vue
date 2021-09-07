@@ -1,12 +1,14 @@
 <template>
   <div class="information">
     <div class="tab-area">
-      <a-tabs v-model:activeKey="activeKey">
+      <a-tabs v-model:activeKey="activeKey" size="small">
         <a-tab-pane key="1" tab="数据" />
         <a-tab-pane key="2" tab="关联" />
       </a-tabs>
     </div>
-    <div ref="propertyRef"></div>
+    <div class="tab-content">
+      <div ref="propertyRef"></div>
+    </div>
   </div>
 </template>
 
@@ -49,18 +51,26 @@ defineExpose({ renderProperty })
 <style lang="less" scoped>
 .information {
   height: 100%;
-  border-left: 1px solid @my-layout-border-color;
   ::v-deep(table, tbody) {
     width: 100%;
   }
 }
 .tab-area {
   text-align: center;
-  border-bottom: 1px solid @my-layout-border-color;
-  margin-bottom: 20px;
-
+  // border-bottom: 1px solid @my-layout-border-color;
+  background-color: #f2f2f2;
   ::v-deep(.ant-tabs-bar) {
     margin-bottom: 2px;
   }
+
+  ::v-deep(.ant-tabs .ant-tabs-small-bar .ant-tabs-tab) {
+    padding: 4px 16px 2px;
+  }
+}
+
+.tab-content {
+  padding: 10px;
+  height: calc(100% - 30px);
+  overflow-y: auto;
 }
 </style>

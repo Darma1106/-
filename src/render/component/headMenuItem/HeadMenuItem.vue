@@ -2,10 +2,10 @@
   <a-dropdown class="head-menu-item" :trigger="['click']">
     <a class="ant-dropdown-link" @click.prevent> {{ itemList?.label }} </a>
     <template #overlay>
-      <a-menu @click="onContextMenuClick">
+      <a-menu class="head-item-menu" @click="onContextMenuClick">
         <!-- <a-menu-item v-for="item in itemList?.children" :key="item.name">{{ item.label }}</a-menu-item> -->
         <div v-for="(context, index) in itemList?.children" :key="index">
-          <div v-if="context.name == 'split'" class="item-split"></div>
+          <a-menu-divider v-if="context.name == 'divider'" />
           <template v-else>
             <a-sub-menu
               v-if="context.children"
@@ -13,8 +13,8 @@
               :title="context.label"
               :disabled="!!context.disable"
             >
-              <a-menu-item v-for="subItem in context.children" :key="subItem.name" :disabled="!!subItem.disable"
-                >{{ subItem.label }}
+              <a-menu-item v-for="subItem in context.children" :key="subItem.name" :disabled="!!subItem.disable">
+                <span class="item-label">{{ subItem.label }}</span>
               </a-menu-item>
             </a-sub-menu>
             <a-menu-item v-else :key="index" :disabled="!!context.disable"
@@ -63,16 +63,24 @@ export default defineComponent({
   // border: 2px solid red;
   display: inline-block;
 }
-.item-split {
-  height: 1px;
-  background-color: @menu-shortcut-key-color;
-  margin: 4px 10px;
-}
 
 .item-right {
   color: @menu-shortcut-key-color;
   position: absolute;
   right: 18px;
+}
+.item-label {
+  min-width: 80px;
+  display: inline-block;
+}
+
+.head-item-menu {
+  padding: 4px 2px;
+}
+
+::v-deep(.ant-dropdown-menu-item-divider) {
+  background-color: @menu-shortcut-key-color;
+  margin: 4px 8px;
 }
 
 ::v-deep(.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title) {
@@ -81,7 +89,11 @@ export default defineComponent({
 }
 
 ::v-deep(.ant-dropdown-menu-item:hover) {
-  background-color: #ddd;
+  background-color: @base-hover-color;
+}
+
+::v-deep(.ant-dropdown-menu-item:active) {
+  background-color: @base-active-color;
 }
 
 ::v-deep(.ant-dropdown-menu-submenu-title) {
@@ -90,6 +102,6 @@ export default defineComponent({
 }
 
 ::v-deep(.ant-dropdown-menu-submenu-title:hover) {
-  background-color: #ddd;
+  background-color: @base-hover-color;
 }
 </style>

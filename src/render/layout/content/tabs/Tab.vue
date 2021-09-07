@@ -42,14 +42,19 @@ export default defineComponent({
 <style lang="less" scoped>
 .tabs {
   // height: 100%;
-  width: calc(100% - 1px);
-  border-left: @1px-border;
-  border-right: @1px-border;
+  border-right: 2px solid @my-layout-border-color;
+
+  ::v-deep(.ant-tabs-nav-container) {
+    height: 28px !important;
+    margin-bottom: 0px;
+  }
 
   ::v-deep(.ant-tabs-bar) {
     margin: 0;
-    width: calc(100% - 1px);
-    background-color: #ddd;
+    // width: calc(100% - 1px);
+    height: 28px;
+    background-color: @content-header-background-color;
+    border-bottom: 1px solid @content-border-color;
   }
 
   // ::v-deep(.ant-tabs-top-content, .ant-tabs-bottom-content) {
@@ -57,21 +62,28 @@ export default defineComponent({
   //   width: 100%;
   // }
   ::v-deep(.ant-tabs-nav .ant-tabs-tab) {
-    background-color: #ddd;
-    border-bottom: #ddd;
-    border: none;
+    background-color: @base-active-color;
+    border: 1px solid @content-border-color;
+    line-height: 28px;
+    border-radius: 4px 4px 0 0;
+    height: 28px;
   }
 
   ::v-deep(.ant-tabs-nav .ant-tabs-tab-active) {
+    color: rgba(0, 0, 0, 0.85);
     font-weight: normal;
-    background-color: #f2f2f2;
-    border-bottom: 1px solid #f2f2f2;
+    height: 28px;
+    background-color: @base-background-color;
+    border-bottom: 1px solid @base-background-color;
+  }
+
+  ::v-deep(.ant-tabs-nav .ant-tabs-tab:hover) {
+    color: rgba(0, 0, 0, 0.85);
   }
 }
 
 .tab-view {
-  height: calc(100% - 40px);
-  border-left: @1px-border;
-  border-right: @1px-border;
+  height: calc(100% - 28px);
+  border-right: 2px solid @my-layout-border-color;
 }
 </style>

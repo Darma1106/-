@@ -43,16 +43,16 @@ export default defineComponent({
     }
 
     const items: Ref<toolConfig[]> = ref([
-      {
-        name: 'xinmoxing',
-        title: '新模型',
-        disable: false,
-        type: 'basedButton',
-        onclick: () => {
-          console.log('123123123')
-        },
-        icon: iconFont.新模型
-      },
+      // {
+      //   name: 'xinmoxing',
+      //   title: '新模型',
+      //   disable: false,
+      //   type: 'basedButton',
+      //   onclick: () => {
+      //     console.log('123123123')
+      //   },
+      //   icon: iconFont.新模型
+      // },
       {
         name: 'dakai',
         title: '打开',

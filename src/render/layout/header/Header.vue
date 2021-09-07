@@ -33,14 +33,15 @@ export default defineComponent({
     const { toolBarState, sideBarState, editorState, porpertyState } = toRefs(useLayoutStore())
     const recentlyScheme: Ref<MenuItem[]> = ref([])
     onMounted(() => {
-      recentlyScheme.value.push({ name: '1', label: '最近方案1' })
+      recentlyScheme.value.push({ name: '1', label: '方案1' })
+      recentlyScheme.value.push({ name: '2', label: '跨域方案2' })
     })
 
     const alignItems: MenuItem[] = reactive([
       { name: 'editAlignTop', label: '顶部对齐' },
       { name: 'editAlignHorizontalCenter', label: '水平居中' },
       { name: 'editAlignBottom', label: '底部对齐' },
-      { name: 'split', label: '分隔线' },
+      { name: 'divider', label: '分隔线' },
       { name: 'editAlignLeft', label: '左对齐' },
       { name: 'editAlignVerticalCenter', label: '垂直居中' },
       { name: 'editAlignRight', label: '左对齐' }
@@ -76,7 +77,7 @@ export default defineComponent({
             }
           },
           { name: 'projectClose', label: '关闭', click: handleProjectManage },
-          { name: 'split', label: '分隔线' },
+          { name: 'divider', label: '分隔线' },
           { name: 'projectManage', label: '项目管理', click: handleProjectManage }
         ]
       },
@@ -89,7 +90,7 @@ export default defineComponent({
           { name: 'editCopy', label: '复制', shortcutKey: 'Ctrl+C' },
           { name: 'editPaste', label: '粘贴', shortcutKey: 'Ctrl+V' },
           { name: 'editDelete', label: '删除', shortcutKey: 'Delete' },
-          { name: 'split', label: '分隔线' },
+          { name: 'divider', label: '分隔线' },
           { name: 'editAlign', label: '对齐', children: alignItems },
           { name: 'editAutoLayout', label: '自动布局' }
         ]
@@ -130,7 +131,7 @@ export default defineComponent({
               layoutStore.stateToggle('porpertyState')
             }
           },
-          { name: 'split', label: '分隔线' },
+          { name: 'divider', label: '分隔线' },
           {
             name: 'viewReset',
             label: '视图复位'
@@ -158,7 +159,7 @@ export default defineComponent({
         label: '计算模型配置',
         children: [
           { name: 'caidan1', label: '计算模型加载' },
-          { name: 'split', label: '分隔线' },
+          { name: 'divider', label: '分隔线' },
           { name: 'caidan2', label: '语义匹配模型构建' },
           { name: 'caidan1', label: '指标匹配模型构建' },
           { name: 'caidan2', label: '流程编配模型构建' },
@@ -170,7 +171,7 @@ export default defineComponent({
         label: '方案动态生成',
         children: [
           { name: 'caidan1', label: '计算模型选择' },
-          { name: 'split', label: '分隔线' },
+          { name: 'divider', label: '分隔线' },
           { name: 'caidan2', label: '能力包生成' },
           { name: 'caidan2', label: '跨域体系生成' }
         ]
@@ -181,7 +182,7 @@ export default defineComponent({
         children: [
           { name: 'caidan1', label: '基于韧性的方案分析' },
           { name: 'caidan2', label: '基于能力效果的方案分析' },
-          { name: 'split', label: '分隔线' },
+          { name: 'divider', label: '分隔线' },
           { name: 'caidan2', label: '跨域体系方案综合分析' }
         ]
       },
@@ -208,7 +209,7 @@ export default defineComponent({
         children: [
           { name: 'caidan1', label: '角色管理' },
           { name: 'caidan2', label: '用户管理' },
-          { name: 'split', label: '分隔线' },
+          { name: 'divider', label: '分隔线' },
           { name: 'caidan1', label: '元模型数据定义' },
           { name: 'caidan2', label: '数据更新' }
         ]

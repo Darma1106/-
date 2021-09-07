@@ -45,5 +45,6 @@ export enum iconFont {
   '置底' = '#iconcangpeitubiao-zhidi',
   '保存' = '#iconbaocun',
   '工具图标' = '#icontool-icon',
-  '对勾' = '#iconduigou'
+  '对勾' = '#iconduigou',
+  '项目' = '#iconxiangmuguanli'
 }
