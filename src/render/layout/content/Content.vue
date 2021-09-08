@@ -2,7 +2,7 @@
   <splitpanes class="layout-content default-theme" horizontal :push-other-panes="false">
     <pane>
       <splitpanes class="layout-content default-theme">
-        <pane v-if="sideBarState" min-size="8" max-size="20" size="12">
+        <pane v-if="sideBarState" min-size="10" max-size="30" size="12">
           <SideTree />
         </pane>
         <pane>
@@ -44,5 +44,15 @@ const { sideBarState } = toRefs(useLayoutStore())
 .layout-content {
   height: 100%;
   width: 100%;
+
+  ::v-deep(.splitpanes.default-theme .splitpanes__pane) {
+    background-color: @base-background-color;
+  }
+
+  ::v-deep(.splitpanes__splitter) {
+    border-left: 1px solid @my-layout-border-color;
+    border-right: 1px solid @my-layout-border-color;
+    margin-left: unset;
+  }
 }
 </style>

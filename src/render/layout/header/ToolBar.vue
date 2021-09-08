@@ -12,7 +12,7 @@
         <!-- <ADivider type="vertical" /> -->
       </div>
     </div>
-    <div class="detail-bar">
+    <div class="bottom-bar">
       <DetailBar />
     </div>
   </div>
@@ -43,16 +43,16 @@ export default defineComponent({
     }
 
     const items: Ref<toolConfig[]> = ref([
-      {
-        name: 'xinmoxing',
-        title: '新模型',
-        disable: false,
-        type: 'basedButton',
-        onclick: () => {
-          console.log('123123123')
-        },
-        icon: iconFont.新模型
-      },
+      // {
+      //   name: 'xinmoxing',
+      //   title: '新模型',
+      //   disable: false,
+      //   type: 'basedButton',
+      //   onclick: () => {
+      //     console.log('123123123')
+      //   },
+      //   icon: iconFont.新模型
+      // },
       {
         name: 'dakai',
         title: '打开',
@@ -265,23 +265,30 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .tool-bar {
-  height: 95px;
+  height: 85px;
   background: @base-background-color;
+  border-left: 2px solid @my-layout-border-color;
+  border-right: 2px solid @my-layout-border-color;
   .top-bar {
     display: flex;
-    height: 60px;
+    height: 50px;
     flex-direction: row;
     border-bottom: @1px-border;
     padding-top: 2px;
+    padding-left: 10px;
     .item-container {
       display: flex;
       align-items: center;
     }
     .item {
       // border: 2px solid red;
-      margin-left: 5px;
+      margin-left: 2px;
       min-width: 50px;
     }
+  }
+
+  .bottom-bar {
+    padding-left: 20px;
   }
 }
 </style>

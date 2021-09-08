@@ -47,22 +47,28 @@ export default defineComponent({
   // max-width: 80px;
   .button-container {
     text-align: center;
-    padding-top: 3px;
-    height: 100%;
+    padding: 3px 8px 0 8px;
+    height: calc(100% - 2px);
+    border-radius: 4px;
     &:hover {
-      background: #0f4d80;
-      box-shadow: 0 0 15px 5px #3e72b9 inset;
-      border-radius: 4px;
-      .item-title {
-        color: #fff;
-      }
+      // background: #0f4d80;
+      background: @base-hover-color;
+      // box-shadow: 0 0 15px 5px #3e72b9 inset;
+      // .item-title {
+      // color: #fff;
+      // }
     }
+
+    &:active {
+      background: @base-active-color;
+    }
+
     .item-image {
       font-size: @tool-svg-size;
       line-height: @tool-svg-size;
     }
     .item-title {
-      line-height: 30px;
+      // line-height: 30px;
       // margin-left: 4px;
       white-space: nowrap;
     }

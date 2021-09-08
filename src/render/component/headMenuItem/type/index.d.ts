@@ -6,4 +6,5 @@ export interface MenuItem {
   type?: string
   flag?: boolean
   click?: any
+  shortcutKey?: string
 }

@@ -1,41 +1,47 @@
 <template>
-  <div class="side-tree">
-    <a-tree
-      v-if="treeData.length != 0"
-      v-model:expanded-keys="defaultExpand"
-      :replace-fields="{ children: 'children', key: 'nodeId', title: 'name' }"
-      :tree-data="treeData"
-      show-icon
-      :selected-keys="selectedKeys"
-      @select="(keys) => onSelect(keys)"
-    >
-      <template #icon> <BaseIcon :icon-type="iconFont.模型" /> </template>
+  <div class="navbar">
+    <div class="navbar-title">导航</div>
+    <div class="side-tree">
+      <a-tree
+        v-if="treeData.length != 0"
+        v-model:expanded-keys="defaultExpand"
+        :replace-fields="{ children: 'children', key: 'nodeId', title: 'name' }"
+        :tree-data="treeData"
+        show-icon
+        :selected-keys="selectedKeys"
+        @select="(keys) => onSelect(keys)"
+      >
+        <template #icon> <BaseIcon :icon-type="iconFont.模型" /> </template>
 
-      <template #title="{ dataRef, name }"
-        ><span @dblclick="nodeDblclick(dataRef)"> {{ name }}</span>
-      </template>
+        <template #title="{ dataRef, name }"
+          ><span @dblclick="nodeDblclick(dataRef)"> {{ name }}</span>
+        </template>
 
-      <template #meca="{ key: treeKey, title }">
-        <a-dropdown :trigger="['contextmenu']">
-          <span>{{ title }}</span>
-          <template #overlay>
-            <!-- 暂未找到解决template类型推断不正确的方法 -->
-            <a-menu @click="({ key: menukey }) => onContextMenuClick(treeKey, menukey)">
-              <a-menu-item key="1">1st menu item</a-menu-item>
-              <a-menu-item key="2">2nd menu item</a-menu-item>
-              <a-menu-item key="3">3rd menu item</a-menu-item>
-            </a-menu>
-          </template>
-        </a-dropdown>
-      </template>
+        <template #meca="{ key: treeKey, title }">
+          <a-dropdown :trigger="['contextmenu']">
+            <span>{{ title }}</span>
+            <template #overlay>
+              <!-- 暂未找到解决template类型推断不正确的方法 -->
+              <a-menu @click="({ key: menukey }) => onContextMenuClick(treeKey, menukey)">
+                <a-menu-item key="1">1st menu item</a-menu-item>
+                <a-menu-item key="2">2nd menu item</a-menu-item>
+                <a-menu-item key="3">3rd menu item</a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
+        </template>
 
-      <template #MODEL_INSTANCE>
-        <BaseIcon :icon-type="iconFont.模型" />
-      </template>
-      <template #VIEW_FOLDER>
-        <BaseIcon :icon-type="iconFont.文件夹" />
-      </template>
-    </a-tree>
+        <template #SCHEME>
+          <BaseIcon :icon-type="iconFont.项目" />
+        </template>
+        <template #MODEL_INSTANCE>
+          <BaseIcon :icon-type="iconFont.模型" />
+        </template>
+        <template #VIEW_FOLDER>
+          <BaseIcon :icon-type="iconFont.文件夹" />
+        </template>
+      </a-tree>
+    </div>
   </div>
 </template>
 
@@ -124,15 +130,48 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.side-tree {
-  border-right: 2px solid @my-layout-border-color;
+.navbar {
+  border-left: 2px solid @my-layout-border-color;
   height: 100%;
+
+  &-title {
+    background-color: @content-header-background-color;
+    padding: 2px 8px;
+    border-bottom: 1px solid @content-border-color;
+    height: 28px;
+    line-height: 24px;
+  }
+}
+.side-tree {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 8px;
   ::v-deep(.base-icon) {
-    height: 14px;
+    height: 24px;
     width: 14px;
   }
   ::v-deep(.ant-tree-switcher) {
     width: 12px;
+  }
+
+  ::v-deep(.ant-tree li .ant-tree-node-content-wrapper) {
+    padding-right: 5px;
+    padding-left: 0px;
+    min-width: 120px;
+    border-radius: unset;
+  }
+
+  ::v-deep(.ant-tree li .ant-tree-node-content-wrapper:hover) {
+    background-color: @base-hover-color;
+  }
+
+  ::v-deep(.ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected) {
+    background-color: @base-active-color;
+  }
+
+  ::v-deep(.ant-tree li) {
+    padding: unset;
   }
 }
 </style>
