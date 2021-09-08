@@ -1,37 +1,35 @@
 import * as go from 'gojs'
-import { PoolLayout } from '../diagramTool/PoolLayout'
 const { make } = go.GraphObject
 
-// swimlanes
-export const MINLENGTH = 400 // this controls the minimum length of any swimlane
-export const MINBREADTH = 20 // this controls the minimum breadth of any non-collapsed swimlane
+const MINLENGTH = 400,
+  MINBREADTH = 20
 
-function laneEventMenuMaker(diagram: go.Diagram) {
-  return make<go.Adornment>( // context menu for each lane
-    'ContextMenu',
-    make(
-      'ContextMenuButton',
-      make(go.TextBlock, 'Add Lane'),
-      // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
-      {
-        click: function (e: go.InputEvent, obj: go.GraphObject) {
-          addLaneEvent((obj.part as go.Adornment).adornedObject as go.Node, diagram)
-        }
+const laneEventMenu = make<go.Adornment>( // context menu for each lane
+  'ContextMenu',
+  make(
+    'ContextMenuButton',
+    make(go.TextBlock, 'Add Lane'),
+    // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
+    {
+      click: function (e: go.InputEvent, obj: go.GraphObject) {
+        console.log(123, obj.part)
+
+        addLaneEvent((obj.part as go.Adornment).adornedObject as go.Node, e.diagram)
       }
-    )
+    }
   )
-}
+)
 
-export function swimLanesGroupMaker(diagram: go.Diagram): go.Group {
-  return make(
+export function laneGroupMaker(): go.Group {
+  const swimLanesGroupTemplate = make(
     go.Group,
     'Spot',
     groupStyle(),
     {
-      name: 'Lane',
-      contextMenu: laneEventMenuMaker(diagram),
-      minLocation: new go.Point(NaN, -Infinity), // only allow vertical movement
-      maxLocation: new go.Point(NaN, Infinity),
+      name: 'lane',
+      contextMenu: laneEventMenu,
+      // minLocation: new go.Point(NaN, -Infinity), // only allow vertical movement
+      // maxLocation: new go.Point(NaN, Infinity),
       selectionObjectName: 'SHAPE', // selecting a lane causes the body of the lane to be highlit, not the label
       resizable: true,
       resizeObjectName: 'SHAPE', // the custom resizeAdornmentTemplate only permits two kinds of resizing
@@ -45,6 +43,7 @@ export function swimLanesGroupMaker(diagram: go.Diagram): go.Group {
           layeringOption: go.LayeredDigraphLayout.LayerLongestPathSource
         }
       ),
+      resizeAdornmentTemplate: laneResizeA,
       computesBoundsAfterDrag: true, // needed to prevent recomputing Group.placeholder bounds too soon
       computesBoundsIncludingLinks: false, // to reduce occurrences of links going briefly outside the lane
       computesBoundsIncludingLocation: true, // to support empty space at top-left corner of lane
@@ -61,7 +60,7 @@ export function swimLanesGroupMaker(diagram: go.Diagram): go.Group {
           const ok = grp.addMembers(grp.diagram.selection, true)
           if (ok) {
             updateCrossLaneLinks(grp)
-            relayoutDiagram(diagram)
+            relayoutDiagram(e.diagram)
           } else {
             grp.diagram.currentTool.doCancel()
           }
@@ -104,7 +103,7 @@ export function swimLanesGroupMaker(diagram: go.Diagram): go.Group {
         go.TextBlock, // the lane label
         { editable: true, margin: new go.Margin(2, 0, 0, 8) },
         new go.Binding('visible', 'isSubGraphExpanded').ofObject(),
-        new go.Binding('text', 'text').makeTwoWay()
+        new go.Binding('text', 'name').makeTwoWay()
       ),
       make('SubGraphExpanderButton', { margin: 4, angle: -270 }) // but this remains always visible!
     ), // end Horizontal Panel
@@ -125,10 +124,11 @@ export function swimLanesGroupMaker(diagram: go.Diagram): go.Group {
         new go.Binding('visible', 'isSubGraphExpanded', function (e) {
           return !e
         }).ofObject(),
-        new go.Binding('text', 'text').makeTwoWay()
+        new go.Binding('text', 'name').makeTwoWay()
       )
     )
   ) // end swimLanesGroupTemplate
+  return swimLanesGroupTemplate
 }
 
 function groupStyle() {
@@ -145,14 +145,50 @@ function groupStyle() {
   ]
 }
 
+const laneResizeA = make(
+  go.Adornment,
+  'Spot',
+  make(go.Placeholder),
+  make(
+    go.Shape, // for changing the length of a lane
+    {
+      alignment: go.Spot.Right,
+      desiredSize: new go.Size(7, 50),
+      fill: 'lightblue',
+      stroke: 'dodgerblue',
+      cursor: 'col-resize',
+      visible: true
+    },
+    new go.Binding('visible', '', function (ad) {
+      if (ad.adornedPart === null) return false
+      return ad.adornedPart.isSubGraphExpanded
+    }).ofObject()
+  ),
+  make(
+    go.Shape, // for changing the breadth of a lane
+    {
+      alignment: go.Spot.Bottom,
+      desiredSize: new go.Size(50, 7),
+      fill: 'lightblue',
+      stroke: 'dodgerblue',
+      cursor: 'row-resize'
+    },
+    new go.Binding('visible', '', function (ad) {
+      if (ad.adornedPart === null) return false
+      return ad.adornedPart.isSubGraphExpanded
+    }).ofObject()
+  )
+)
+
 function addLaneEvent(lane: go.Node, diagram: go.Diagram) {
   diagram.startTransaction('addLane')
-  if (lane != null && lane.data.category === 'Lane') {
+  if (lane != null && lane.data.category === 'lane') {
     // create a new lane data object
     const shape = lane.findObject('SHAPE')
-    const size = new go.Size(shape ? shape.width : MINLENGTH, MINBREADTH)
+    console.log(shape, 'Shape')
+    const size = new go.Size(shape ? shape.width : MINLENGTH, shape ? shape.height : MINBREADTH)
     const newlanedata = {
-      category: 'Lane',
+      category: 'lane',
       text: 'New Lane',
       color: 'white',
       isGroup: true,
@@ -166,6 +202,7 @@ function addLaneEvent(lane: go.Node, diagram: go.Diagram) {
   diagram.commitTransaction('addLane')
 }
 
+// hide links between lanes when either lane is collapsed
 function updateCrossLaneLinks(group: go.Group) {
   group.findExternalLinksConnected().each((l) => {
     l.visible = l.fromNode !== null && l.fromNode.isVisible() && l.toNode !== null && l.toNode.isVisible()
@@ -178,35 +215,4 @@ function relayoutDiagram(diagram: go.Diagram) {
     if (g.category === 'Pool' && g.layout !== null) g.layout.invalidateLayout()
   })
   diagram.layoutDiagram()
-}
-
-export function poolGroupMaker(): go.Group {
-  return make(
-    go.Group,
-    'Auto',
-    groupStyle(),
-    {
-      computesBoundsIncludingLinks: false,
-      // use a simple layout that ignores links to stack the "lane" Groups on top of each other
-      layout: make(PoolLayout, { spacing: new go.Size(0, 0) }) // no space between lanes
-    },
-    new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-    make(go.Shape, { fill: 'white' }, new go.Binding('fill', 'color')),
-    make(
-      go.Panel,
-      'Table',
-      { defaultColumnSeparatorStroke: 'black' },
-      make(
-        go.Panel,
-        'Horizontal',
-        { column: 0, angle: 270 },
-        make(
-          go.TextBlock,
-          { editable: true, margin: new go.Margin(5, 0, 5, 0) }, // margin matches private process (black box pool)
-          new go.Binding('text').makeTwoWay()
-        )
-      ),
-      make(go.Placeholder, { background: 'darkgray', column: 1 })
-    )
-  ) // end poolG
 }

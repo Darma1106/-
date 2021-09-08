@@ -36,3 +36,11 @@ export function renderDiagramFromLocal(
     })
   })
 }
+
+export function relayoutDiagram(diagram: go.Diagram): void {
+  diagram.layout.invalidateLayout()
+  diagram.findTopLevelGroups().each(function (g) {
+    if (g.category === 'Pool' && g.layout !== null) g.layout.invalidateLayout()
+  })
+  diagram.layoutDiagram()
+}
