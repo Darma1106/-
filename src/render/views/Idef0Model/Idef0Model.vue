@@ -1,11 +1,6 @@
 <template>
   <div class="idef0-model">
-    <BaseDiagram
-      ref="baseDiagramRef"
-      :editor-template="templateData"
-      default-link-type="defaultLink"
-      :diagram-option="diagramOption"
-    />
+    <BaseDiagram ref="baseDiagramRef" default-link-type="defaultLink" :diagram-option="diagramOption" />
   </div>
 </template>
 
@@ -42,50 +37,50 @@ if (props.tabId) {
 const defaultJson = dataMap.get('lct') as string
 renderDiagramFromLocal(props.tabId, baseDiagramRef, defaultJson)
 
-const templateData: EditorTemplate[] = [
-  {
-    id: '1',
-    name: '图形',
-    category: 'graph',
-    items: [
-      {
-        id: '567',
-        type: 'node',
-        name: '任务',
-        data: {
-          key: 2,
-          figure: 'RoundedRectangle',
-          fill: '#FFFEDF',
-          name: '任务',
-          category: 'defaultNode',
-          type: 'ServiceTask',
-          showContext: false
-        }
-      },
+// const templateData: EditorTemplate[] = [
+//   {
+//     id: '1',
+//     name: '图形',
+//     category: 'graph',
+//     items: [
+//       {
+//         id: '567',
+//         type: 'node',
+//         name: '任务',
+//         data: {
+//           key: 2,
+//           figure: 'RoundedRectangle',
+//           fill: '#FFFEDF',
+//           name: '任务',
+//           category: 'defaultNode',
+//           type: 'ServiceTask',
+//           showContext: false
+//         }
+//       },
 
-      {
-        id: '345',
-        type: 'line',
-        name: '折线',
-        data: { category: 'avoidLink' }
-      },
-      {
-        id: '222',
-        type: 'singleLine',
-        name: '单例线',
-        data: {
-          category: 'singleLink'
-        }
-      },
-      {
-        id: '543',
-        type: 'line',
-        name: '直线',
-        data: { category: 'defaultLink' }
-      }
-    ]
-  }
-]
+//       {
+//         id: '345',
+//         type: 'line',
+//         name: '折线',
+//         data: { category: 'avoidLink' }
+//       },
+//       {
+//         id: '222',
+//         type: 'singleLine',
+//         name: '单例线',
+//         data: {
+//           category: 'singleLink'
+//         }
+//       },
+//       {
+//         id: '543',
+//         type: 'line',
+//         name: '直线',
+//         data: { category: 'defaultLink' }
+//       }
+//     ]
+//   }
+// ]
 
 const diagramOption = {
   // grid: make(go.Panel, "Grid",

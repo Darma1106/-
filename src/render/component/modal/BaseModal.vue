@@ -15,69 +15,48 @@
   </a-modal>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Modal as AModal } from 'ant-design-vue'
-import { defineComponent } from 'vue'
+// import { defineComponent } from 'vue'
 import { useFlag } from '@/composition'
 
-export default defineComponent({
-  components: {
-    AModal
+interface Props {
+  title?: string
+  width?: string
+  onOk?: () => void
+  onClose?: () => void
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  title: 'defaultTitle',
+  width: '50%',
+  onOk: () => {
+    console.log('onOk')
   },
-  props: {
-    title: {
-      type: String,
-      default: 'defaultTitle'
-    },
-    width: {
-      type: String,
-      default: '50%'
-    },
-    onOk: {
-      type: Function,
-      default: () => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        return new Promise<void>((resolve) => {
-          setTimeout(() => {
-            resolve()
-          }, 2000)
-        })
-      }
-    },
-    onClose: {
-      type: Function,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      default: () => {}
-    }
-  },
-  setup(props) {
-    const [visible, visibleToggle] = useFlag(false)
-    const [loding, lodingToggle] = useFlag(false)
-
-    const showModal = () => {
-      visibleToggle.set(true)
-    }
-
-    const handleOk = async () => {
-      lodingToggle.set(true)
-      await props.onOk()
-      lodingToggle.set(false)
-      visibleToggle.set(false)
-    }
-
-    const handleClose = async () => {
-      await props.onClose()
-    }
-
-    return {
-      visible,
-      loding,
-      showModal,
-      handleOk,
-      handleClose
-    }
+  onClose: () => {
+    console.log('onClose')
   }
 })
+
+const [visible, visibleToggle] = useFlag(false)
+const [loding, lodingToggle] = useFlag(false)
+
+const showModal = () => {
+  visibleToggle.set(true)
+}
+
+const handleOk = async () => {
+  lodingToggle.set(true)
+  await props.onOk()
+  lodingToggle.set(false)
+  visibleToggle.set(false)
+}
+
+const handleClose = async () => {
+  await props.onClose()
+}
+
+defineExpose({ showModal })
 </script>
 
 <style lang="less" scoped></style>

@@ -35,6 +35,7 @@ import { guidedDraggingToolOption } from '@/component/baseDiagram/util/diagramTo
 import { LinkShiftingTool } from '@/component/baseDiagram/util/diagramTool/LinkShiftingTool'
 import { injectLinkMap } from '@/component/baseDiagram/util/defaultLine'
 import { injectNodeMap } from '@/component/baseDiagram/util/defaultNode'
+import { injectGroupMap } from '@/component/baseDiagram/util/defaultGroup'
 import { useEventStore, useLayoutStore } from '@/store'
 import type { ModelTool, ModelInstanceEditDTO, DataInstanceAttrDTO, ToolMeta } from '@/services/module/modelService'
 import { proptyDatatoAttrDTOs, toDataInstanceDTOs, proptyDataExplain } from '@/common/dataTransfer'
@@ -49,6 +50,8 @@ interface Props {
   treeLayout?: boolean
   defaultLinkType?: string
   diagramOption?: AnyObject
+  // 当配置需要用到实例时
+  diagramSetting?: (diagram: go.Diagram) => Partial<go.Diagram>
   afterLink?: AfterLink
   afterInit?: AfterInit
 }
@@ -71,11 +74,16 @@ let diagram: go.Diagram | null = null
 let activeEditorType: ToolMeta | null = null
 
 function init(templeteRef: HTMLDivElement): go.Diagram {
+  let option: Partial<go.Diagram> = {}
+  if (props.diagramSetting) {
+    option = props.diagramSetting(diagram)
+  }
   const myDiagram = make(
     go.Diagram,
     templeteRef,
     // 获取辅助线
     Object.assign(
+      option,
       guidedDraggingToolOption,
       {
         'animationManager.isEnabled': false,
@@ -90,6 +98,7 @@ function init(templeteRef: HTMLDivElement): go.Diagram {
   )
   injectNodeMap(myDiagram)
   injectLinkMap(myDiagram)
+  injectGroupMap(myDiagram)
 
   if (props.treeLayout) {
     myDiagram.layout = make(go.TreeLayout, { angle: 90, arrangement: go.TreeLayout.ArrangementFixedRoots })

@@ -1,11 +1,6 @@
 <template>
   <div class="process-model">
-    <BaseDiagram
-      ref="baseDiagramRef"
-      :editor-template="templateData"
-      :after-link="afterLink"
-      default-link-type="avoidLink"
-    />
+    <BaseDiagram ref="baseDiagramRef" :after-link="afterLink" default-link-type="avoidLink" />
   </div>
 </template>
 

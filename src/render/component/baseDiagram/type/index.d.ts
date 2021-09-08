@@ -1,5 +1,5 @@
 import type { Diagram, ObjectData } from 'gojs'
-import { ArrowTypeValue, CommonNodeTypeValue, CommonLinkTypeValue } from './enum'
+import { ArrowTypeValue, CommonNodeTypeValue, CommonLinkTypeValue, CommonGroupTypeValue } from './enum'
 import { icons } from '@/common/icons'
 
 export type ArrowType = keyof typeof ArrowTypeValue
@@ -89,4 +89,10 @@ export type CommonLinkType = keyof typeof CommonLinkTypeValue
 
 export type CommonLinkMap = {
   [key in CommonLinkType]: go.Link
+}
+
+export type CommonGroupType = keyof typeof CommonGroupTypeValue
+
+export type CommonGroupMap = {
+  [key in CommonGroupType]: go.Group
 }

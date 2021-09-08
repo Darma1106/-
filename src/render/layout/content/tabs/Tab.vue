@@ -1,5 +1,5 @@
 <template>
-  <a-tabs :active-key="activeTab" class="tabs" hide-add type="editable-card" @edit="onEdit" @change="change"
+  <a-tabs v-model:active-key="activeTab" class="tabs" hide-add type="editable-card" @edit="onEdit"
     ><a-tab-pane v-for="pane in tabs" :key="pane.key" :tab="pane.title" :closable="pane.closable"></a-tab-pane
   ></a-tabs>
   <div v-for="pane in tabs" v-show="pane.key == activeTab" :key="pane.key" class="tab-view">
@@ -19,21 +19,23 @@ export default defineComponent({
     TREE_GRAPHIC: defineAsyncComponent(() => import('@/views/organizationModel/OrganizationModel.vue')),
     TIMELINE_GRAPHIC: defineAsyncComponent(() => import('@/views/sequenceModel/SequenceModel.vue')),
     // FLOW_GRAPHIC: defineAsyncComponent(() => import('@/views/processModel/ProcessModel.vue')),
-    FLOW_GRAPHIC: defineAsyncComponent(() => import('@/views/Idef0Model/Idef0Model.vue')),
-    TABLE_GRAPHIC: defineAsyncComponent(() => import('@/views/tableModel/TableModel.vue'))
+    FLOW_GRAPHIC: defineAsyncComponent(() => import('@/views/Idef0Model/Idef0Model.vue'))
+    // TABLE_GRAPHIC: defineAsyncComponent(() => import('@/views/tableModel/TableModel.vue'))
+    // TABLE: defineAsyncComponent(() => import('@/views/bpmnModel/BpmnModel3.vue'))
   },
   setup() {
-    const { tabs, activeTab, change, remove } = toRefs(useTabStore())
+    const { tabs, activeTab } = toRefs(useTabStore())
+    const { remove, change } = useTabStore()
 
     const onEdit = (targetKey: string) => {
-      remove.value(targetKey)
+      remove(targetKey)
     }
 
     return {
       tabs,
       activeTab,
-      change,
-      onEdit
+      onEdit,
+      change
     }
   }
 })

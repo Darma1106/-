@@ -19,3 +19,8 @@ export enum CommonLinkTypeValue {
   avoidLink = 'avoidLink',
   singleLink = 'singleLink'
 }
+
+export enum CommonGroupTypeValue {
+  lane = 'lane',
+  pool = 'pool'
+}
